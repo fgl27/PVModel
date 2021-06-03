@@ -15,7 +15,6 @@ function mReadFile(path) {
         if (err) {
 
             console.log(err);
-            return null;
 
         } else console.log(path + ' OK');
 

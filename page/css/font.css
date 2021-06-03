@@ -1,0 +1,51 @@
+@charset "UTF-8";
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('fonts/Roboto-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Roboto-Bold';
+  src: url('fonts/Roboto-Bold.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body,
+html {
+  background-color: rgba(0, 0, 0, 0);
+  font-family: 'Roboto', 'Roboto-Bold';
+  margin: auto;
+  overflow: hidden;
+  -webkit-text-stroke: 0.005em;
+}
+
+.font_bold {
+  font-family: 'Roboto-Bold';
+}
+
+#inputs {
+  width: auto;
+  text-align: center;
+  margin-top: 1%;
+}
+
+.divBase {
+  margin-top: 0.25em;
+}
+
+.inputsText {
+  display: inline-block;
+  padding-right: 1%;
+}
+
+.inputsInput {
+  display: inline-block;
+}
+
+.inputsbutton {
+  margin-top: 1%;
+}
