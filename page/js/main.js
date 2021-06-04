@@ -197,7 +197,7 @@ const fun_obj = {
         div_result_value.className = 'result_value';
         div_result_value.setAttribute('id', 'mes_' + prop);
 
-        div_result_value.innerHTML = base_div_text + '<br> kWh';
+        div_result_value.innerHTML = base_div_text + '<br>kWh';
         div_result_holder.appendChild(div_result_value);
 
         for (let prop in obj) {
