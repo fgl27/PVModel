@@ -218,7 +218,7 @@ echo -e "\\n${bldgrn}Compression done\\n";
 # copy main.js temp files to githubio/js/
 cp -rf main.js ../js/main.js;
 cd - &> /dev/null || exit;
-rm -rf "$temp_maker_folder"
+#rm -rf "$temp_maker_folder"
 
 # Warn if a change was detected to main.js and page/temp/html
 git_check="$(git status | grep modified)";
