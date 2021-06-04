@@ -142,7 +142,7 @@ const fun_obj = {
         //Calcula o objeto com os valores de potencia e mostra
         button.onclick = function() {
 
-            let obj = obj_temp,
+            let obj = JSON.parse(obj_temp),
                 i = 0,
                 len = obj.length,
                 ang = 20,//Element_obj.angulo.value * (Math.PI / 180),
@@ -381,7 +381,7 @@ const fun_obj = {
         resultObjID = msetTimeout(
             function() {
 
-                window.scrollTo(0, document.body.scrollHeight);
+                //window.scrollTo(0, document.body.scrollHeight);
 
                 for (let prop in obj) {
 
