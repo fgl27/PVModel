@@ -19,8 +19,8 @@ function mReadFile(path) {
         } else console.log(path + ' OK');
 
         data = data.replaceAll(',', '.').replaceAll('\t', ',').replaceAll('\n', '],[');
-        data = 'var obj_temp = [[' + data.substring(0, data.length - 2) + '];';
-        var b = new Beautifier();
+        data = 'const obj_temp = [[' + data.substring(0, data.length - 2) + '];';
+        let b = new Beautifier();
 
         mWriteFile(
             './obj.js',
