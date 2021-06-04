@@ -123,7 +123,7 @@ const fun_obj = {
                 'div',
                 prop + '_Help',
                 'tooltip ' + (obj.help ? '' : 'opacityZero'),
-                '?<span class="tooltiptext">' + obj.help + '</span>'
+                '&nbsp;?&nbsp;<span class="tooltiptext">' + obj.help + '</span>'
             )
         );
 
@@ -242,9 +242,9 @@ const fun_obj = {
 
         if (isDay) {
 
-            div_result_title.textContent = 'Resultado Mês ' + mesesfull[prop1] + ' Dia ' + prop2;
+            div_result_title.textContent = 'Resultado ' + prop2 + ' de ' + mesesfull[prop1];
 
-            button.innerHTML = '<span>&#8592;</span> Voltar ao mês de ' + mesesfull[prop1];
+            button.innerHTML = '<span>&#8592;</span> Voltar pro mês de ' + mesesfull[prop1];
             button.onclick = function() {
                 monclick(prop1);
             };
@@ -255,8 +255,8 @@ const fun_obj = {
 
         } else if (isMonth) {
 
-            div_result_title.textContent = 'Resultado Mês ' + mesesfull[prop1];
-            button.innerHTML = '<span>&#8592;</span> Voltar ao ano';
+            div_result_title.textContent = 'Resultado ' + mesesfull[prop1];
+            button.innerHTML = '<span>&#8592;</span> Voltar pro ano';
             button.onclick = function() {
                 monclick();
             };
@@ -426,8 +426,14 @@ function StartPage() {
     inputsDiv = mgetElementById('inputs');
     resultDiv = mgetElementById('result');
 
-    Element_obj.order_base.forEach(GenDiv);
+    mgetElementById('page_title').innerHTML = 'PVModel';
 
+    StartInputs();
+
+}
+
+function StartInputs() {
+    Element_obj.order_base.forEach(GenDiv);
 }
 
 function GenDiv(prop) {

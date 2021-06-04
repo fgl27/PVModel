@@ -21,6 +21,14 @@ html {
   -webkit-text-stroke: 0.005em;
 }
 
+#page_title {
+  width: auto;
+  text-align: center;
+  margin-top: 1%;
+  font-size: 200%;
+  font-family: 'Roboto-Bold';
+}
+
 #inputs {
   width: auto;
   text-align: center;
@@ -33,18 +41,18 @@ html {
 
 .divider {
   margin: 0.2em;
-  width: 29%;
+  width: 53ch;
   background: #000000;
-  height: 0.1ex;
+  height: 0.15ch;
   left: 50%;
-  transform: translateX(-51%);
+  transform: translateX(-50.5%);
   position: relative;
 }
 
 .inputsText {
   display: inline-block;
   font-family: 'Roboto-Bold';
-  min-width: 20%;
+  min-width: 38ch;
   text-align: start;
 }
 
@@ -52,6 +60,7 @@ html {
   display: inline-block;
   text-align: center !important;
   font-family: 'Roboto-Bold';
+  width: 13ch;
 }
 
 .inputsbutton {
@@ -123,7 +132,7 @@ html {
   position: relative;
   display: inline-block;
   border-bottom: 0.15em dotted black;
-  margin-left: 0.1em;
+  margin-left: 1ch;
 }
 
 .tooltip .tooltiptext {
