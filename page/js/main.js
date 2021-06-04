@@ -133,6 +133,7 @@ const fun_obj = {
             div_result_title,
             div_result_note,
             button,
+            base_id = 'base',
             isDay = Boolean(prop1 && prop2),
             isMonth = Boolean(prop1 && !prop2),
             total_max = 0,
@@ -150,12 +151,12 @@ const fun_obj = {
         }
 
         button = document.createElement('button');
-        button.setAttribute('id', prop);
+        button.setAttribute('id', base_id);
         button.className = 'inputsbutton';
 
         div_result_title = document.createElement('div');
         div_result_title.className = 'result_title';
-        div_result_title.setAttribute('id', 'result_title_' + prop);
+        div_result_title.setAttribute('id', 'result_title_' + base_id);
 
         if (isDay) {
 
@@ -190,12 +191,12 @@ const fun_obj = {
 
         div_result_holder = document.createElement('div');
         div_result_holder.className = 'result_holder';
-        div_result_holder.setAttribute('id', 'result_holder_' + prop);
+        div_result_holder.setAttribute('id', 'result_holder_' + base_id);
         resultDiv.appendChild(div_result_holder);
 
         div_result_value = document.createElement('div');
         div_result_value.className = 'result_value';
-        div_result_value.setAttribute('id', 'mes_' + prop);
+        div_result_value.setAttribute('id', 'result_value_' + base_id);
 
         div_result_value.innerHTML = base_div_text + '<br>kWh';
         div_result_holder.appendChild(div_result_value);
@@ -230,7 +231,7 @@ const fun_obj = {
 
                 div_result_value = document.createElement('div');
                 div_result_value.className = 'result_value';
-                div_result_value.setAttribute('id', 'mes_' + prop);
+                div_result_value.setAttribute('id', 'result_value_' + prop);
 
                 temp_total = obj[prop].total * CC_CA / 1000;
                 if (temp_total > total_max) total_max = temp_total;
@@ -242,6 +243,18 @@ const fun_obj = {
 
             }
         }
+
+        div_result_holder = document.createElement('div');
+        div_result_holder.className = 'result_holder';
+        div_result_holder.setAttribute('id', 'result_holder_end');
+        resultDiv.appendChild(div_result_holder);
+
+        div_result_value = document.createElement('div');
+        div_result_value.className = 'result_value';
+        div_result_value.setAttribute('id', 'result_value_end');
+
+        div_result_value.innerHTML = 'Total<br>' + (obj.total * CC_CA / 1000).toFixed(2);
+        div_result_holder.appendChild(div_result_value);
 
         div_result_note = document.createElement('div');
         div_result_note.className = 'result_note';
