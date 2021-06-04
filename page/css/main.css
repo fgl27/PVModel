@@ -1,1 +1,157 @@
-@charset "UTF-8";@font-face{font-family:"Roboto";src:url(fonts/Roboto-Regular.woff2) format("woff2");font-weight:normal;font-style:normal}@font-face{font-family:"Roboto-Bold";src:url(fonts/Roboto-Bold.woff2) format("woff2");font-weight:normal;font-style:normal}body,html{background-color:#dcdcdc;font-family:"Roboto","Roboto-Bold";-webkit-text-stroke:.005em}#inputs{width:auto;text-align:center;margin-top:1%}.divBase{margin-top:.25em}.divider{margin:.2em;width:29%;background:#000000;height:.1ex;left:50%;transform:translateX(-51%);position:relative}.inputsText{display:inline-block;font-family:"Roboto-Bold";min-width:20%;text-align:start}.inputsInput{display:inline-block;text-align:center!important;font-family:"Roboto-Bold"}.inputsbutton{margin-top:1%;background:#ff5757;border-radius:4%;font-family:"Roboto-Bold";font-size:125%}#result{width:auto;text-align:center;margin-top:1%}.result_value{box-sizing:border-box;border:.1em solid #000000;border-radius:5%;padding:.5em;background:#FFFFFF;font-family:"Roboto-Bold";min-width:3.5em}.result_holder{display:inline-block;text-align:center;margin:.25em;font-size:78%}.result_graf_holder{height:50vh;position:relative}.result_graf{height:0;background-color:#ff0000;will-change:height;transition:height 750ms linear;position:absolute;bottom:.2%;width:50%;left:50%;transform:translateX(-50%)}.result_title{text-align:center;font-size:150%;font-family:"Roboto-Bold"}.result_note{margin-top:1%;text-align:center;font-size:100%;font-family:"Roboto-Bold"}.opacityZero{opacity:0}.tooltip{position:relative;display:inline-block;border-bottom:.15em dotted black;margin-left:.1em}.tooltip .tooltiptext{visibility:hidden;width:20em;background-color:black;color:#fff;text-align:center;border-radius:.5em;padding:.5em;position:absolute;z-index:1;top:150%;left:50%;transform:translateX(-50%)}.tooltip .tooltiptext:after{content:"";position:absolute;bottom:100%;left:50%;margin-left:-.35em;border-width:.35em;border-style:solid;border-color:transparent transparent black transparent}.tooltip:hover .tooltiptext{visibility:visible}
+@charset "UTF-8";
+
+@font-face {
+    font-family: "Roboto";
+    src: url(fonts/Roboto-Regular.woff2) format("woff2");
+    font-weight: normal;
+    font-style: normal
+}
+
+@font-face {
+    font-family: "Roboto-Bold";
+    src: url(fonts/Roboto-Bold.woff2) format("woff2");
+    font-weight: normal;
+    font-style: normal
+}
+
+body,
+html {
+    background-color: #dcdcdc;
+    font-family: "Roboto", "Roboto-Bold";
+    -webkit-text-stroke: .005em
+}
+
+#inputs {
+    width: auto;
+    text-align: center;
+    margin-top: 1%
+}
+
+.divBase {
+    margin-top: .25em
+}
+
+.divider {
+    margin: .2em;
+    width: 29%;
+    background: #000000;
+    height: .1ex;
+    left: 50%;
+    transform: translateX(-51%);
+    position: relative
+}
+
+.inputsText {
+    display: inline-block;
+    font-family: "Roboto-Bold";
+    min-width: 20%;
+    text-align: start
+}
+
+.inputsInput {
+    display: inline-block;
+    text-align: center !important;
+    font-family: "Roboto-Bold"
+}
+
+.inputsbutton {
+    margin-top: 1%;
+    background: #ff5757;
+    border-radius: 4%;
+    font-family: "Roboto-Bold";
+    font-size: 125%
+}
+
+#result {
+    width: auto;
+    text-align: center;
+    margin-top: 1%
+}
+
+.result_value {
+    box-sizing: border-box;
+    border: .1em solid #000000;
+    border-radius: 5%;
+    padding: .5em;
+    background: #FFFFFF;
+    font-family: "Roboto-Bold";
+    min-width: 3.5em
+}
+
+.result_holder {
+    display: inline-block;
+    text-align: center;
+    margin: .25em;
+    font-size: 78%
+}
+
+.result_graf_holder {
+    height: 50vh;
+    position: relative
+}
+
+.result_graf {
+    height: 0;
+    background-color: #ff0000;
+    will-change: height;
+    transition: height 750ms linear;
+    position: absolute;
+    bottom: .2%;
+    width: 50%;
+    left: 50%;
+    transform: translateX(-50%)
+}
+
+.result_title {
+    text-align: center;
+    font-size: 150%;
+    font-family: "Roboto-Bold"
+}
+
+.result_note {
+    margin-top: 1%;
+    text-align: center;
+    font-size: 100%;
+    font-family: "Roboto-Bold"
+}
+
+.opacityZero {
+    opacity: 0
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: .15em dotted black;
+    margin-left: .1em
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 20em;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: .5em;
+    padding: .5em;
+    position: absolute;
+    z-index: 1;
+    top: 150%;
+    left: 50%;
+    transform: translateX(-50%)
+}
+
+.tooltip .tooltiptext:after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -.35em;
+    border-width: .35em;
+    border-style: solid;
+    border-color: transparent transparent black transparent
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible
+}

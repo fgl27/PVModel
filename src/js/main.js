@@ -78,49 +78,68 @@ let Element_obj = {
 
 const fun_obj = {
     divider: function() {
-        const div_base = document.createElement('div');
-        div_base.className = 'divider';
-        inputsDiv.appendChild(div_base);
+        inputsDiv.appendChild(
+            mcreateElement(
+                'div',
+                null,
+                'divider'
+            )
+        );
     },
     input: function(prop) {
         let obj = Element_obj[prop];
 
-        const div_base = document.createElement('div');
-        div_base.setAttribute('id', prop);
+        const div_base = mcreateElement(
+            'div',
+            prop
+        );
 
-        const div_text = document.createElement('div');
-        div_text.setAttribute('id', prop + '_Text');
-        div_text.className = 'inputsText';
-        div_text.textContent = obj.innerHTML;
+        const div_input = mcreateElement(
+            'input',
+            prop + '_Input',
+            'inputsInput'
+        );
 
-        const div_input = document.createElement('input');
-        div_input.className = 'inputsInput';
         div_input.type = obj.type;
         div_input.step = obj.step;
         if (obj.value) div_input.value = obj.value;
-        div_input.setAttribute('id', prop + '_Input');
         div_input.onchange = function() {
             obj.value = this.value;
         };
 
-        div_base.appendChild(div_text);
+        div_base.appendChild(
+            mcreateElement(
+                'div',
+                prop + '_Text',
+                'inputsText',
+                obj.innerHTML
+            )
+        );
+
         div_base.appendChild(div_input);
 
-        const div_help = document.createElement('div');
-        div_help.setAttribute('id', prop + '_Help');
-        div_help.className = 'tooltip ' + (obj.help ? '' : 'opacityZero');
-        div_help.innerHTML = ' ? <span class="tooltiptext">' + obj.help + '</span>';
-        div_base.appendChild(div_help);
+        div_base.appendChild(
+            mcreateElement(
+                'div',
+                prop + '_Help',
+                'tooltip ' + (obj.help ? '' : 'opacityZero'),
+                '?<span class="tooltiptext">' + obj.help + '</span>'
+            )
+        );
 
         inputsDiv.appendChild(div_base);
     },
     button: function(prop) {
         let obj = Element_obj[prop];
 
-        const button = document.createElement('button');
-        button.setAttribute('id', prop);
-        button.className = 'inputsbutton';
-        button.textContent = obj.innerHTML;
+        const button = mcreateElement(
+            'button',
+            prop,
+            'inputsbutton',
+            obj.innerHTML
+        );
+
+        //Calcula o objeto com os valores de potencia e mostra
         button.onclick = function() {
 
             let obj = obj_temp,
@@ -186,24 +205,21 @@ const fun_obj = {
 
         resultDiv.textContent = '';
 
-        let obj = resultObj,
-            div_result_holder,
-            div_result_graf_holder,
-            div_result_graf,
-            div_result_value,
-            div_result_title,
-            div_result_note,
-            button,
-            base_id = 'base',
+        const base_id = 'base',
             isDay = Boolean(prop1 && prop2),
             isMonth = Boolean(prop1 && !prop2),
-            total_max = 0,
-            base_div_text = 'Mês',
-            temp_total,
             CC_CA = Element_obj.cc_ca.value / 100000,
             monclick = function(prop1, prop2) {
                 fun_obj.Resultado(prop1, prop2);
             };
+
+        let obj = resultObj,
+            div_result_graf_holder,
+            div_result_note,
+            div_result_holder,
+            total_max = 0,
+            base_div_text = 'Mês',
+            temp_total;
 
 
         if (isDay) {
@@ -212,13 +228,17 @@ const fun_obj = {
             obj = resultObj[prop1];
         }
 
-        button = document.createElement('button');
-        button.setAttribute('id', base_id);
-        button.className = 'inputsbutton';
+        const button = mcreateElement(
+            'button',
+            'button' + base_id,
+            'inputsbutton'
+        );
 
-        div_result_title = document.createElement('div');
-        div_result_title.className = 'result_title';
-        div_result_title.setAttribute('id', 'result_title_' + base_id);
+        const div_result_title = mcreateElement(
+            'div',
+            'result_title_' + base_id,
+            'result_title'
+        );
 
         if (isDay) {
 
@@ -251,25 +271,31 @@ const fun_obj = {
 
         resultDiv.appendChild(div_result_title);
 
-        div_result_holder = document.createElement('div');
-        div_result_holder.className = 'result_holder';
-        div_result_holder.setAttribute('id', 'result_holder_' + base_id);
+        div_result_holder = mcreateElement(
+            'div',
+            'result_holder_' + base_id,
+            'result_holder'
+        );
         resultDiv.appendChild(div_result_holder);
 
-        div_result_value = document.createElement('div');
-        div_result_value.className = 'result_value';
-        div_result_value.setAttribute('id', 'result_value_' + base_id);
-
-        div_result_value.innerHTML = base_div_text + '<br>kWh (CA)';
-        div_result_holder.appendChild(div_result_value);
+        div_result_holder.appendChild(
+            mcreateElement(
+                'div',
+                'result_value' + base_id,
+                'result_value',
+                base_div_text + '<br>kWh (CA)'
+            )
+        );
 
         for (let prop in obj) {
 
             if (prop !== 'total') {
 
-                div_result_holder = document.createElement('div');
-                div_result_holder.className = 'result_holder';
-                div_result_holder.setAttribute('id', 'result_holder_' + prop);
+                div_result_holder = mcreateElement(
+                    'div',
+                    'result_holder_' + prop,
+                    'result_holder'
+                );
 
                 const mprop = prop,
                     mprop1 = prop1,
@@ -286,46 +312,59 @@ const fun_obj = {
 
                 };
 
-                div_result_graf_holder = document.createElement('div');
-                div_result_graf_holder.className = 'result_graf_holder';
-                div_result_graf_holder.setAttribute('id', 'graf_holder_' + prop);
+                div_result_graf_holder = mcreateElement(
+                    'div',
+                    'graf_holder_' + prop,
+                    'result_graf_holder'
+                );
                 div_result_holder.appendChild(div_result_graf_holder);
 
-                div_result_graf = document.createElement('div');
-                div_result_graf.className = 'result_graf';
-                div_result_graf.setAttribute('id', 'graf_' + prop);
-                div_result_graf_holder.appendChild(div_result_graf);
-
-                div_result_value = document.createElement('div');
-                div_result_value.className = 'result_value';
-                div_result_value.setAttribute('id', 'result_value_' + prop);
+                div_result_graf_holder.appendChild(
+                    mcreateElement(
+                        'div',
+                        'graf_' + prop,
+                        'result_graf'
+                    )
+                );
 
                 temp_total = obj[prop].total * CC_CA;
                 if (temp_total > total_max) total_max = temp_total;
 
-                div_result_value.innerHTML = prop + '<br>' + temp_total.toFixed(2);
-                div_result_holder.appendChild(div_result_value);
+                div_result_holder.appendChild(
+                    mcreateElement(
+                        'div',
+                        'result_value' + prop,
+                        'result_value',
+                        prop + '<br>' + temp_total.toFixed(2)
+                    )
+                );
 
                 resultDiv.appendChild(div_result_holder);
 
             }
         }
 
-        div_result_holder = document.createElement('div');
-        div_result_holder.className = 'result_holder';
-        div_result_holder.setAttribute('id', 'result_holder_end');
+        div_result_holder = mcreateElement(
+            'div',
+            'result_holder_end',
+            'result_holder'
+        );
+
         resultDiv.appendChild(div_result_holder);
 
-        div_result_value = document.createElement('div');
-        div_result_value.className = 'result_value';
-        div_result_value.setAttribute('id', 'result_value_end');
+        div_result_holder.appendChild(
+            mcreateElement(
+                'div',
+                'result_value_end',
+                'result_value',
+                'Total<br>' + (obj.total * CC_CA).toFixed(2)
+            ));
 
-        div_result_value.innerHTML = 'Total<br>' + (obj.total * CC_CA).toFixed(2);
-        div_result_holder.appendChild(div_result_value);
-
-        div_result_note = document.createElement('div');
-        div_result_note.className = 'result_note';
-        div_result_note.setAttribute('id', 'result_note_div');
+        div_result_note = mcreateElement(
+            'div',
+            'result_note_div',
+            'result_note'
+        );
 
         if (isMonth) {
 
@@ -342,14 +381,14 @@ const fun_obj = {
         resultObjID = msetTimeout(
             function() {
 
+                window.scrollTo(0, document.body.scrollHeight);
+
                 for (let prop in obj) {
 
                     if (prop !== 'total')
                         mgetElementById('graf_' + prop).style.height = (((obj[prop].total * CC_CA) / total_max) * 100) + '%';
 
                 }
-
-                window.scrollTo(0, document.body.scrollHeight);
 
             },
             100,
@@ -358,6 +397,16 @@ const fun_obj = {
 
     }
 };
+
+function mcreateElement(type, id, className, innerHTML) {
+
+    const element = document.createElement(type);
+    if (className) element.className = className;
+    if (id) element.setAttribute('id', id);
+    if (innerHTML) element.innerHTML = innerHTML;
+
+    return element;
+}
 
 Start();
 
