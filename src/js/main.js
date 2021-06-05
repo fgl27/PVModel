@@ -22,7 +22,7 @@ const mesesfull = {
 let Element_obj = {
     modelo: {
         elem: 'select',
-        innerHTML: '    ',
+        innerHTML: 'Modelo de entrada de valores',
         value: 0,
         options: [
             'Potência nominal total',
@@ -44,6 +44,7 @@ let Element_obj = {
                 'area',
                 'area_painel',
                 'pot_nominal_painel',
+                'quantidade',
                 'pot_nominal_array',
                 'coef_temp',
                 'superficie',
@@ -53,8 +54,8 @@ let Element_obj = {
             ],
             [
                 'modelo',
-                'quantidade',
                 'pot_nominal_painel',
+                'quantidade',
                 'pot_nominal_array',
                 'coef_temp',
                 'superficie',
@@ -74,11 +75,14 @@ let Element_obj = {
 
                 mgetElementById(Elem_Ids.Input.Input + 'pot_nominal_array').disabled = Boolean(value);
 
+                if (value === 1)
+                    mgetElementById(Elem_Ids.Input.Input + 'quantidade').disabled = true;
+
             }
 
         },
         help: 'Potência nominal total:<br><br>O cálculo é feito pela potência total nominal do conjunto de painéis<br><br>' +
-            'Área total:<br><br>O cálculo é feito a determinar potência total nominal do conjunto de painéis em relação a área e potência nominal de um painel<br><br>' +
+            'Área total:<br><br>O cálculo é feito a determinar potência total nominal do conjunto de painéis em relação a quantos paines cabem na área total<br><br>' +
             'Quantidade painéis:<br><br>O cálculo é feito a determinar potência total nominal do conjunto de painéis em relação ao número total de painéis'
     },
     pot_nominal_array: {
@@ -110,10 +114,10 @@ let Element_obj = {
     area: {
         elem: 'input',
         innerHTML: 'Área total utilizada (m²)',
-        value: 5.47,
+        value: 6,
         type: 'number',
-        step: '0.01',
-        help: 'A área total que os painéis irão cobrir',
+        step: '1',
+        help: 'A máxima área que os painéis podem cobrir',
         UpdateValue: UpdatePm
     },
     quantidade: {
@@ -122,7 +126,7 @@ let Element_obj = {
         value: 3,
         type: 'number',
         step: '1',
-        help: 'A quantidade total de painéis usada',
+        help: 'A quantidade total de painéis possível',
         UpdateValue: UpdatePm
     },
     perda: {
@@ -646,31 +650,36 @@ function GenDiv(prop) {
 function UpdatePm() {
     const modelo = Element_obj.modelo;
     const pot_nom = Element_obj.pot_nominal_array;
+    const quantidade = Element_obj.quantidade;
+    const area = Element_obj.area;
+    const area_painel = Element_obj.area_painel;
 
     if (!modelo.value) {
 
         pot_nom.value = 1000;
 
-    } else if (modelo.value === 1) {
+    } else {
 
-        pot_nom.value = parseFloat(
-            (Element_obj.area.value / Element_obj.area_painel.value) *
+        quantidade.value = parseInt(
+            (area.value / area_painel.value)
+        );
+
+        pot_nom.value = parseInt(
+            quantidade.value *
             Element_obj.pot_nominal_painel.value
-        ).toFixed(2);
-
-    } else if (modelo.value === 2) {
-
-        pot_nom.value = parseFloat(
-            Element_obj.quantidade.value *
-            Element_obj.pot_nominal_painel.value
-        ).toFixed(2);
+        );
 
     }
 
-    const elem = mgetElementById(Elem_Ids.Input.Input + 'pot_nominal_array');
+    const elem_pot = mgetElementById(Elem_Ids.Input.Input + 'pot_nominal_array');
+    const elem_quatidade = mgetElementById(Elem_Ids.Input.Input + 'quantidade');
 
-    if (elem) {
-        elem.value = pot_nom.value;
+    if (elem_pot) {
+        elem_pot.value = pot_nom.value;
+    }
+
+    if (elem_quatidade) {
+        elem_quatidade.value = quantidade.value;
     }
 
 }
