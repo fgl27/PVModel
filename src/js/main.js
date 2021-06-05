@@ -61,37 +61,23 @@ let Element_obj = {
         elem: 'button',
         innerHTML: 'Calcular'
     },
-    divider: {
-        elem: 'divider',
-    },
     order_base: [
         'pot_nominal_array',
-        'divider',
         'coef_temp',
-        'divider',
         'perda',
-        'divider',
         'cc_ca',
         'button'
     ]
 };
 
 const fun_obj = {
-    divider: function() {
-        inputsDiv.appendChild(
-            mcreateElement(
-                'div',
-                null,
-                'divider'
-            )
-        );
-    },
     input: function(prop) {
         let obj = Element_obj[prop];
 
         const div_base = mcreateElement(
             'div',
-            prop
+            prop,
+            'divBase'
         );
 
         const div_input = mcreateElement(
@@ -127,7 +113,13 @@ const fun_obj = {
             )
         );
 
-        inputsDiv.appendChild(div_base);
+        const container = mcreateElement(
+            'div',
+            prop
+        );
+
+        container.appendChild(div_base);
+        inputsDiv.appendChild(container);
     },
     button: function(prop) {
         let obj = Element_obj[prop];
@@ -287,6 +279,23 @@ const fun_obj = {
             )
         );
 
+        div_result_holder = mcreateElement(
+            'div',
+            'result_holder_end',
+            'result_holder'
+        );
+
+        resultDiv.appendChild(div_result_holder);
+
+        div_result_holder.appendChild(
+            mcreateElement(
+                'div',
+                'result_value_end',
+                'result_value',
+                'Total<br>' + (obj.total * CC_CA).toFixed(2)
+            )
+        );
+
         for (let prop in obj) {
 
             if (prop !== 'total') {
@@ -343,22 +352,6 @@ const fun_obj = {
 
             }
         }
-
-        div_result_holder = mcreateElement(
-            'div',
-            'result_holder_end',
-            'result_holder'
-        );
-
-        resultDiv.appendChild(div_result_holder);
-
-        div_result_holder.appendChild(
-            mcreateElement(
-                'div',
-                'result_value_end',
-                'result_value',
-                'Total<br>' + (obj.total * CC_CA).toFixed(2)
-            ));
 
         div_result_note = mcreateElement(
             'div',
@@ -427,6 +420,18 @@ function StartPage() {
     resultDiv = mgetElementById('result');
 
     mgetElementById('page_title').innerHTML = 'PVModel';
+
+    const about_div = mgetElementById('page_about');
+    const about_text = 'Este é um projeto em andamento da faculdade, com o objetivo de modelar paineis fotovoltaicos, para mais informações acesse o link abaixo:<br><br><a href="https://github.com/fgl27/PVModel" target="_blank">github.com/fgl27/PVModel</a>';
+
+    about_div.appendChild(
+        mcreateElement(
+            'div',
+            'about_text',
+            'tooltip',
+            'Sobre &nbsp;<span id="span_about" class="tooltiptextop">' + about_text + '</span>'
+        )
+    );
 
     StartInputs();
 
