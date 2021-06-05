@@ -364,7 +364,7 @@ const fun_obj = {
             let obj = JSON.parse(obj_regiao[Element_obj.regiao.value]),
                 ang = 20,//Element_obj.angulo.value * (Math.PI / 180),
                 pm0 = Element_obj.pot_nominal_array.value,
-                calcPot_Temp = 0.0,
+                calcPotCC_Temp = 0.0,
                 mes,
                 dia,
                 hora;
@@ -392,7 +392,7 @@ const fun_obj = {
 
                 }
 
-                calcPot_Temp = calcPot(
+                calcPotCC_Temp = calcPotCC(
                     pm0,
                     ang,
                     obj[i][3],
@@ -404,10 +404,10 @@ const fun_obj = {
                 hora = obj[i][2];
 
                 resultObj[mes][dia][hora] = {};
-                resultObj[mes][dia][hora].total = calcPot_Temp;
-                resultObj[mes].total += calcPot_Temp;
-                resultObj[mes][dia].total += calcPot_Temp;
-                resultObj.total += calcPot_Temp;
+                resultObj[mes][dia][hora].total = calcPotCC_Temp;
+                resultObj[mes].total += calcPotCC_Temp;
+                resultObj[mes][dia].total += calcPotCC_Temp;
+                resultObj.total += calcPotCC_Temp;
 
             }
 
@@ -663,7 +663,6 @@ function StartInputs() {
 
 function GenDiv(prop) {
     fun_obj[Element_obj[prop].elem](prop);
-
 }
 
 function UpdatePm() {
@@ -703,7 +702,6 @@ function UpdatePm() {
 
 }
 
-
 function mgetElementById(elemString) {
     return document.getElementById(elemString);
 }
@@ -711,26 +709,33 @@ function mgetElementById(elemString) {
 let a = Element_obj.superficie.values.a[0];
 let b = Element_obj.superficie.values.b[0];
 let Delta_T = Element_obj.superficie.values.Delta_T[0];
-const k = 0.0015;
+const k = 0.0015;//Fator de correção de erro
 
-function calcPot(PM0, AOI, DNI, EG_ED, TA, WS) {
+//Função calcula o valor de potencia CC
+function calcPotCC(PM0, AOI, DNI, EG_ED, TA, WS) {
+
+    //Calcula o POA
     const eb = DNI;
-
     const POA = eb + EG_ED;
 
     if (!POA) return 0;
 
+    //Calcula a temperatura do modulo
     const TM = (POA * (Math.exp(a + (b * WS)))) + TA;
 
+    //Calcula a temperatura da celula
     const TC = TM + ((POA / 1000) * Delta_T);
 
+    //Calcula a potencia com erro
     const PPM = (POA / 1000) * (1 + ((Element_obj.coef_temp.value / 100) * (TC - 25)));
 
     let PM = 0;
 
+    //Calcula a potencia sem erro
     if (POA > 200) PM = PM0 * (PPM - (k * (1000 - POA) / (800)));
     else PM = PM0 * (PPM - (k * (1 - (1 - Math.pow(POA / 200, 4)))));
 
+    //Calcula a potencia CC já com as perdas
     return PM * (1 - (Element_obj.perda.value / 100));
 }
 
