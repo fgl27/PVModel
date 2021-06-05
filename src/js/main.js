@@ -20,13 +20,110 @@ const mesesfull = {
 };
 
 let Element_obj = {
+    modelo: {
+        elem: 'select',
+        innerHTML: 'Modelo de entrada de valores',
+        value: 0,
+        options: [
+            'Potência nominal total',
+            'Área total',
+            'Quantidade painéis',
+        ],
+        values: [
+            [
+                'modelo',
+                'pot_nominal_array',
+                'coef_temp',
+                'superficie',
+                'perda',
+                'cc_ca',
+                'button'
+            ],
+            [
+                'modelo',
+                'area',
+                'area_painel',
+                'pot_nominal_painel',
+                'pot_nominal_array',
+                'coef_temp',
+                'superficie',
+                'perda',
+                'cc_ca',
+                'button'
+            ],
+            [
+                'modelo',
+                'quantidade',
+                'pot_nominal_painel',
+                'pot_nominal_array',
+                'coef_temp',
+                'superficie',
+                'perda',
+                'cc_ca',
+                'button'
+            ]
+        ],
+        setValues: function(value) {
+            value = parseInt(value);
+
+            if (this.value !== value) {
+
+                this.value = value;
+                UpdatePm();
+                StartInputs();
+
+                mgetElementById(Elem_Ids.Input.Input + 'pot_nominal_array').disabled = Boolean(value);
+
+            }
+
+        },
+        help: 'Potência nominal total:<br><br>O cálculo é feito pela potência total nominal do conjunto de painéis<br><br>' +
+            'Área total:<br><br>O cálculo é feito a determinar potência total nominal do conjunto de painéis em relação a área e potência nominal de um painel<br><br>' +
+            'Quantidade painéis:<br><br>O cálculo é feito a determinar potência total nominal do conjunto de painéis em relação ao número total de painéis'
+    },
     pot_nominal_array: {
         elem: 'input',
-        innerHTML: 'Potência nominal da matriz (W/m²)',
+        innerHTML: 'Potência nominal total da matriz (W/m²)',
         value: 1000,
         type: 'number',
         step: '10',
         help: 'O valor nominal total da matriz fotovoltaica instalada em W/m²'
+    },
+    pot_nominal_painel: {
+        elem: 'input',
+        innerHTML: 'Potência nominal de um painel (W/m²)',
+        value: 300,
+        type: 'number',
+        step: '10',
+        help: 'O valor nominal total de um painel usado em W/m² (assumindo que todos painéis são iguais)',
+        UpdateValue: UpdatePm
+    },
+    area_painel: {
+        elem: 'input',
+        innerHTML: 'Área de um painel (m²)',
+        value: 1.64,
+        type: 'number',
+        step: '0.01',
+        help: 'A área de um painel comercial em m²',
+        UpdateValue: UpdatePm
+    },
+    area: {
+        elem: 'input',
+        innerHTML: 'Área total utilizada (m²)',
+        value: 5.47,
+        type: 'number',
+        step: '0.01',
+        help: 'A área total que os painéis irão cobrir',
+        UpdateValue: UpdatePm
+    },
+    quantidade: {
+        elem: 'input',
+        innerHTML: 'Quantidade painéis',
+        value: 3,
+        type: 'number',
+        step: '1',
+        help: 'A quantidade total de painéis usada',
+        UpdateValue: UpdatePm
     },
     perda: {
         elem: 'input',
@@ -80,15 +177,7 @@ let Element_obj = {
     button: {
         elem: 'button',
         innerHTML: 'Calcular'
-    },
-    order_base: [
-        'pot_nominal_array',
-        'coef_temp',
-        'superficie',
-        'perda',
-        'cc_ca',
-        'button'
-    ]
+    }
 };
 
 const Elem_Ids = {
@@ -137,6 +226,10 @@ const fun_obj = {
         if (obj.value) Input.value = obj.value;
         Input.onchange = function() {
             obj.value = this.value;
+
+            if (obj.UpdateValue) {
+                obj.UpdateValue();
+            }
         };
 
         Inputs_Container.appendChild(
@@ -202,6 +295,8 @@ const fun_obj = {
             Select.appendChild(option);
 
         }
+
+        Select.selectedIndex = obj.value;
 
         Inputs_Container.appendChild(
             mCreateElement(
@@ -544,13 +639,50 @@ function StartPage() {
 }
 
 function StartInputs() {
-    Element_obj.order_base.forEach(GenDiv);
+    inputsDiv.textContent = '';
+
+    const obj = Element_obj.modelo;
+
+    obj.values[obj.value].forEach(GenDiv);
 }
 
 function GenDiv(prop) {
     fun_obj[Element_obj[prop].elem](prop);
 
 }
+
+function UpdatePm() {
+    const modelo = Element_obj.modelo;
+    const pot_nom = Element_obj.pot_nominal_array;
+
+    if (!modelo.value) {
+
+        pot_nom.value = 1000;
+
+    } else if (modelo.value === 1) {
+
+        pot_nom.value = parseFloat(
+            (Element_obj.area.value / Element_obj.area_painel.value) *
+            Element_obj.pot_nominal_painel.value
+        ).toFixed(2);
+
+    } else if (modelo.value === 2) {
+
+        pot_nom.value = parseFloat(
+            Element_obj.quantidade.value *
+            Element_obj.pot_nominal_painel.value
+        ).toFixed(2);
+
+    }
+
+    const elem = mgetElementById(Elem_Ids.Input.Input + 'pot_nominal_array');
+
+    if (elem) {
+        elem.value = pot_nom.value;
+    }
+
+}
+
 
 function mgetElementById(elemString) {
     return document.getElementById(elemString);
