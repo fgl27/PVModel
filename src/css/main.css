@@ -20,6 +20,10 @@ html {
   font-family: 'Roboto', 'Roboto-Bold';
   margin: 0;
   -webkit-text-stroke: 0.005em;
+  overflow-x: hidden;
+  overflow-y: scroll !important;
+  position: absolute;
+  width: 100vw;
 }
 
 #page_about,
@@ -33,7 +37,7 @@ html {
 }
 
 #page_about {
-  margin-top: 4%;
+  margin-top: 3%;
 }
 
 #about_text {
@@ -54,6 +58,7 @@ html {
   padding: 5px;
   border-radius: 6px;
   margin-top: 2px;
+  max-width: 94vw;
 }
 
 .inputsText {
@@ -109,6 +114,7 @@ html {
   width: auto;
   text-align: center;
   margin-top: 1%;
+  min-height: 20vh;
 }
 
 .result_value {
@@ -173,7 +179,7 @@ html {
 .tooltip .tooltiptextop,
 .tooltip .tooltiptext {
   visibility: hidden;
-  width: 20em;
+  width: 12em;
   background-color: #24292e;
   color: #fff;
   text-align: center;
