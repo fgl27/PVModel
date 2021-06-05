@@ -696,15 +696,15 @@
         const area = Element_obj.area;
         const area_painel = Element_obj.area_painel;
 
-        if (!modelo.value) {
+        if (modelo.value) {
 
-            pot_nom.value = 1000;
+            if (modelo.value === 1) {
 
-        } else {
+                quantidade.value = parseInt(
+                    (area.value / area_painel.value)
+                );
 
-            quantidade.value = parseInt(
-                (area.value / area_painel.value)
-            );
+            }
 
             pot_nom.value = parseInt(
                 quantidade.value *
