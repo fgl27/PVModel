@@ -34,7 +34,7 @@ let Element_obj = {
         value: 14,
         type: 'number',
         step: '1',
-        help: 'As perdas no sistema que não são explicitamente modeladas, que incluem os impactos na potência final de sujeira, sombreamento, cobertura de neve, incompatibilidade, fiação, conexões, degradação induzida pela luz, classificação da placa de identificação, idade do sistema e disponibilidade operacional'
+        help: 'As perdas no sistema que não são explicitamente modeladas, que incluem os impactos na potência final em relação a sujeira, sombreamento, cobertura de neve, incompatibilidade, fiação, conexões, degradação induzida pela luz, classificação da placa de identificação, idade do sistema e disponibilidade operacional'
     },
     coef_temp: {
         elem: 'input',
@@ -52,6 +52,31 @@ let Element_obj = {
         step: '1',
         help: 'O modelo proposto utiliza uma simples conversão baseada na eficiência do inversor'
     },
+    superficie: {
+        elem: 'select',
+        innerHTML: 'Superfície | Montagem do painel',
+        value: 0,
+        options: [
+            'Vidro | Costas livre',
+            'Vidro | Costas fechada',
+            'Polímero | Costas livre',
+            'Polímero | Costas fechada'
+        ],
+        values: {
+            a: [-3.47, -2.98, -3.56, -2, 81],
+            b: [-0.0594, -0.0471, -0.075, -0.0455],
+            Delta_T: [3, 1, 3, 0],
+        },
+        setValues: function(value) {
+            this.value = value;
+
+            a = this.values.a[value];
+            b = this.values.b[value];
+            Delta_T = this.values.Delta_T[value];
+
+        },
+        help: 'Para calcular a temperatura de operação do painel é necessário determinar parâmetros que dependem da construção, materiais e montagem do painel<br><br>Costas livre um painel montado em um rack aberto<br><br>Costas fechada um painel montado sombre um telhado'
+    },
     button: {
         elem: 'button',
         innerHTML: 'Calcular'
@@ -59,6 +84,7 @@ let Element_obj = {
     order_base: [
         'pot_nominal_array',
         'coef_temp',
+        'superficie',
         'perda',
         'cc_ca',
         'button'
@@ -68,9 +94,12 @@ let Element_obj = {
 const Elem_Ids = {
     Input: {
         Input: 'Input_',
+        Container: 'Input_Container_',
         Text: 'Input_Text_',
         Help: 'Input_Help_',
         Button: 'Input_Calc_Button_',
+        Select: 'Input_Select_',
+        Option: 'Input_Select_Option_',
     },
     Result: {
         Button: 'Result_Button_',
@@ -93,7 +122,7 @@ const fun_obj = {
 
         const Inputs_Container = mCreateElement(
             'div',
-            prop,
+            Elem_Ids.Input.Container + prop,
             'inputsContainer'
         );
 
@@ -138,6 +167,70 @@ const fun_obj = {
         container.appendChild(Inputs_Container);
         inputsDiv.appendChild(container);
     },
+    select: function(prop) {
+        let obj = Element_obj[prop];
+
+        const Inputs_Container = mCreateElement(
+            'div',
+            Elem_Ids.Input.Container + prop,
+            'inputsContainer'
+        );
+
+        const Select = mCreateElement(
+            'select',
+            Elem_Ids.Input.Select + prop,
+            'inputsSelect'
+        );
+
+        Select.type = obj.type;
+        Select.step = obj.step;
+        if (obj.value) Select.value = obj.value;
+
+        Select.onchange = function() {
+            obj.setValues(this.value);
+        };
+
+        for (const [idex, value] of obj.options.entries()) {
+
+            const option = mCreateElement(
+                'option',
+                Elem_Ids.Input.Option + prop + idex
+            );
+
+            option.value = idex;
+            option.text = value;
+            Select.appendChild(option);
+
+        }
+
+        Inputs_Container.appendChild(
+            mCreateElement(
+                'div',
+                Elem_Ids.Input.Text + prop,
+                'inputsText',
+                obj.innerHTML
+            )
+        );
+
+        Inputs_Container.appendChild(Select);
+
+        Inputs_Container.appendChild(
+            mCreateElement(
+                'div',
+                Elem_Ids.Input.Help + prop,
+                'tooltip ' + (obj.help ? '' : 'opacityZero'),
+                '&nbsp;?&nbsp;<span class="tooltiptext">' + obj.help + '</span>'
+            )
+        );
+
+        const container = mCreateElement(
+            'div',
+            prop
+        );
+
+        container.appendChild(Inputs_Container);
+        inputsDiv.appendChild(container);
+    },
     button: function(prop) {
         let obj = Element_obj[prop];
 
@@ -152,8 +245,6 @@ const fun_obj = {
         button.onclick = function() {
 
             let obj = JSON.parse(obj_temp),
-                i = 0,
-                len = obj.length,
                 ang = 20,//Element_obj.angulo.value * (Math.PI / 180),
                 pm0 = Element_obj.pot_nominal_array.value,
                 calcPot_Temp = 0.0,
@@ -164,7 +255,7 @@ const fun_obj = {
             resultObj = {};
             resultObj.total = 0;
 
-            for (i; i < len; i++) {
+            for (const i in obj) {
 
                 mes = meses[obj[i][0] - 1];
                 dia = obj[i][1];
@@ -313,13 +404,13 @@ const fun_obj = {
             )
         );
 
-        for (let prop in obj) {
+        for (const prop in obj) {
 
             if (prop !== 'total') {
 
                 div_value_container = mCreateElement(
                     'div',
-                    Elem_Ids.Result.Value + prop,
+                    Elem_Ids.Result.Value_Container + prop,
                     'result_holder'
                 );
 
@@ -393,7 +484,7 @@ const fun_obj = {
 
                 mgetElementById(Elem_Ids.Input.Button).scrollIntoView({behavior: "smooth"});
 
-                for (let prop in obj) {
+                for (const prop in obj) {
 
                     if (prop !== 'total')
                         mgetElementById(Elem_Ids.Result.Graf + prop).style.height = (((obj[prop].total * CC_CA) / total_max) * 100) + '%';
@@ -465,9 +556,9 @@ function mgetElementById(elemString) {
     return document.getElementById(elemString);
 }
 
-const a = -3.47;
-const b = -0.0594;
-const Delta_T = 3;
+let a = Element_obj.superficie.values.a[0];
+let b = Element_obj.superficie.values.b[0];
+let Delta_T = Element_obj.superficie.values.Delta_T[0];
 const k = 0.0015;
 
 function calcPot(PM0, AOI, DNI, EG_ED, TA, WS) {

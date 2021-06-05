@@ -75,17 +75,23 @@ html {
   text-align: start;
 }
 
+.inputsSelect,
 .inputsInput {
   display: inline-block;
   text-align: center !important;
   font-family: 'Roboto-Bold';
-  width: 13ch;
+  width: 24ch;
   background-color: #ebedef;
   border: 1px solid #000000;
   border-radius: 3px;
   outline: none;
 }
 
+.inputsSelect {
+  text-align-last: center;
+}
+
+.inputsSelect:focus,
 .inputsInput:focus {
   background-color: #FFFFFF;
   box-shadow: 0 0 0 1.5px #2ea44f;
