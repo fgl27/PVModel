@@ -457,7 +457,7 @@ const fun_obj = {
             'result_title'
         );
 
-        const resultado_total = ': Energia produzida total ' + (obj.total * CC_CA).toFixed(2) + ' kWh';
+        const resultado_total = GetTotal(obj.total * CC_CA);
 
         if (isDay) {
 
@@ -653,12 +653,21 @@ function StartPage() {
 
 }
 
-function StartInputs() {
-    inputsDiv.textContent = '';
+function GetTotal(total) {
+    let text = ': Energia produzida total ';
 
-    const obj = Element_obj.modelo;
+    if (total > 1000000) {
 
-    obj.values[obj.value].forEach(GenDiv);
+        return text + (total / 1000000).toFixed(2) + ' GWh';
+
+    } else if (total > 1000) {
+
+        return text + (total / 1000).toFixed(2) + ' MWh';
+
+    }
+
+    return text + (total).toFixed(2) + ' kWh';
+
 }
 
 function GenDiv(prop) {
@@ -747,4 +756,12 @@ function msetTimeout(fun, timeout, id) {
 
 function mclearTimeout(id) {
     window.clearTimeout(id);
+}
+
+function StartInputs() {
+    inputsDiv.textContent = '';
+
+    const obj = Element_obj.modelo;
+
+    obj.values[obj.value].forEach(GenDiv);
 }
