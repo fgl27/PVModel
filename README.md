@@ -28,5 +28,3 @@ It folder that needed has its own README.md that contains more info about it
 ### Mobile
 
 ![mobile_3](https://fgl27.github.io/PVModel/screenshots/mobile_1.png)
-
-![mobile_2](https://fgl27.github.io/PVModel/screenshots/mobile_2.png)
