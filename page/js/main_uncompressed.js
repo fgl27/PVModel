@@ -653,8 +653,8 @@
 
         mgetElementById('page_title').innerHTML = 'PVModel';
 
-        const about_div = mgetElementById('page_about');
-        const about_text = 'Este é um projeto em andamento da faculdade, com o objetivo de modelar painéis fotovoltaicos, esta página é usada para mostrar os resultados do modelo, para mais informações acesse o link abaixo:<br><br><a href="https://github.com/fgl27/PVModel" target="_blank">github.com/fgl27/PVModel</a>';
+        const about_div = mgetElementById('page_about'),
+            about_text = 'Este é um projeto em andamento da faculdade, com o objetivo de modelar painéis fotovoltaicos, esta página é usada para mostrar os resultados do modelo, para mais informações acesse o link abaixo:<br><br><a href="https://github.com/fgl27/PVModel" target="_blank">github.com/fgl27/PVModel</a>';
 
         about_div.appendChild(
             mCreateElement(
@@ -691,13 +691,14 @@
     }
 
     function UpdatePm() {
-        const modelo = Element_obj.modelo;
-        const pot_nom = Element_obj.pot_nominal_array;
-        const pot_nominal_painel = Element_obj.pot_nominal_painel;
-        const quantidade = Element_obj.quantidade;
-        const area = Element_obj.area;
-        const area_painel = Element_obj.area_painel;
-
+        const modelo = Element_obj.modelo,
+            pot_nom = Element_obj.pot_nominal_array,
+            pot_nominal_painel = Element_obj.pot_nominal_painel,
+            quantidade = Element_obj.quantidade,
+            area = Element_obj.area,
+            area_painel = Element_obj.area_painel,
+            elem_pot = mgetElementById(Elem_Ids.Input.Input + 'pot_nominal_array'),
+            elem_quatidade = mgetElementById(Elem_Ids.Input.Input + 'quantidade');
 
         if (!modelo.value) {
 
@@ -732,9 +733,6 @@
 
         }
 
-        const elem_pot = mgetElementById(Elem_Ids.Input.Input + 'pot_nominal_array');
-        const elem_quatidade = mgetElementById(Elem_Ids.Input.Input + 'quantidade');
-
         if (elem_pot) {
             elem_pot.value = pot_nom.value;
         }
@@ -758,8 +756,8 @@
     function calcPotCC(PM0, AOI, DNI, EG_ED, TA, WS) {
 
         //Calcula o POA
-        const eb = DNI;
-        const POA = eb + EG_ED;
+        const eb = DNI,
+            POA = eb + EG_ED;
 
         if (!POA) return 0;
 
