@@ -107,7 +107,8 @@
             value: 1000,
             type: 'number',
             step: '10',
-            help: 'O valor nominal total da matriz fotovoltaica instalada em W/m²'
+            help: 'O valor nominal total da matriz fotovoltaica instalada em W/m²',
+            UpdateValue: UpdatePm
         },
         pot_nominal_painel: {
             elem: 'input',
@@ -692,11 +693,23 @@
     function UpdatePm() {
         const modelo = Element_obj.modelo;
         const pot_nom = Element_obj.pot_nominal_array;
+        const pot_nominal_painel = Element_obj.pot_nominal_painel;
         const quantidade = Element_obj.quantidade;
         const area = Element_obj.area;
         const area_painel = Element_obj.area_painel;
 
-        if (modelo.value) {
+
+        if (!modelo.value) {
+
+            quantidade.value = parseInt(
+                Math.ceil(pot_nom.value / pot_nominal_painel.value)
+            );
+
+            area.value = parseInt(
+                Math.ceil(quantidade.value * area_painel.value)
+            );
+
+        } else {
 
             if (modelo.value === 1) {
 
@@ -704,11 +717,17 @@
                     (area.value / area_painel.value)
                 );
 
+            } else {
+
+                area.value = parseInt(
+                    Math.ceil(quantidade.value * area_painel.value)
+                );
+
             }
 
             pot_nom.value = parseInt(
                 quantidade.value *
-                Element_obj.pot_nominal_painel.value
+                pot_nominal_painel.value
             );
 
         }
