@@ -204,6 +204,10 @@ html {
   transform: translateX(-50%);
 }
 
+.tooltip .tooltiptext {
+  transform: translateX(-65%);
+}
+
 .tooltip .tooltiptextop::after,
 .tooltip .tooltiptext::after {
   content: "";
@@ -235,6 +239,7 @@ html {
 
 .tooltip .tooltiptext::after {
   bottom: 100%;
+  left: 65%;
   border-color: transparent transparent #24292e transparent;
 }
 
