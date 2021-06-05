@@ -22,7 +22,7 @@ const mesesfull = {
 let Element_obj = {
     modelo: {
         elem: 'select',
-        innerHTML: 'Modelo de entrada de valores',
+        innerHTML: '    ',
         value: 0,
         options: [
             'Potência nominal total',
@@ -195,7 +195,6 @@ const Elem_Ids = {
         Title: 'Result_Title_',
         Value_Container: 'Result_Value_Container_',
         Value: 'Result_Value_',
-        Total: 'Result_Total_',
         Graf_Container: 'Result_Graf_Container_',
         Graf: 'Result_Graf_',
         Note: 'Result_Note_',
@@ -435,9 +434,11 @@ const fun_obj = {
             'result_title'
         );
 
+        const resultado_total = ': Energia produzida total ' + (obj.total * CC_CA).toFixed(2) + ' kWh';
+
         if (isDay) {
 
-            div_result_title.textContent = 'Resultado ' + prop2 + ' de ' + mesesfull[prop1];
+            div_result_title.innerHTML = 'Resultado ' + prop2 + ' de ' + mesesfull[prop1] + resultado_total;
 
             button.innerHTML = '<span>&#8592;</span> Voltar pro mês de ' + mesesfull[prop1];
             button.onclick = function() {
@@ -450,7 +451,7 @@ const fun_obj = {
 
         } else if (isMonth) {
 
-            div_result_title.textContent = 'Resultado ' + mesesfull[prop1];
+            div_result_title.innerHTML = 'Resultado ' + mesesfull[prop1] + resultado_total;
             button.innerHTML = '<span>&#8592;</span> Voltar pro ano';
             button.onclick = function() {
                 monclick();
@@ -461,7 +462,7 @@ const fun_obj = {
             base_div_text = 'Dia';
 
         } else {
-            div_result_title.textContent = 'Resultado Ano';
+            div_result_title.innerHTML = 'Resultado Ano' + resultado_total;
         }
 
         resultDiv.appendChild(div_result_title);
@@ -489,15 +490,6 @@ const fun_obj = {
         );
 
         resultDiv.appendChild(div_value_container);
-
-        div_value_container.appendChild(
-            mCreateElement(
-                'div',
-                Elem_Ids.Result.Total,
-                'result_value',
-                'Total<br>' + (obj.total * CC_CA).toFixed(2)
-            )
-        );
 
         for (const prop in obj) {
 
