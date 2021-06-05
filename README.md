@@ -17,11 +17,15 @@ It folder that needed has its own README.md that contains more info about it
 
 ## This is how it looks
 
+### Desktop
+
 ![desktop_1](https://fgl27.github.io/PVModel/screenshots/desktop_1.png)
 
 ![desktop_2](https://fgl27.github.io/PVModel/screenshots/desktop_2.png)
 
 ![desktop_3](https://fgl27.github.io/PVModel/screenshots/desktop_3.png)
+
+### Mobile
 
 ![mobile_3](https://fgl27.github.io/PVModel/screenshots/mobile_1.png)
 
