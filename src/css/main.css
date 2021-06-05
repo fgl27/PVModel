@@ -28,16 +28,23 @@ html {
 
 #page_about,
 #page_title {
-  width: auto;
+  position: fixed;
+  width: 100%;
   text-align: center;
   font-size: 200%;
   font-family: 'Roboto-Bold';
   color: #FFF;
   background: #24292e;
+  z-index: 1;
 }
 
 #page_about {
-  margin-top: 3%;
+  bottom: 0;
+}
+
+#content {
+  margin-top: 9vh;
+  margin-bottom: 9vh;
 }
 
 #about_text {
