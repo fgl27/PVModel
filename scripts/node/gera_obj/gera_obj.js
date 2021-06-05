@@ -19,8 +19,8 @@ function mReadFile(path) {
 
         } else console.log(path + ' OK');
 
-        data = data.replaceAll(',', '.').replaceAll('\t', ',').replaceAll('\n', '],[');
-        data = 'const obj_temp = "[[' + data.substring(0, data.length - 2) + ']";';
+        data = data.replaceAll('"', '').replaceAll(',', '.').replaceAll('\t', ',').replaceAll('\n', '],[');
+        data = 'const obj_regiao = "[[' + data.substring(0, data.length - 2) + ']";';
         //let b = new Beautifier();
 
         mWriteFile(

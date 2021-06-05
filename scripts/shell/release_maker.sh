@@ -187,7 +187,7 @@ fi;
 
 # make the page/temp/index.html
 cp -rf src/index.html page/index.html;
-sed -i '/js\/obj\.js/d' page/index.html;
+sed -i '/js\/obj_regiao\.js/d' page/index.html;
 
 echo -e "\\n${bldgrn}Compressing Start\\n";
 

@@ -32,6 +32,7 @@ let Element_obj = {
         values: [
             [
                 'modelo',
+                'regiao',
                 'pot_nominal_array',
                 'coef_temp',
                 'superficie',
@@ -41,6 +42,7 @@ let Element_obj = {
             ],
             [
                 'modelo',
+                'regiao',
                 'area',
                 'area_painel',
                 'pot_nominal_painel',
@@ -54,6 +56,7 @@ let Element_obj = {
             ],
             [
                 'modelo',
+                'regiao',
                 'pot_nominal_painel',
                 'quantidade',
                 'pot_nominal_array',
@@ -177,6 +180,22 @@ let Element_obj = {
 
         },
         help: 'Para calcular a temperatura de operação do painel é necessário determinar parâmetros que dependem da construção, materiais e montagem do painel<br><br>Costas livre um painel montado em um rack aberto<br><br>Costas fechada um painel montado sombre um telhado'
+    },
+    regiao: {
+        elem: 'select',
+        innerHTML: 'Região do Brasil',
+        value: 4,
+        options: [
+            'Centro-Oeste',
+            'Nordeste',
+            'Norte',
+            'Sudeste',
+            'Sul'
+        ],
+        setValues: function(value) {
+            this.value = value;
+        },
+        help: 'A região do país que deseja calcular os resultados'
     },
     button: {
         elem: 'button',
@@ -342,7 +361,7 @@ const fun_obj = {
         //Calcula o objeto com os valores de potencia e mostra
         button.onclick = function() {
 
-            let obj = JSON.parse(obj_temp),
+            let obj = JSON.parse(obj_regiao[Element_obj.regiao.value]),
                 ang = 20,//Element_obj.angulo.value * (Math.PI / 180),
                 pm0 = Element_obj.pot_nominal_array.value,
                 calcPot_Temp = 0.0,
