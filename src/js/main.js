@@ -42,7 +42,7 @@ let Element_obj = {
         value: -0.35,
         type: 'number',
         step: '0.01',
-        help: 'A eficiência da matriz diminua a uma taxa linear em função do aumento da temperatura, governada pelo coeficiente de temperatura do painel'
+        help: 'A eficiência da matriz diminua a uma taxa linear em função do aumento da temperatura, governada pelo coeficiente de temperatura do painel, para maioria dos painéis este valor varia de -0,5 ate 0,1'
     },
     cc_ca: {
         elem: 'input',
@@ -51,11 +51,6 @@ let Element_obj = {
         type: 'number',
         step: '1',
         help: 'O modelo proposto utiliza uma simples conversão baseada na eficiência do inversor'
-    },
-    angulo: {
-        elem: 'input',
-        innerHTML: 'Ângulo painel',
-        value: 20
     },
     button: {
         elem: 'button',
@@ -70,63 +65,85 @@ let Element_obj = {
     ]
 };
 
+const Elem_Ids = {
+    Input: {
+        Input: 'Input_',
+        Text: 'Input_Text_',
+        Help: 'Input_Help_',
+        Button: 'Input_Calc_Button_',
+    },
+    Result: {
+        Button: 'Result_Button_',
+        Title: 'Result_Title_',
+        Value_Container: 'Result_Value_Container_',
+        Value: 'Result_Value_',
+        Total: 'Result_Total_',
+        Graf_Container: 'Result_Graf_Container_',
+        Graf: 'Result_Graf_',
+        Note: 'Result_Note_',
+    },
+    General: {
+        About: 'About'
+    },
+};
+
 const fun_obj = {
     input: function(prop) {
         let obj = Element_obj[prop];
 
-        const div_base = mcreateElement(
+        const Inputs_Container = mCreateElement(
             'div',
             prop,
-            'divBase'
+            'inputsContainer'
         );
 
-        const div_input = mcreateElement(
+        const Input = mCreateElement(
             'input',
-            prop + '_Input',
+            Elem_Ids.Input.Input + prop,
             'inputsInput'
         );
 
-        div_input.type = obj.type;
-        div_input.step = obj.step;
-        if (obj.value) div_input.value = obj.value;
-        div_input.onchange = function() {
+        Input.type = obj.type;
+        Input.step = obj.step;
+        if (obj.value) Input.value = obj.value;
+        Input.onchange = function() {
             obj.value = this.value;
         };
 
-        div_base.appendChild(
-            mcreateElement(
+        Inputs_Container.appendChild(
+            mCreateElement(
                 'div',
-                prop + '_Text',
+                Elem_Ids.Input.Text + prop,
                 'inputsText',
                 obj.innerHTML
             )
         );
 
-        div_base.appendChild(div_input);
+        Inputs_Container.appendChild(Input);
 
-        div_base.appendChild(
-            mcreateElement(
+        Inputs_Container.appendChild(
+            mCreateElement(
                 'div',
-                prop + '_Help',
+                Elem_Ids.Input.Help + prop,
                 'tooltip ' + (obj.help ? '' : 'opacityZero'),
                 '&nbsp;?&nbsp;<span class="tooltiptext">' + obj.help + '</span>'
             )
         );
 
-        const container = mcreateElement(
+        const container = mCreateElement(
             'div',
             prop
         );
 
-        container.appendChild(div_base);
+        container.appendChild(Inputs_Container);
         inputsDiv.appendChild(container);
     },
     button: function(prop) {
         let obj = Element_obj[prop];
 
-        const button = mcreateElement(
+        const button = mCreateElement(
             'button',
-            prop,
+            Elem_Ids.Input.Button,
             'inputsbutton',
             obj.innerHTML
         );
@@ -206,9 +223,9 @@ const fun_obj = {
             };
 
         let obj = resultObj,
-            div_result_graf_holder,
+            div_graf_container,
             div_result_note,
-            div_result_holder,
+            div_value_container,
             total_max = 0,
             base_div_text = 'Mês',
             temp_total;
@@ -220,15 +237,15 @@ const fun_obj = {
             obj = resultObj[prop1];
         }
 
-        const button = mcreateElement(
+        const button = mCreateElement(
             'button',
-            'button' + base_id,
+            Elem_Ids.Result.Button + base_id,
             'inputsbutton'
         );
 
-        const div_result_title = mcreateElement(
+        const div_result_title = mCreateElement(
             'div',
-            'result_title_' + base_id,
+            Elem_Ids.Result.Title + base_id,
             'result_title'
         );
 
@@ -263,34 +280,34 @@ const fun_obj = {
 
         resultDiv.appendChild(div_result_title);
 
-        div_result_holder = mcreateElement(
+        div_value_container = mCreateElement(
             'div',
-            'result_holder_' + base_id,
+            Elem_Ids.Result.Value_Container + base_id,
             'result_holder'
         );
-        resultDiv.appendChild(div_result_holder);
+        resultDiv.appendChild(div_value_container);
 
-        div_result_holder.appendChild(
-            mcreateElement(
+        div_value_container.appendChild(
+            mCreateElement(
                 'div',
-                'result_value' + base_id,
+                Elem_Ids.Result.Value + base_id,
                 'result_value',
                 base_div_text + '<br>kWh (CA)'
             )
         );
 
-        div_result_holder = mcreateElement(
+        div_value_container = mCreateElement(
             'div',
             'result_holder_end',
             'result_holder'
         );
 
-        resultDiv.appendChild(div_result_holder);
+        resultDiv.appendChild(div_value_container);
 
-        div_result_holder.appendChild(
-            mcreateElement(
+        div_value_container.appendChild(
+            mCreateElement(
                 'div',
-                'result_value_end',
+                Elem_Ids.Result.Total,
                 'result_value',
                 'Total<br>' + (obj.total * CC_CA).toFixed(2)
             )
@@ -300,9 +317,9 @@ const fun_obj = {
 
             if (prop !== 'total') {
 
-                div_result_holder = mcreateElement(
+                div_value_container = mCreateElement(
                     'div',
-                    'result_holder_' + prop,
+                    Elem_Ids.Result.Value + prop,
                     'result_holder'
                 );
 
@@ -311,7 +328,7 @@ const fun_obj = {
                     mprop2 = prop2,
                     formonclick = monclick;
 
-                div_result_holder.onclick = function() {
+                div_value_container.onclick = function() {
 
                     if (!mprop1) {
                         formonclick(mprop);
@@ -321,17 +338,17 @@ const fun_obj = {
 
                 };
 
-                div_result_graf_holder = mcreateElement(
+                div_graf_container = mCreateElement(
                     'div',
-                    'graf_holder_' + prop,
+                    Elem_Ids.Result.Graf_Container + prop,
                     'result_graf_holder'
                 );
-                div_result_holder.appendChild(div_result_graf_holder);
+                div_value_container.appendChild(div_graf_container);
 
-                div_result_graf_holder.appendChild(
-                    mcreateElement(
+                div_graf_container.appendChild(
+                    mCreateElement(
                         'div',
-                        'graf_' + prop,
+                        Elem_Ids.Result.Graf + prop,
                         'result_graf'
                     )
                 );
@@ -339,23 +356,23 @@ const fun_obj = {
                 temp_total = obj[prop].total * CC_CA;
                 if (temp_total > total_max) total_max = temp_total;
 
-                div_result_holder.appendChild(
-                    mcreateElement(
+                div_value_container.appendChild(
+                    mCreateElement(
                         'div',
-                        'result_value' + prop,
+                        Elem_Ids.Result.Value + prop,
                         'result_value',
                         prop + '<br>' + temp_total.toFixed(2)
                     )
                 );
 
-                resultDiv.appendChild(div_result_holder);
+                resultDiv.appendChild(div_value_container);
 
             }
         }
 
-        div_result_note = mcreateElement(
+        div_result_note = mCreateElement(
             'div',
-            'result_note_div',
+            Elem_Ids.Result.Note,
             'result_note'
         );
 
@@ -374,12 +391,12 @@ const fun_obj = {
         resultObjID = msetTimeout(
             function() {
 
-                mgetElementById('button').scrollIntoView({behavior: "smooth"});
+                mgetElementById(Elem_Ids.Input.Button).scrollIntoView({behavior: "smooth"});
 
                 for (let prop in obj) {
 
                     if (prop !== 'total')
-                        mgetElementById('graf_' + prop).style.height = (((obj[prop].total * CC_CA) / total_max) * 100) + '%';
+                        mgetElementById(Elem_Ids.Result.Graf + prop).style.height = (((obj[prop].total * CC_CA) / total_max) * 100) + '%';
 
                 }
 
@@ -391,7 +408,7 @@ const fun_obj = {
     }
 };
 
-function mcreateElement(type, id, className, innerHTML) {
+function mCreateElement(type, id, className, innerHTML) {
 
     const element = document.createElement(type);
     if (className) element.className = className;
@@ -420,12 +437,12 @@ function StartPage() {
     mgetElementById('page_title').innerHTML = 'PVModel';
 
     const about_div = mgetElementById('page_about');
-    const about_text = 'Este é um projeto em andamento da faculdade, com o objetivo de modelar paineis fotovoltaicos, para mais informações acesse o link abaixo:<br><br><a href="https://github.com/fgl27/PVModel" target="_blank">github.com/fgl27/PVModel</a>';
+    const about_text = 'Este é um projeto em andamento da faculdade, com o objetivo de modelar painéis fotovoltaicos, esta página é usada para mostrar os resultados do modelo, para mais informações acesse o link abaixo:<br><br><a href="https://github.com/fgl27/PVModel" target="_blank">github.com/fgl27/PVModel</a>';
 
     about_div.appendChild(
-        mcreateElement(
+        mCreateElement(
             'div',
-            'about_text',
+            Elem_Ids.General.About,
             'tooltip',
             'Sobre &nbsp;<span id="span_about" class="tooltiptextop">' + about_text + '</span>'
         )
@@ -457,6 +474,8 @@ function calcPot(PM0, AOI, DNI, EG_ED, TA, WS) {
     const eb = DNI;
 
     const POA = eb + EG_ED;
+
+    if (!POA) return 0;
 
     const TM = (POA * (Math.exp(a + (b * WS)))) + TA;
 

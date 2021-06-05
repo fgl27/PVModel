@@ -57,7 +57,7 @@ html {
   margin-top: 1%;
 }
 
-.divBase {
+.inputsContainer {
   width: fit-content;
   display: inline-block;
   background: #ffffff;
