@@ -387,7 +387,9 @@
             resultObjID = msetTimeout(
                 function() {
 
-                    //window.scrollTo(0, document.body.scrollHeight);
+                    mgetElementById('button').scrollIntoView({
+                        behavior: "smooth"
+                    });
 
                     for (let prop in obj) {
 
@@ -427,8 +429,6 @@
     }
 
     function StartPage() {
-        console.log('StartPage');
-
         inputsDiv = mgetElementById('inputs');
         resultDiv = mgetElementById('result');
 
