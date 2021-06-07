@@ -90,7 +90,7 @@ let Element_obj = {
                 if (value === 1) {
 
                     mgetElementById(Elem_Ids.Input.Input + 'quantidade').disabled = true;
-                    mgetElementById(Elem_Ids.Input.Span + 'quantidade').className = disabled ? 'tooltiptext tooltiptext_disabled' : '';
+                    mgetElementById(Elem_Ids.Input.Span + 'quantidade').className = 'tooltiptext tooltiptext_disabled';
                     mgetElementById(Elem_Ids.Input.Span + 'quantidade').innerHTML = 'Neste modo a quantidade é igual:<br><br>A área total pela área de um painel';
                 }
 
