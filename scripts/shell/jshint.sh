@@ -91,7 +91,7 @@ if which 'jshint' >/dev/null ; then
 	fi;
 		
 	echo -e "${bldgrn}\nJSHint Test started...\\n";
-	echo -e '/* jshint eqeqeq: true, undef: true, unused: true, node: true, browser: true, esversion: 6 */\n/*globals PVModel */' > "$mainfolder"/page/temp/main.js;
+	echo -e '/* jshint eqeqeq: true, undef: true, unused: true, node: true, browser: true, esversion: 6 */\n/*globals PVModel, firebase, dataLayer */' > "$mainfolder"/page/temp/main.js;
 	echo "$main_start" >> "$mainfolder"/page/temp/main.js;
 	js_jshint "${js_folders[@]}";
 

@@ -681,8 +681,18 @@ function StartPage() {
     );
 
     StartInputs();
+    Startfirebase();
 
 }
+
+function StartInputs() {
+    inputsDiv.textContent = '';
+
+    const obj = Element_obj.modelo;
+
+    obj.values[obj.value].forEach(GenDiv);
+}
+
 
 function GetTotal(total) {
     let text = ': Energia produzida total ';
@@ -805,10 +815,33 @@ function mclearTimeout(id) {
     window.clearTimeout(id);
 }
 
-function StartInputs() {
-    inputsDiv.textContent = '';
+window.dataLayer = window.dataLayer || [];
+function gtag() {
+    dataLayer.push(arguments);
+}
 
-    const obj = Element_obj.modelo;
+var skipfirebase = false;
+function Startfirebase() {
 
-    obj.values[obj.value].forEach(GenDiv);
+    var firebaseConfig = {
+        apiKey: "AIzaSyBu5Rs9_NVVHf4o43L79Nlbom0XTtsxC3o",
+        authDomain: "pvmodel-131a9.firebaseapp.com",
+        projectId: "pvmodel-131a9",
+        storageBucket: "pvmodel-131a9.appspot.com",
+        messagingSenderId: "564678824267",
+        appId: "1:564678824267:web:07965a0c821d40b3da18ce",
+        measurementId: "G-7CG8TMC0S5"
+    };
+
+    try {
+
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+
+        gtag('js', new Date());
+
+    } catch (e) {
+        console.log("Startfirebase e " + e);
+        skipfirebase = true;
+    }
 }
