@@ -85,6 +85,7 @@ html {
   border: 1px solid #000000;
   border-radius: 3px;
   outline: none;
+  padding: 0;
 }
 
 .inputsSelect {
@@ -182,6 +183,7 @@ html {
   opacity: 0;
 }
 
+.tooltip_botton,
 .tooltip {
   position: relative;
   display: inline-block;
@@ -189,7 +191,26 @@ html {
   margin-left: 1ch;
 }
 
-.tooltip .tooltiptextop,
+.tooltip_botton,
+.tooltip_disabled {
+  border-bottom: 0 !important;
+  margin: 0 !important;
+}
+
+.tooltiptext_disabled {
+  transform: translateX(-50%) !important;
+}
+
+.tooltip_disabled .tooltiptext_disabled::after {
+  left: 46% !important;
+}
+
+.tooltip_botton {
+  margin: 0;
+}
+
+.tooltip_botton .tooltiptext,
+.tooltip_botton .tooltiptextop,
 .tooltip .tooltiptext {
   visibility: hidden;
   width: 12em;
@@ -208,7 +229,7 @@ html {
   transform: translateX(-65%);
 }
 
-.tooltip .tooltiptextop::after,
+.tooltip_botton .tooltiptextop::after,
 .tooltip .tooltiptext::after {
   content: "";
   position: absolute;
@@ -218,7 +239,7 @@ html {
   border-style: solid;
 }
 
-.tooltip:hover .tooltiptextop,
+.tooltip_botton:hover .tooltiptextop,
 .tooltip:hover .tooltiptext {
   visibility: visible;
 }
@@ -231,10 +252,9 @@ html {
   bottom: 120%;
 }
 
-.tooltip .tooltiptextop::after {
+.tooltip_botton .tooltiptextop::after {
   top: 100%;
   border-color: #24292e transparent transparent transparent;
-
 }
 
 .tooltip .tooltiptext::after {
