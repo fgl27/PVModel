@@ -89,10 +89,24 @@
                     UpdatePm();
                     StartInputs();
 
-                    mgetElementById(Elem_Ids.Input.Input + 'pot_nominal_array').disabled = Boolean(value);
+                    const disabled = Boolean(value);
+                    mgetElementById(Elem_Ids.Input.Input + 'pot_nominal_array').disabled = disabled;
 
-                    if (value === 1)
+                    if (disabled) {
+
+                        mgetElementById(Elem_Ids.Input.Span + 'pot_nominal_array').className = 'tooltiptext tooltiptext_disabled';
+                        mgetElementById(Elem_Ids.Input.Span + 'pot_nominal_array').innerHTML = 'Neste modo a potência nominal total é igual:<br><br>A potência nominal de um painel vezes a quatidade de painéis';
+
+                    }
+
+
+                    if (value === 1) {
+
                         mgetElementById(Elem_Ids.Input.Input + 'quantidade').disabled = true;
+                        mgetElementById(Elem_Ids.Input.Span + 'quantidade').className = disabled ? 'tooltiptext tooltiptext_disabled' : '';
+                        mgetElementById(Elem_Ids.Input.Span + 'quantidade').innerHTML = 'Neste modo a quantidade é igual:<br><br>A área total pela área de um painel';
+                    }
+
 
                 }
 
@@ -221,6 +235,8 @@
         Input: {
             Input: 'Input_',
             Container: 'Input_Container_',
+            Tooltip: 'Input_Tooltip_',
+            Span: 'Input_Tooltip_Span',
             Text: 'Input_Text_',
             Help: 'Input_Help_',
             Button: 'Input_Calc_Button_',
@@ -251,6 +267,12 @@
                 'inputsContainer'
             );
 
+            const Input_Tooltip = mCreateElement(
+                'div',
+                Elem_Ids.Input.Tooltip + prop,
+                'tooltip tooltip_disabled'
+            );
+
             const Input = mCreateElement(
                 'input',
                 Elem_Ids.Input.Input + prop,
@@ -277,7 +299,14 @@
                 )
             );
 
-            Inputs_Container.appendChild(Input);
+            Input_Tooltip.appendChild(Input);
+            Input_Tooltip.appendChild(
+                mCreateElement(
+                    'span',
+                    Elem_Ids.Input.Span + prop
+                )
+            );
+            Inputs_Container.appendChild(Input_Tooltip);
 
             Inputs_Container.appendChild(
                 mCreateElement(
@@ -660,8 +689,8 @@
             mCreateElement(
                 'div',
                 Elem_Ids.General.About,
-                'tooltip',
-                'Sobre &nbsp;<span id="span_about" class="tooltiptextop">' + about_text + '</span>'
+                'tooltip_botton',
+                'Sobre<span id="span_about" class="tooltiptextop">' + about_text + '</span>'
             )
         );
 
