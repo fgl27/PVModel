@@ -693,7 +693,6 @@ function StartInputs() {
     obj.values[obj.value].forEach(GenDiv);
 }
 
-
 function GetTotal(total) {
     let text = ': Energia produzida total ';
 
