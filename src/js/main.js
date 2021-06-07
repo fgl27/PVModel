@@ -290,7 +290,8 @@ const fun_obj = {
         Input_Tooltip.appendChild(
             mCreateElement(
                 'span',
-                Elem_Ids.Input.Span + prop
+                Elem_Ids.Input.Span + prop,
+                'hide'
             )
         );
         Inputs_Container.appendChild(Input_Tooltip);
