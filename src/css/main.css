@@ -63,9 +63,16 @@ html {
   background: #ffffff;
   border: 1px solid #afafaf;
   padding: 5px;
-  border-radius: 6px;
-  margin-top: 2px;
+  margin-top: -1px;
   max-width: 94vw;
+}
+
+.inputsContainerTop {
+  border-radius: 6px 6px 0 0;
+}
+
+.inputsContainerBottom {
+  border-radius: 0 0 6px 6px;
 }
 
 .inputsText {
@@ -85,7 +92,8 @@ html {
   border: 1px solid #000000;
   border-radius: 3px;
   outline: none;
-  padding: 0;
+  padding: 0 !important;
+  box-sizing: border-box;
 }
 
 .inputsSelect {
@@ -144,12 +152,12 @@ html {
 .result_holder {
   display: inline-block;
   text-align: center;
-  margin: 0.25em;
+  margin: 2px;
   font-size: 78%;
 }
 
 .result_graf_holder {
-  height: 50vh;
+  height: 40vh;
   position: relative;
 }
 

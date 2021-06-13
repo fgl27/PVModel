@@ -537,14 +537,6 @@ const fun_obj = {
             )
         );
 
-        div_value_container = mCreateElement(
-            'div',
-            'result_holder_end',
-            'result_holder'
-        );
-
-        resultDiv.appendChild(div_value_container);
-
         for (const prop in obj) {
 
             if (prop !== 'total') {
@@ -588,6 +580,8 @@ const fun_obj = {
                 temp_total = obj[prop].total * CC_CA;
                 if (temp_total > total_max) total_max = temp_total;
 
+                if (!temp_total) div_graf_container.style.height = '1vh';
+
                 div_value_container.appendChild(
                     mCreateElement(
                         'div',
@@ -618,7 +612,7 @@ const fun_obj = {
             resultDiv.appendChild(div_result_note);
         }
 
-        total_max = total_max * 1.1;
+        total_max = total_max * 1.05;
 
         resultObjID = msetTimeout(
             function() {
@@ -689,8 +683,12 @@ function StartInputs() {
     inputsDiv.textContent = '';
 
     const obj = Element_obj.modelo;
+    const objArray = obj.values[obj.value];
 
-    obj.values[obj.value].forEach(GenDiv);
+    objArray.forEach(GenDiv);
+
+    mgetElementById(Elem_Ids.Input.Container + objArray[0]).classList.add('inputsContainerTop');
+    mgetElementById(Elem_Ids.Input.Container + objArray[objArray.length - 2]).classList.add('inputsContainerBottom');
 }
 
 function GetTotal(total) {
