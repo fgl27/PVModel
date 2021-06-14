@@ -61,13 +61,14 @@ html {
   width: fit-content;
   display: inline-block;
   background: #ffffff;
-  border: 1px solid #afafaf;
+  border: 1px solid #999999;
+  border-top: 0;
   padding: 5px;
-  margin-top: -1px;
   max-width: 94vw;
 }
 
 .inputsContainerTop {
+  border-top: 1px solid #999999 !important;
   border-radius: 6px 6px 0 0;
 }
 
@@ -144,7 +145,7 @@ html {
   font-family: 'Roboto-Bold';
   min-width: 3.5em;
   background: #ffffff;
-  border: 1px solid #afafaf;
+  border: 1px solid #999999;
   padding: 5px;
   border-radius: 6px;
 }
