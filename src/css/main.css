@@ -172,19 +172,20 @@ html {
 .result_graf_holder {
   height: 40vh;
   position: relative;
+  overflow: hidden;
 }
 
 .result_graf {
   height: 0;
   background-color: #2ea44f;
-  will-change: height;
-  transition: height 750ms linear;
   position: absolute;
   bottom: 0;
   width: 50%;
   left: 50%;
-  transform: translateX(-50%);
   border-radius: 3px 3px 0 0;
+  transform: translate(-50%, 102%);
+  will-change: transform;
+  transition: transform 750ms linear;
 }
 
 .result_title {

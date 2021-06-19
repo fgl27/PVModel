@@ -614,6 +614,13 @@ const fun_obj = {
 
         total_max = total_max * 1.05;
 
+        for (const prop in obj) {
+
+            if (prop !== 'total')
+                mgetElementById(Elem_Ids.Result.Graf + prop).style.height = (((obj[prop].total * CC_CA) / total_max) * 100) + '%';
+
+        }
+
         resultObjID = msetTimeout(
             function() {
 
@@ -622,7 +629,7 @@ const fun_obj = {
                 for (const prop in obj) {
 
                     if (prop !== 'total')
-                        mgetElementById(Elem_Ids.Result.Graf + prop).style.height = (((obj[prop].total * CC_CA) / total_max) * 100) + '%';
+                        mgetElementById(Elem_Ids.Result.Graf + prop).style.transform = 'translate(-50%, 2%)';
 
                 }
 
