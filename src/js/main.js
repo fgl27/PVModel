@@ -30,7 +30,7 @@ let Element_obj = {
             'Quantidade painéis',
         ],
         values: [
-            [
+            [// os elementos disponíveis no modo Pot nominal
                 'modelo',
                 'regiao',
                 'pot_nominal_array',
@@ -40,7 +40,7 @@ let Element_obj = {
                 'cc_ca',
                 'button'
             ],
-            [
+            [// os elementos disponíveis no modo Área total
                 'modelo',
                 'regiao',
                 'area',
@@ -54,7 +54,7 @@ let Element_obj = {
                 'cc_ca',
                 'button'
             ],
-            [
+            [// os elementos disponíveis no modo quantidade painéis
                 'modelo',
                 'regiao',
                 'pot_nominal_painel',
@@ -73,19 +73,19 @@ let Element_obj = {
             if (this.value !== value) {
 
                 this.value = value;
-                UpdatePm();
+                UpdatePotNominal();
                 StartInputs();
 
                 const disabled = Boolean(value);
                 mgetElementById(Elem_Ids.Input.Input + 'pot_nominal_array').disabled = disabled;
 
+                //bloqueia que se altere os valores dos elementos que seu valor é calculado em relação a outros valores
                 if (disabled) {
 
                     mgetElementById(Elem_Ids.Input.Span + 'pot_nominal_array').className = 'tooltiptext tooltiptext_disabled';
                     mgetElementById(Elem_Ids.Input.Span + 'pot_nominal_array').innerHTML = 'Neste modo a potência nominal total é igual:<br><br>A potência nominal de um painel vezes a quatidade de painéis';
 
                 }
-
 
                 if (value === 1) {
 
@@ -109,7 +109,7 @@ let Element_obj = {
         type: 'number',
         step: '10',
         help: 'O valor nominal total da matriz fotovoltaica instalada em W/m²',
-        UpdateValue: UpdatePm
+        UpdateValue: UpdatePotNominal
     },
     pot_nominal_painel: {
         elem: 'input',
@@ -118,7 +118,7 @@ let Element_obj = {
         type: 'number',
         step: '10',
         help: 'O valor nominal total de um painel usado em W/m² (assumindo que todos painéis são iguais)',
-        UpdateValue: UpdatePm
+        UpdateValue: UpdatePotNominal
     },
     area_painel: {
         elem: 'input',
@@ -127,7 +127,7 @@ let Element_obj = {
         type: 'number',
         step: '0.01',
         help: 'A área de um painel comercial em m²',
-        UpdateValue: UpdatePm
+        UpdateValue: UpdatePotNominal
     },
     area: {
         elem: 'input',
@@ -136,7 +136,7 @@ let Element_obj = {
         type: 'number',
         step: '1',
         help: 'A máxima área que os painéis podem cobrir',
-        UpdateValue: UpdatePm
+        UpdateValue: UpdatePotNominal
     },
     quantidade: {
         elem: 'input',
@@ -145,7 +145,7 @@ let Element_obj = {
         type: 'number',
         step: '1',
         help: 'A quantidade total de painéis possível',
-        UpdateValue: UpdatePm
+        UpdateValue: UpdatePotNominal
     },
     perda: {
         elem: 'input',
@@ -246,6 +246,7 @@ const Elem_Ids = {
 
 const fun_obj = {
     input: function(prop) {
+        //cria o elemento de entrada de valor
         let obj = Element_obj[prop];
 
         const Inputs_Container = mCreateElement(
@@ -266,9 +267,14 @@ const fun_obj = {
             'inputsInput'
         );
 
+        //seta o seu tipo
         Input.type = obj.type;
+        //seta o seu passo se é numero de 0.1 em 0.1 por ex.
         Input.step = obj.step;
+        //seta o valor inicial
         if (obj.value) Input.value = obj.value;
+
+        //seta a função a ser chamada quando o valor muda
         Input.onchange = function() {
             obj.value = this.value;
 
@@ -277,6 +283,7 @@ const fun_obj = {
             }
         };
 
+        //cria os elementos de acordo com as entradas
         Inputs_Container.appendChild(
             mCreateElement(
                 'div',
@@ -296,6 +303,7 @@ const fun_obj = {
         );
         Inputs_Container.appendChild(Input_Tooltip);
 
+        //Seta a ajuda quando o mouse fica sobre ?
         Inputs_Container.appendChild(
             mCreateElement(
                 'div',
@@ -314,6 +322,7 @@ const fun_obj = {
         inputsDiv.appendChild(container);
     },
     select: function(prop) {
+        //cria o elemento de seleção
         let obj = Element_obj[prop];
 
         const Inputs_Container = mCreateElement(
@@ -328,14 +337,17 @@ const fun_obj = {
             'inputsSelect'
         );
 
+        //seta o tipo
         Select.type = obj.type;
-        Select.step = obj.step;
+        //seta o valor padram
         if (obj.value) Select.value = obj.value;
 
+        //Seta a função chamada quando o valor muda
         Select.onchange = function() {
             obj.setValues(this.value);
         };
 
+        //seta os possíveis valores de seleção
         for (const [idex, value] of obj.options.entries()) {
 
             const option = mCreateElement(
@@ -362,6 +374,7 @@ const fun_obj = {
 
         Inputs_Container.appendChild(Select);
 
+        //Seta a ajuda quando o mouse fica sobre ?
         Inputs_Container.appendChild(
             mCreateElement(
                 'div',
@@ -389,11 +402,10 @@ const fun_obj = {
             obj.innerHTML
         );
 
-        //Calcula o objeto com os valores de potencia e mostra
+        //Calcula o objeto com os valores de potencia e mostra quando clicado
         button.onclick = function() {
 
             let obj = JSON.parse(obj_regiao[Element_obj.regiao.value]),
-                ang = 20,//Element_obj.angulo.value * (Math.PI / 180),
                 pm0 = Element_obj.pot_nominal_array.value,
                 calcPotCC_Temp = 0.0,
                 mes,
@@ -403,11 +415,13 @@ const fun_obj = {
             resultObj = {};
             resultObj.total = 0;
 
+            //Loopa no obj e calcula a potencia para cada hora do ano
             for (const i in obj) {
 
                 mes = meses[obj[i][0] - 1];
                 dia = obj[i][1];
 
+                //Inicializa o resultObj de acordo com cada referencia
                 if (!resultObj[mes]) {
 
                     resultObj[mes] = {};
@@ -423,9 +437,9 @@ const fun_obj = {
 
                 }
 
+                //calcula a potencia
                 calcPotCC_Temp = calcPotCC(
                     pm0,
-                    ang,
                     obj[i][3],
                     obj[i][4],
                     obj[i][5],
@@ -434,10 +448,15 @@ const fun_obj = {
 
                 hora = obj[i][2];
 
+                //cria o objeto hora
                 resultObj[mes][dia][hora] = {};
+                //adiciona o valor calculado para hora
                 resultObj[mes][dia][hora].total = calcPotCC_Temp;
+                //adiciona o valor calculado ao total do mes
                 resultObj[mes].total += calcPotCC_Temp;
+                //adiciona o valor calculado ao total do dia
                 resultObj[mes][dia].total += calcPotCC_Temp;
+                //adiciona o valor calculado ao total do ano
                 resultObj.total += calcPotCC_Temp;
 
             }
@@ -450,9 +469,10 @@ const fun_obj = {
         inputsDiv.appendChild(button);
     },
     Resultado: function(prop1, prop2) {
-
+        //apaga o conteúdo do div resultado
         resultDiv.textContent = '';
 
+        //inicializa as constantes locais
         const base_id = 'base',
             isDay = Boolean(prop1 && prop2),
             isMonth = Boolean(prop1 && !prop2),
@@ -461,35 +481,40 @@ const fun_obj = {
                 fun_obj.Resultado(prop1, prop2);
             };
 
+        //inicializa as variavies locais
         let obj = resultObj,
             div_graf_container,
-            div_result_note,
             div_value_container,
-            total_max = 0,
+            maior_total = 0,
             base_div_text = 'Mês',
             temp_total;
 
-
+        //seta o obj local em relação se é mês ou dia
         if (isDay) {
             obj = resultObj[prop1][prop2];
         } else if (isMonth) {
             obj = resultObj[prop1];
         }
 
+        //adiciona o botão
         const button = mCreateElement(
             'button',
             Elem_Ids.Result.Button + base_id,
             'inputsbutton'
         );
 
+        //adiciona o div titulo "Resultado ___: etc..."
         const div_result_title = mCreateElement(
             'div',
             Elem_Ids.Result.Title + base_id,
             'result_title'
         );
 
+        //obtem o valor total que vai no texto Resultado
         const resultado_total = GetTotal(obj.total * CC_CA);
 
+        //Seta o valor se é ano, mês ou dia
+        //e adiciona um botão pra voltar ao resultado anterior caso seja mês ou dia
         if (isDay) {
 
             div_result_title.innerHTML = 'Resultado ' + prop2 + ' de ' + mesesfull[prop1] + resultado_total;
@@ -521,6 +546,7 @@ const fun_obj = {
 
         resultDiv.appendChild(div_result_title);
 
+        //cria o elemento que indica se é mes e kwh
         div_value_container = mCreateElement(
             'div',
             Elem_Ids.Result.Value_Container + base_id,
@@ -537,31 +563,39 @@ const fun_obj = {
             )
         );
 
+        //Cria cada um dos elementos que tem um gráfico
         for (const prop in obj) {
 
             if (prop !== 'total') {
 
+                //inicializa os div que contem os elementos
                 div_value_container = mCreateElement(
                     'div',
                     Elem_Ids.Result.Value_Container + prop,
                     'result_holder'
                 );
 
-                const mprop = prop,
-                    mprop1 = prop1,
-                    mprop2 = prop2,
-                    formonclick = monclick;
+                //adiciona a função de onclick para meses e  dias
+                if (!prop1 || !prop2) {
 
-                div_value_container.onclick = function() {
+                    //inicializa constantes locais para serem usadas na função onclick
+                    const mprop = prop,
+                        mprop1 = prop1,
+                        mprop2 = prop2,
+                        formonclick = monclick;
 
-                    if (!mprop1) {
-                        formonclick(mprop);
-                    } else if (!mprop2) {
-                        formonclick(mprop1, mprop);
-                    }
+                    div_value_container.onclick = function() {
 
-                };
+                        if (!mprop1) {
+                            formonclick(mprop);
+                        } else if (!mprop2) {
+                            formonclick(mprop1, mprop);
+                        }
 
+                    };
+                }
+
+                //inicializa os gráficos individuais
                 div_graf_container = mCreateElement(
                     'div',
                     Elem_Ids.Result.Graf_Container + prop,
@@ -577,11 +611,15 @@ const fun_obj = {
                     )
                 );
 
+                //calcula qual elemento é o maior
                 temp_total = obj[prop].total * CC_CA;
-                if (temp_total > total_max) total_max = temp_total;
+                if (temp_total > maior_total) maior_total = temp_total;
 
+                //se o elemento tem potencia igual a zero, diminui a sua altura para 1vh
+                //Para que no celular não tome tanto espaço quando possivel
                 if (!temp_total) div_graf_container.style.height = '1vh';
 
+                //Adiciona o valor individual de potencia para cada mes dia hora
                 div_value_container.appendChild(
                     mCreateElement(
                         'div',
@@ -596,36 +634,47 @@ const fun_obj = {
             }
         }
 
-        div_result_note = mCreateElement(
-            'div',
-            Elem_Ids.Result.Note,
-            'result_note'
-        );
-
+        //Adiciona a observação para meses e dias
         if (isMonth) {
 
-            div_result_note.textContent = 'Obs.: Clique no dia para ver o resultado por hora';
-            resultDiv.appendChild(div_result_note);
+            resultDiv.appendChild(
+                mCreateElement(
+                    'div',
+                    Elem_Ids.Result.Note,
+                    'result_note',
+                    'Obs.: Clique no dia para ver o resultado por hora'
+                )
+            );
 
         } else if (!isDay) {
-            div_result_note.textContent = 'Obs.: Clique no mês para ver o resultado por dia';
-            resultDiv.appendChild(div_result_note);
+
+            resultDiv.appendChild(
+                mCreateElement(
+                    'div',
+                    Elem_Ids.Result.Note,
+                    'result_note',
+                    'Obs.: Clique no mês para ver o resultado por dia'
+                )
+            );
         }
 
-        total_max = total_max * 1.05;
-
+        //Seta o valor da altura de cada elemento gráfico em relação ao maior que é igual maior_total
+        //Aumenta o valor total referencia para que nenhum gráfico de resultado fique maior que o seu container
+        maior_total *= 1.05;
         for (const prop in obj) {
 
             if (prop !== 'total')
-                mgetElementById(Elem_Ids.Result.Graf + prop).style.height = (((obj[prop].total * CC_CA) / total_max) * 100) + '%';
+                mgetElementById(Elem_Ids.Result.Graf + prop).style.height = (((obj[prop].total * CC_CA) / maior_total) * 100) + '%';
 
         }
 
         resultObjID = msetTimeout(
             function() {
 
+                //Desloca a pagina para baixo, para mostrar os gráficos
                 mgetElementById(Elem_Ids.Input.Button).scrollIntoView({behavior: "smooth"});
 
+                //Anima os gráficos
                 for (const prop in obj) {
 
                     if (prop !== 'total')
@@ -641,6 +690,7 @@ const fun_obj = {
     }
 };
 
+//Cria um elemento em relação aos valores passados
 function mCreateElement(type, id, className, innerHTML) {
 
     const element = document.createElement(type);
@@ -651,24 +701,27 @@ function mCreateElement(type, id, className, innerHTML) {
     return element;
 }
 
-Start();
-
+//Função que inicializa o aplicativo
 function Start() {
     if (document.readyState === "loading") {
+        //se o documento html ainda esta carregando adiciona um evento para iniciar somente apos ele terminar
         document.addEventListener("DOMContentLoaded", function() {
             StartPage();
         });
-    } else { // `DOMContentLoaded` already fired
+    } else { // `DOMContentLoaded` já foi chamado
         StartPage();
     }
 }
 
 function StartPage() {
+    //Inicializa os div de conteúdo
     inputsDiv = mgetElementById('inputs');
     resultDiv = mgetElementById('result');
 
+    //Seta no nome no topo
     mgetElementById('page_title').innerHTML = 'PVModel';
 
+    //Seta o about
     const about_div = mgetElementById('page_about'),
         about_text = 'Este é um projeto em andamento da faculdade, com o objetivo de modelar painéis fotovoltaicos, esta página é usada para mostrar os resultados do modelo, para mais informações acesse o link abaixo:<br><br><a href="https://github.com/fgl27/PVModel" target="_blank">github.com/fgl27/PVModel</a>';
 
@@ -681,45 +734,54 @@ function StartPage() {
         )
     );
 
+    //Inicializa os inputs
     StartInputs();
+    //Inicializa o analitics 
     Startfirebase();
 
 }
 
 function StartInputs() {
+    //Limpa o div
     inputsDiv.textContent = '';
 
     const obj = Element_obj.modelo;
     const objArray = obj.values[obj.value];
 
+    //Gera a lista de entradas em relação ao array Element_obj.modelo.values
     objArray.forEach(GenDiv);
 
+    //Aredonda os cantos do primeiro e ultimo elemento de entrada
     mgetElementById(Elem_Ids.Input.Container + objArray[0]).classList.add('inputsContainerTop');
     mgetElementById(Elem_Ids.Input.Container + objArray[objArray.length - 2]).classList.add('inputsContainerBottom');
-}
-
-function GetTotal(total) {
-    let text = ': Energia produzida total ';
-
-    if (total > 1000000) {
-
-        return text + (total / 1000000).toFixed(2) + ' GWh';
-
-    } else if (total > 1000) {
-
-        return text + (total / 1000).toFixed(2) + ' MWh';
-
-    }
-
-    return text + (total).toFixed(2) + ' kWh';
-
 }
 
 function GenDiv(prop) {
     fun_obj[Element_obj[prop].elem](prop);
 }
 
-function UpdatePm() {
+//Retorna se o total esta em quilo, Mega ou Giga
+function GetTotal(total) {
+    let text = ': Energia produzida total ';
+
+    if (total > 1000000) {//Giga
+
+        return text + (total / 1000000).toFixed(2) + ' GWh';
+
+    } else if (total > 1000) {//Mega
+
+        return text + (total / 1000).toFixed(2) + ' MWh';
+
+    }//else quilo
+
+    return text + (total).toFixed(2) + ' kWh';
+
+}
+
+//Atualiza o valor da potência nominal total da matriz em relação ao outros valores
+function UpdatePotNominal() {
+
+    //Inicializa os elementos e objetos locais
     const modelo = Element_obj.modelo,
         pot_nom = Element_obj.pot_nominal_array,
         pot_nominal_painel = Element_obj.pot_nominal_painel,
@@ -730,6 +792,7 @@ function UpdatePm() {
         elem_quatidade = mgetElementById(Elem_Ids.Input.Input + 'quantidade');
 
     if (!modelo.value) {
+        //Modo padram quando modelo e entradas = potência nominal
 
         quantidade.value = parseInt(
             Math.ceil(pot_nom.value / pot_nominal_painel.value)
@@ -741,13 +804,14 @@ function UpdatePm() {
 
     } else {
 
+        // modelo e entradas = área total
         if (modelo.value === 1) {
 
             quantidade.value = parseInt(
                 (area.value / area_painel.value)
             );
 
-        } else {
+        } else {// modelo e entradas = quantidade paineis
 
             area.value = parseInt(
                 Math.ceil(quantidade.value * area_painel.value)
@@ -782,7 +846,7 @@ let Delta_T = Element_obj.superficie.values.Delta_T[0];
 const k = 0.0015;//Fator de correção de erro
 
 //Função calcula o valor de potencia CC
-function calcPotCC(PM0, AOI, DNI, EG_ED, TA, WS) {
+function calcPotCC(PM0, DNI, EG_ED, TA, WS) {
 
     //Calcula o POA
     const eb = DNI,
@@ -819,6 +883,8 @@ function mclearTimeout(id) {
     window.clearTimeout(id);
 }
 
+//Funções usadas para analise de uso da pagina
+//Quantidade de acessos e etc relacionado
 window.dataLayer = window.dataLayer || [];
 function gtag() {
     dataLayer.push(arguments);
@@ -849,3 +915,5 @@ function Startfirebase() {
         skipfirebase = true;
     }
 }
+
+Start();
