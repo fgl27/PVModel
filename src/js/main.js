@@ -166,7 +166,7 @@ let Element_obj = {
     cc_ca: {
         elem: 'input',
         innerHTML: 'Conversão CA-CC (Eficiencia %)',
-        value: 96,
+        value: 95,
         type: 'number',
         step: '1',
         help: 'O modelo proposto utiliza uma simples conversão baseada na eficiência do inversor'
