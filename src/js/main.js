@@ -470,7 +470,7 @@ const fun_obj = {
     },
     Resultado: function(prop1, prop2) {
         //apaga o conteúdo do div resultado
-        resultDiv.textContent = '';
+        emptyEle(resultDiv);
 
         //inicializa as constantes locais
         const base_id = 'base',
@@ -743,7 +743,7 @@ function StartPage() {
 
 function StartInputs() {
     //Limpa o div
-    inputsDiv.textContent = '';
+    emptyEle(inputsDiv);
 
     const obj = Element_obj.modelo;
     const objArray = obj.values[obj.value];
@@ -758,6 +758,10 @@ function StartInputs() {
 
 function GenDiv(prop) {
     fun_obj[Element_obj[prop].elem](prop);
+}
+
+function emptyEle(el) {
+    while (el.firstChild) el.removeChild(el.firstChild);
 }
 
 //Retorna se o total esta em quilo, Mega ou Giga
