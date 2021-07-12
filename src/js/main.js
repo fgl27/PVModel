@@ -165,7 +165,7 @@ let Element_obj = {
     },
     cc_ca: {
         elem: 'input',
-        innerHTML: 'Conversão CA-CC (Eficiencia %)',
+        innerHTML: 'Conversão CC-CA (Eficiencia %)',
         value: 95,
         type: 'number',
         step: '1',
