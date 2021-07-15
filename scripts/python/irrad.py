@@ -10,10 +10,10 @@ from matplotlib import pyplot as plt
 # For this example, we will be using Golden, Colorado
 tz = 'America/Sao_Paulo'
 #Pelotas
-#lat, lon = -31.7654, -52.3376
+lat, lon = -31.7654, -52.3376
 
 #Santa Maria
-lat, lon = -29.7, -53.7
+#lat, lon = -29.7, -53.7
 
 # Create location object to store lat, lon, timezone
 site = location.Location(lat, lon, tz=tz)

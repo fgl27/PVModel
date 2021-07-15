@@ -2,12 +2,14 @@
 from pvlib import location
 from pvlib import irradiance
 import pandas as pd
+import numpy as np
+
 from matplotlib import pyplot as plt
 
 # For this example, we will be using Golden, Colorado
 tz = 'America/Sao_Paulo'
 #Pelotas
-lat, lon = -31.76, -52.33
+lat, lon = -31.7654, -52.3376
 
 # Create location object to store lat, lon, timezone
 site = location.Location(lat, lon, tz=tz)
@@ -41,7 +43,7 @@ def get_irradiance(site_location, date, tilt, surface_azimuth, linke_turbidity):
 # Get irradiance data for summer and winter solstice, assuming 25 degree tilt
 # and a south facing array
 sem_chuva = get_irradiance(site, '01-01-2020', 20, 180, 2.5)
-com_chuva = get_irradiance(site, '01-01-2020', 20, 180, 10)
+com_chuva = get_irradiance(site, '06-01-2020', 10, 180, 2.5)
 
 # Convert Dataframe Indexes to Hour:Minute format to make plotting easier
 sem_chuva.index = sem_chuva.index.strftime("%H:%M")
@@ -49,16 +51,34 @@ com_chuva.index = com_chuva.index.strftime("%H:%M")
 
 #dias.to_csv("file.csv")
 
+
 # Plot GHI vs. POA for winter and summer
 fig, (ax1, ax2) = plt.subplots(1, 2, sharey=True)
 sem_chuva['GHI'].plot(ax=ax1, label='GHI')
 sem_chuva['POA'].plot(ax=ax1, label='POA')
 com_chuva['GHI'].plot(ax=ax2, label='GHI')
 com_chuva['POA'].plot(ax=ax2, label='POA')
-ax1.set_xlabel('Time of day (sem_chuva)')
-ax2.set_xlabel('Time of day (com_chuva)')
-ax1.set_ylabel('Irradiance ($W/m^2$)')
+fsize = 22
+ax1.set_xlabel('Hora do dia (verão)', fontsize=fsize)
+ax2.set_xlabel('Hora do dia (inverno)', fontsize=fsize)
+ax1.set_ylabel('Irradiância ($W/m^2$)', fontsize=fsize)
 ax1.legend()
 ax2.legend()
+
+
+l = list(range(1, len(sem_chuva.index)+1))
+
+ax1.set_xticks(l)
+ax1.set_xticklabels(sem_chuva.index, rotation=45)
+ax1.locator_params(nbins=24, axis='x')
+
+ax2.set_xticks(l)
+ax2.set_xticklabels(sem_chuva.index, rotation=45)
+ax2.locator_params(nbins=24, axis='x')
+ax2.locator_params(nbins=24, axis='y')
+
+ax1.grid()
+ax2.grid()
+
 plt.show()
 
