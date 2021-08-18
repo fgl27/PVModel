@@ -730,6 +730,14 @@ function StartPage() {
     inputsDiv = mgetElementById('inputs');
     resultDiv = mgetElementById('result');
 
+    mgetElementById('lang').onclick = showDropdown;
+    mgetElementById('lang_pt').onclick = function() {
+        SetLAng('pt');
+    };
+    mgetElementById('lang_en').onclick = function() {
+        SetLAng('en');
+    };
+
     //Seta no nome no topo
     mgetElementById('title').innerHTML = 'PVModel';
     ReStartPage();
@@ -967,6 +975,7 @@ function GetLAng() {
 }
 
 function SetLAng(newLang) {
+    /* eslint-enable */
     localStorage.setItem('app_lang', newLang);
     appLang = newLang;
     Start_Element_obj();
@@ -983,7 +992,6 @@ window.onclick = function(event) {
         //console.log('asa')
         showDropdown();
     }
-}
-
+};
 
 Start();
