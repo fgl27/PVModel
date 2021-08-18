@@ -235,6 +235,8 @@ const Elem_Ids = {
         Button: 'Result_Button_',
         Title: 'Result_Title_',
         Value_Container: 'Result_Value_Container_',
+        Results_container: 'Result_results_Container_',
+        Results_inner_container: 'Result_results_inner_Container_',
         Value: 'Result_Value_',
         Graf_Container: 'Result_Graf_Container_',
         Graf: 'Result_Graf_',
@@ -562,13 +564,51 @@ const fun_obj = {
 
         resultDiv.appendChild(div_result_title);
 
+
+        //Adiciona a observação para meses e dias
+        if (isMonth) {
+
+            resultDiv.appendChild(
+                mCreateElement(
+                    'div',
+                    Elem_Ids.Result.Note,
+                    'result_note',
+                    'Obs.: Clique no dia para ver o resultado por hora'
+                )
+            );
+
+        } else if (!isDay) {
+
+            resultDiv.appendChild(
+                mCreateElement(
+                    'div',
+                    Elem_Ids.Result.Note,
+                    'result_note',
+                    'Obs.: Clique no mês para ver o resultado por dia'
+                )
+            );
+        }
+
+        const Results_container = mCreateElement(
+            'div',
+            Elem_Ids.Result.Results_container + base_id,
+            'Results_container'
+        );
+
+        const Results_inner_container = mCreateElement(
+            'div',
+            Elem_Ids.Result.Results_inner_container + base_id,
+            'Results_inner_container'
+        );
+        Results_container.appendChild(Results_inner_container);
+
         //cria o elemento que indica se é mes e kwh
         div_value_container = mCreateElement(
             'div',
             Elem_Ids.Result.Value_Container + base_id,
             'result_holder'
         );
-        resultDiv.appendChild(div_value_container);
+        Results_inner_container.appendChild(div_value_container);
 
         div_value_container.appendChild(
             mCreateElement(
@@ -645,33 +685,11 @@ const fun_obj = {
                     )
                 );
 
-                resultDiv.appendChild(div_value_container);
+                Results_inner_container.appendChild(div_value_container);
 
             }
-        }
 
-        //Adiciona a observação para meses e dias
-        if (isMonth) {
-
-            resultDiv.appendChild(
-                mCreateElement(
-                    'div',
-                    Elem_Ids.Result.Note,
-                    'result_note',
-                    'Obs.: Clique no dia para ver o resultado por hora'
-                )
-            );
-
-        } else if (!isDay) {
-
-            resultDiv.appendChild(
-                mCreateElement(
-                    'div',
-                    Elem_Ids.Result.Note,
-                    'result_note',
-                    'Obs.: Clique no mês para ver o resultado por dia'
-                )
-            );
+            resultDiv.appendChild(Results_container);
         }
 
         //Seta o valor da altura de cada elemento gráfico em relação ao maior que é igual maior_total

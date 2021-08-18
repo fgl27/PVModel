@@ -110,17 +110,6 @@ html {
   text-align: start;
 }
 
-@media screen and (max-width: 700px) {
-  .inputsContainer {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .inputsText {
-    text-align: center;
-  }
-}
-
 .inputsSelect,
 .inputsInput {
   display: inline-block;
@@ -177,6 +166,11 @@ html {
   text-align: center;
   margin-top: 1%;
   min-height: 30vh;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-around;
 }
 
 .result_value {
@@ -337,4 +331,45 @@ a:active {
 
 .hide {
   display: none !important;
+}
+
+
+@media screen and (max-width: 700px) {
+  .inputsContainer {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .inputsText {
+    text-align: center;
+  }
+
+  .Results_container {
+    transform: rotate(90deg) translate(50%);
+    transform-origin: center;
+    margin-top: -38%;
+    padding-right: 10%;
+  }
+
+  .Results_inner_container {
+    transform-style: preserve-3d;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .result_value {
+    transform-style: preserve-3d;
+    transform: rotate(-90deg) scale(1);
+    white-space: nowrap;
+    min-width: 10ch;
+  }
+
+  .result_holder {
+    margin-left: -3.5ch;
+  }
+
+  .result_graf {
+    width: 40%;
+  }
+
 }
