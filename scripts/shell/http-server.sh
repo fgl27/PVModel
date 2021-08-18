@@ -18,4 +18,4 @@ echo "$mainfolder"
 cd src/
 
 # -c-1 disable cache
-http-server -a 127.0.0.2 -c-1
+http-server -a 127.0.0.1 -p 5001 -c-1
