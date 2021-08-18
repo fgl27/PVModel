@@ -239,6 +239,7 @@
             Span: 'Input_Tooltip_Span',
             Text: 'Input_Text_',
             Help: 'Input_Help_',
+            Imput_Help_Container: 'Input_Imput_Help_Container_',
             Button: 'Input_Calc_Button_',
             Select: 'Input_Select_',
             Option: 'Input_Select_Option_',
@@ -247,6 +248,8 @@
             Button: 'Result_Button_',
             Title: 'Result_Title_',
             Value_Container: 'Result_Value_Container_',
+            Results_container: 'Result_results_Container_',
+            Results_inner_container: 'Result_results_inner_Container_',
             Value: 'Result_Value_',
             Graf_Container: 'Result_Graf_Container_',
             Graf: 'Result_Graf_',
@@ -266,6 +269,12 @@
                 'div',
                 Elem_Ids.Input.Container + prop,
                 'inputsContainer'
+            );
+
+            const Imput_Help_Container = mCreateElement(
+                'div',
+                Elem_Ids.Input.Imput_Help_Container + prop,
+                'Imput_Help_Container'
             );
 
             const Input_Tooltip = mCreateElement(
@@ -314,10 +323,10 @@
                     'hide'
                 )
             );
-            Inputs_Container.appendChild(Input_Tooltip);
+            Imput_Help_Container.appendChild(Input_Tooltip);
 
             //Seta a ajuda quando o mouse fica sobre ?
-            Inputs_Container.appendChild(
+            Imput_Help_Container.appendChild(
                 mCreateElement(
                     'div',
                     Elem_Ids.Input.Help + prop,
@@ -325,6 +334,7 @@
                     '&nbsp;?&nbsp;<span class="tooltiptext">' + obj.help + '</span>'
                 )
             );
+            Inputs_Container.appendChild(Imput_Help_Container);
 
             const container = mCreateElement(
                 'div',
@@ -348,6 +358,12 @@
                 'select',
                 Elem_Ids.Input.Select + prop,
                 'inputsSelect'
+            );
+
+            const Select_Help_Container = mCreateElement(
+                'div',
+                Elem_Ids.Input.Imput_Help_Container + prop,
+                'Imput_Help_Container'
             );
 
             //seta o tipo
@@ -385,10 +401,10 @@
                 )
             );
 
-            Inputs_Container.appendChild(Select);
+            Select_Help_Container.appendChild(Select);
 
             //Seta a ajuda quando o mouse fica sobre ?
-            Inputs_Container.appendChild(
+            Select_Help_Container.appendChild(
                 mCreateElement(
                     'div',
                     Elem_Ids.Input.Help + prop,
@@ -396,6 +412,8 @@
                     '&nbsp;?&nbsp;<span class="tooltiptext">' + obj.help + '</span>'
                 )
             );
+
+            Inputs_Container.appendChild(Select_Help_Container);
 
             const container = mCreateElement(
                 'div',
@@ -559,13 +577,51 @@
 
             resultDiv.appendChild(div_result_title);
 
+
+            //Adiciona a observação para meses e dias
+            if (isMonth) {
+
+                resultDiv.appendChild(
+                    mCreateElement(
+                        'div',
+                        Elem_Ids.Result.Note,
+                        'result_note',
+                        'Obs.: Clique no dia para ver o resultado por hora'
+                    )
+                );
+
+            } else if (!isDay) {
+
+                resultDiv.appendChild(
+                    mCreateElement(
+                        'div',
+                        Elem_Ids.Result.Note,
+                        'result_note',
+                        'Obs.: Clique no mês para ver o resultado por dia'
+                    )
+                );
+            }
+
+            const Results_container = mCreateElement(
+                'div',
+                Elem_Ids.Result.Results_container + base_id,
+                'Results_container'
+            );
+
+            const Results_inner_container = mCreateElement(
+                'div',
+                Elem_Ids.Result.Results_inner_container + base_id,
+                'Results_inner_container'
+            );
+            Results_container.appendChild(Results_inner_container);
+
             //cria o elemento que indica se é mes e kwh
             div_value_container = mCreateElement(
                 'div',
                 Elem_Ids.Result.Value_Container + base_id,
                 'result_holder'
             );
-            resultDiv.appendChild(div_value_container);
+            Results_inner_container.appendChild(div_value_container);
 
             div_value_container.appendChild(
                 mCreateElement(
@@ -642,33 +698,11 @@
                         )
                     );
 
-                    resultDiv.appendChild(div_value_container);
+                    Results_inner_container.appendChild(div_value_container);
 
                 }
-            }
 
-            //Adiciona a observação para meses e dias
-            if (isMonth) {
-
-                resultDiv.appendChild(
-                    mCreateElement(
-                        'div',
-                        Elem_Ids.Result.Note,
-                        'result_note',
-                        'Obs.: Clique no dia para ver o resultado por hora'
-                    )
-                );
-
-            } else if (!isDay) {
-
-                resultDiv.appendChild(
-                    mCreateElement(
-                        'div',
-                        Elem_Ids.Result.Note,
-                        'result_note',
-                        'Obs.: Clique no mês para ver o resultado por dia'
-                    )
-                );
+                resultDiv.appendChild(Results_container);
             }
 
             //Seta o valor da altura de cada elemento gráfico em relação ao maior que é igual maior_total
@@ -785,15 +819,15 @@
 
         if (total > 1000000) { //Giga
 
-            return text + (total / 1000000).toFixed(2) + ' GWh';
+            return text + (total / 1000000).toFixed(2) + ' GWh (CA)';
 
         } else if (total > 1000) { //Mega
 
-            return text + (total / 1000).toFixed(2) + ' MWh';
+            return text + (total / 1000).toFixed(2) + ' MWh (CA)';
 
         } //else quilo
 
-        return text + (total).toFixed(2) + ' kWh';
+        return text + (total).toFixed(2) + ' kWh (CA)';
 
     }
 
