@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
             WebView.setWebContentsDebuggingEnabled(true);
             WebSettings webSettings = webView.getSettings();
             webSettings.setJavaScriptEnabled(true);
+            webSettings.setDomStorageEnabled(true);
             webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
             webView.loadUrl(appUrl);
