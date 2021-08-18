@@ -21,10 +21,13 @@ boolean Created;
             setContentView(R.layout.activity_main);
             WebView webView = (WebView) findViewById(R.id.webview);
             webView.setBackgroundColor(Color.TRANSPARENT);
+            webView.clearCache(true);
+            webView.clearHistory();
 
             WebView.setWebContentsDebuggingEnabled(true);
             WebSettings webSettings = webView.getSettings();
             webSettings.setJavaScriptEnabled(true);
+            webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
             webView.loadUrl("https://fgl27.github.io/PVModel/page/index.html");
             Created = true;
