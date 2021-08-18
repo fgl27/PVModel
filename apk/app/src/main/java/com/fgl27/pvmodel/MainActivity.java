@@ -1,7 +1,6 @@
 package com.fgl27.pvmodel;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -23,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
         if (!Created) {
             setContentView(R.layout.activity_main);
             WebView webView = (WebView) findViewById(R.id.webview);
-            webView.setBackgroundColor(Color.TRANSPARENT);
             webView.clearCache(true);
             webView.clearHistory();
 

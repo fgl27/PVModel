@@ -3,12 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/secondary"
     tools:context=".MainActivity">
 
     <WebView
         android:id="@+id/webview"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -18,6 +19,7 @@
         android:layout_height="100dip"
         android:layout_gravity="center"
         android:indeterminate="true"
-        android:indeterminateTint="@color/primary" />
+        android:indeterminateTint="@color/primary"
+        tools:targetApi="lollipop" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
