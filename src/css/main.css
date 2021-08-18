@@ -314,20 +314,12 @@ html {
   width: auto;
 }
 
-a:link {
-  color: #0366d6;
-}
-
-a:visited {
-  color: #0366d6;
-}
-
-a:hover {
-  color: #3c97ff;
-}
-
+a:link,
+a:hover,
+a:visited,
 a:active {
-  color: blue;
+  color: #0366d6;
+  text-decoration: none;
 }
 
 .hide {
