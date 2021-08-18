@@ -57,6 +57,9 @@ html {
   width: auto;
   text-align: center;
   margin-top: 1%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .inputsContainer {
@@ -67,6 +70,19 @@ html {
   border-top: 0;
   padding: 5px;
   max-width: 94vw;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.Imput_Help_Container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-around;
+  align-content: space-around;
 }
 
 .tooltiptextop,
@@ -86,11 +102,23 @@ html {
   border-radius: 0 0 6px 6px;
 }
 
+
 .inputsText {
   display: inline-block;
   font-family: 'Roboto-Bold';
   min-width: 38ch;
   text-align: start;
+}
+
+@media screen and (max-width: 700px) {
+  .inputsContainer {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .inputsText {
+    text-align: center;
+  }
 }
 
 .inputsSelect,

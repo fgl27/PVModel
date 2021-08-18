@@ -226,6 +226,7 @@ const Elem_Ids = {
         Span: 'Input_Tooltip_Span',
         Text: 'Input_Text_',
         Help: 'Input_Help_',
+        Imput_Help_Container: 'Input_Imput_Help_Container_',
         Button: 'Input_Calc_Button_',
         Select: 'Input_Select_',
         Option: 'Input_Select_Option_',
@@ -253,6 +254,12 @@ const fun_obj = {
             'div',
             Elem_Ids.Input.Container + prop,
             'inputsContainer'
+        );
+
+        const Imput_Help_Container = mCreateElement(
+            'div',
+            Elem_Ids.Input.Imput_Help_Container + prop,
+            'Imput_Help_Container'
         );
 
         const Input_Tooltip = mCreateElement(
@@ -301,10 +308,10 @@ const fun_obj = {
                 'hide'
             )
         );
-        Inputs_Container.appendChild(Input_Tooltip);
+        Imput_Help_Container.appendChild(Input_Tooltip);
 
         //Seta a ajuda quando o mouse fica sobre ?
-        Inputs_Container.appendChild(
+        Imput_Help_Container.appendChild(
             mCreateElement(
                 'div',
                 Elem_Ids.Input.Help + prop,
@@ -312,6 +319,7 @@ const fun_obj = {
                 '&nbsp;?&nbsp;<span class="tooltiptext">' + obj.help + '</span>'
             )
         );
+        Inputs_Container.appendChild(Imput_Help_Container);
 
         const container = mCreateElement(
             'div',
@@ -335,6 +343,12 @@ const fun_obj = {
             'select',
             Elem_Ids.Input.Select + prop,
             'inputsSelect'
+        );
+
+        const Select_Help_Container = mCreateElement(
+            'div',
+            Elem_Ids.Input.Imput_Help_Container + prop,
+            'Imput_Help_Container'
         );
 
         //seta o tipo
@@ -372,10 +386,10 @@ const fun_obj = {
             )
         );
 
-        Inputs_Container.appendChild(Select);
+        Select_Help_Container.appendChild(Select);
 
         //Seta a ajuda quando o mouse fica sobre ?
-        Inputs_Container.appendChild(
+        Select_Help_Container.appendChild(
             mCreateElement(
                 'div',
                 Elem_Ids.Input.Help + prop,
@@ -383,6 +397,8 @@ const fun_obj = {
                 '&nbsp;?&nbsp;<span class="tooltiptext">' + obj.help + '</span>'
             )
         );
+
+        Inputs_Container.appendChild(Select_Help_Container);
 
         const container = mCreateElement(
             'div',
