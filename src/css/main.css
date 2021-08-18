@@ -74,6 +74,7 @@ html {
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
+  border-radius: 1px;
 }
 
 .Imput_Help_Container {
@@ -95,11 +96,11 @@ html {
 
 .inputsContainerTop {
   border-top: 1px solid #999999 !important;
-  border-radius: 6px 6px 0 0;
+  border-radius: 6px 6px 0 0 !important;
 }
 
 .inputsContainerBottom {
-  border-radius: 0 0 6px 6px;
+  border-radius: 0 0 6px 6px !important;
 }
 
 
@@ -337,7 +338,6 @@ a:active {
 @media screen and (max-width: 700px) {
   .inputsContainer {
     flex-direction: column;
-    align-items: center;
   }
 
   .inputsText {
