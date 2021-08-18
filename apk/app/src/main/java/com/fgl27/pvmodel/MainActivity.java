@@ -3,13 +3,16 @@ package com.fgl27.pvmodel;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
-boolean Created;
+    boolean Created;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -17,7 +20,7 @@ boolean Created;
         if (!Created) setTheme(R.style.NoActionBar);
         super.onCreate(savedInstanceState);
 
-        if(!Created) {
+        if (!Created) {
             setContentView(R.layout.activity_main);
             WebView webView = (WebView) findViewById(R.id.webview);
             webView.setBackgroundColor(Color.TRANSPARENT);
@@ -30,6 +33,16 @@ boolean Created;
             webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
             webView.loadUrl("https://fgl27.github.io/PVModel/page/index.html");
+
+            webView.setWebViewClient(new WebViewClient() {
+
+                public void onPageFinished(WebView view, String url) {
+                    runOnUiThread(() -> {
+                        ProgressBar loadingView = findViewById(R.id.loading);
+                        loadingView.setVisibility(View.GONE);
+                    });
+                }
+            });
             Created = true;
         }
     }
