@@ -171,6 +171,14 @@ js_jshint() {
 
 }
 
+sed_js_html() {
+	array=( "$@" );
+	for i in "${array[@]}"; do
+		sed -i "/js\/$i\.js/d" page/index.html;
+	done
+}
+
+
 main_start=$(echo "$a" | sed '/APISTART/,/APIMID/!d;/APIMID/d;/APISTART/d' page/temp/api.js);
 main_end=$(echo "$a" | sed '/APICENTER/,/APIEND/!d;/APIEND/d;/APICENTER/d' page/temp/api.js);
 
@@ -187,7 +195,8 @@ fi;
 
 # make the page/temp/index.html
 cp -rf src/index.html page/index.html;
-sed -i '/js\/obj_regiao\.js/d' page/index.html;
+js_file=("obj_regiao" "lang");
+sed_js_html "${js_file[@]}";
 
 echo -e "\\n${bldgrn}Compressing Start\\n";
 

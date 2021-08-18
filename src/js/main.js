@@ -3,220 +3,198 @@ let inputsDiv;
 let resultDiv;
 let resultObj = {};
 let resultObjID;
-const meses = ["Jan", "Fev", "Mar", "Abr", "Maio", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
-const mesesfull = {
-    Jan: 'Janeiro',
-    Fev: 'Fevereiro',
-    Mar: 'Março',
-    Abr: 'Abril',
-    Maio: 'Maio',
-    Jun: 'Junho',
-    Jul: 'Julho',
-    Ago: 'Agosto',
-    Set: 'Setembor',
-    Out: 'Outubro',
-    Nov: 'Novembro',
-    Dez: 'Dezembro'
-};
+let appLang = GetLAng();
 
-let Element_obj = {
-    modelo: {
-        elem: 'select',
-        innerHTML: 'Modelo de entrada de valores',
-        value: 0,
-        options: [
-            'Potência nominal total',
-            'Área total',
-            'Quantidade painéis',
-        ],
-        values: [
-            [// os elementos disponíveis no modo Pot nominal
-                'modelo',
-                'regiao',
-                'pot_nominal_array',
-                'coef_temp',
-                'superficie',
-                'perda',
-                'cc_ca',
-                'button'
+let Element_obj;
+Start_Element_obj();
+
+function Start_Element_obj() {
+    Element_obj = {
+        modelo: {
+            elem: 'select',
+            innerHTML: Lang[appLang].modelo.innerHTML,
+            value: 0,
+            options: Lang[appLang].modelo.options,
+            values: [
+                [// os elementos disponíveis no modo Pot nominal
+                    'modelo',
+                    'regiao',
+                    'pot_nominal_array',
+                    'coef_temp',
+                    'superficie',
+                    'perda',
+                    'cc_ca',
+                    'button'
+                ],
+                [// os elementos disponíveis no modo Área total
+                    'modelo',
+                    'regiao',
+                    'area',
+                    'area_painel',
+                    'pot_nominal_painel',
+                    'quantidade',
+                    'pot_nominal_array',
+                    'coef_temp',
+                    'superficie',
+                    'perda',
+                    'cc_ca',
+                    'button'
+                ],
+                [// os elementos disponíveis no modo quantidade painéis
+                    'modelo',
+                    'regiao',
+                    'pot_nominal_painel',
+                    'quantidade',
+                    'pot_nominal_array',
+                    'coef_temp',
+                    'superficie',
+                    'perda',
+                    'cc_ca',
+                    'button'
+                ]
             ],
-            [// os elementos disponíveis no modo Área total
-                'modelo',
-                'regiao',
-                'area',
-                'area_painel',
-                'pot_nominal_painel',
-                'quantidade',
-                'pot_nominal_array',
-                'coef_temp',
-                'superficie',
-                'perda',
-                'cc_ca',
-                'button'
-            ],
-            [// os elementos disponíveis no modo quantidade painéis
-                'modelo',
-                'regiao',
-                'pot_nominal_painel',
-                'quantidade',
-                'pot_nominal_array',
-                'coef_temp',
-                'superficie',
-                'perda',
-                'cc_ca',
-                'button'
-            ]
-        ],
-        setValues: function(value) {
-            value = parseInt(value);
+            setValues: function(value) {
+                value = parseInt(value);
 
-            if (this.value !== value) {
+                if (this.value !== value) {
 
+                    this.value = value;
+                    UpdatePotNominal();
+                    StartInputs();
+
+                    const disabled = Boolean(value);
+                    mgetElementById(Elem_Ids.Input.Input + 'pot_nominal_array').disabled = disabled;
+
+                    //bloqueia que se altere os valores dos elementos que seu valor é calculado em relação a outros valores
+                    if (disabled) {
+
+                        mgetElementById(Elem_Ids.Input.Span + 'pot_nominal_array').className =
+                            'tooltiptext tooltiptext_disabled';
+                        mgetElementById(Elem_Ids.Input.Span + 'pot_nominal_array').innerHTML =
+                            Lang[appLang].modelo.setValues[0];
+
+                    }
+
+                    if (value === 1) {
+
+                        mgetElementById(Elem_Ids.Input.Input + 'quantidade').disabled = true;
+                        mgetElementById(Elem_Ids.Input.Span + 'quantidade').className =
+                            'tooltiptext tooltiptext_disabled';
+                        mgetElementById(Elem_Ids.Input.Span + 'quantidade').innerHTML =
+                            Lang[appLang].modelo.setValues[1];
+                    }
+
+
+                }
+
+            },
+            help: Lang[appLang].modelo.help
+        },
+        pot_nominal_array: {
+            elem: 'input',
+            innerHTML: Lang[appLang].pot_nominal_array.innerHTML,
+            help: Lang[appLang].pot_nominal_array.help,
+            value: 1000,
+            type: 'number',
+            step: '10',
+            UpdateValue: UpdatePotNominal
+        },
+        pot_nominal_painel: {
+            elem: 'input',
+            innerHTML: Lang[appLang].pot_nominal_painel.innerHTML,
+            help: Lang[appLang].pot_nominal_painel.help,
+            value: 300,
+            type: 'number',
+            step: '10',
+            UpdateValue: UpdatePotNominal
+        },
+        area_painel: {
+            elem: 'input',
+            innerHTML: Lang[appLang].area_painel.innerHTML,
+            help: Lang[appLang].area_painel.help,
+            value: 1.64,
+            type: 'number',
+            step: '0.01',
+            UpdateValue: UpdatePotNominal
+        },
+        area: {
+            elem: 'input',
+            innerHTML: Lang[appLang].area.innerHTML,
+            help: Lang[appLang].area.help,
+            value: 6,
+            type: 'number',
+            step: '1',
+            UpdateValue: UpdatePotNominal
+        },
+        quantidade: {
+            elem: 'input',
+            innerHTML: Lang[appLang].quantidade.innerHTML,
+            help: Lang[appLang].quantidade.help,
+            value: 3,
+            type: 'number',
+            step: '1',
+            UpdateValue: UpdatePotNominal
+        },
+        perda: {
+            elem: 'input',
+            innerHTML: Lang[appLang].perda.innerHTML,
+            help: Lang[appLang].perda.help,
+            value: 14,
+            type: 'number',
+            step: '1',
+        },
+        coef_temp: {
+            elem: 'input',
+            innerHTML: Lang[appLang].coef_temp.innerHTML,
+            help: Lang[appLang].coef_temp.help,
+            value: -0.35,
+            type: 'number',
+            step: '0.01',
+        },
+        cc_ca: {
+            elem: 'input',
+            innerHTML: Lang[appLang].cc_ca.innerHTML,
+            help: Lang[appLang].cc_ca.help,
+            value: 95,
+            type: 'number',
+            step: '1',
+        },
+        superficie: {
+            elem: 'select',
+            innerHTML: Lang[appLang].superficie.innerHTML,
+            help: Lang[appLang].superficie.help,
+            options: Lang[appLang].superficie.options,
+            value: 0,
+            values: {
+                a: [-3.47, -2.98, -3.56, -2, 81],
+                b: [-0.0594, -0.0471, -0.075, -0.0455],
+                Delta_T: [3, 1, 3, 0],
+            },
+            setValues: function(value) {
                 this.value = value;
-                UpdatePotNominal();
-                StartInputs();
 
-                const disabled = Boolean(value);
-                mgetElementById(Elem_Ids.Input.Input + 'pot_nominal_array').disabled = disabled;
+                a = this.values.a[value];
+                b = this.values.b[value];
+                Delta_T = this.values.Delta_T[value];
 
-                //bloqueia que se altere os valores dos elementos que seu valor é calculado em relação a outros valores
-                if (disabled) {
-
-                    mgetElementById(Elem_Ids.Input.Span + 'pot_nominal_array').className = 'tooltiptext tooltiptext_disabled';
-                    mgetElementById(Elem_Ids.Input.Span + 'pot_nominal_array').innerHTML = 'Neste modo a potência nominal total é igual:<br><br>A potência nominal de um painel vezes a quatidade de painéis';
-
-                }
-
-                if (value === 1) {
-
-                    mgetElementById(Elem_Ids.Input.Input + 'quantidade').disabled = true;
-                    mgetElementById(Elem_Ids.Input.Span + 'quantidade').className = 'tooltiptext tooltiptext_disabled';
-                    mgetElementById(Elem_Ids.Input.Span + 'quantidade').innerHTML = 'Neste modo a quantidade é igual:<br><br>A área total pela área de um painel';
-                }
-
-
+            },
+        },
+        regiao: {
+            elem: 'select',
+            innerHTML: Lang[appLang].regiao.innerHTML,
+            help: Lang[appLang].regiao.help,
+            options: Lang[appLang].regiao.options,
+            value: 4,
+            setValues: function(value) {
+                this.value = value;
             }
-
         },
-        help: 'Potência nominal total:<br><br>O cálculo é feito pela potência total nominal do conjunto de painéis<br><br>' +
-            'Área total:<br><br>O cálculo é feito a determinar potência total nominal do conjunto de painéis em relação a quantos paines cabem na área total<br><br>' +
-            'Quantidade painéis:<br><br>O cálculo é feito a determinar potência total nominal do conjunto de painéis em relação ao número total de painéis'
-    },
-    pot_nominal_array: {
-        elem: 'input',
-        innerHTML: 'Potência nominal total da matriz (W/m²)',
-        value: 1000,
-        type: 'number',
-        step: '10',
-        help: 'O valor nominal total da matriz fotovoltaica instalada em W/m²',
-        UpdateValue: UpdatePotNominal
-    },
-    pot_nominal_painel: {
-        elem: 'input',
-        innerHTML: 'Potência nominal de um painel (W/m²)',
-        value: 300,
-        type: 'number',
-        step: '10',
-        help: 'O valor nominal total de um painel usado em W/m² (assumindo que todos painéis são iguais)',
-        UpdateValue: UpdatePotNominal
-    },
-    area_painel: {
-        elem: 'input',
-        innerHTML: 'Área de um painel (m²)',
-        value: 1.64,
-        type: 'number',
-        step: '0.01',
-        help: 'A área de um painel comercial em m²',
-        UpdateValue: UpdatePotNominal
-    },
-    area: {
-        elem: 'input',
-        innerHTML: 'Área total utilizada (m²)',
-        value: 6,
-        type: 'number',
-        step: '1',
-        help: 'A máxima área que os painéis podem cobrir',
-        UpdateValue: UpdatePotNominal
-    },
-    quantidade: {
-        elem: 'input',
-        innerHTML: 'Quantidade painéis',
-        value: 3,
-        type: 'number',
-        step: '1',
-        help: 'A quantidade total de painéis possível',
-        UpdateValue: UpdatePotNominal
-    },
-    perda: {
-        elem: 'input',
-        innerHTML: 'Perdas do sistema (%)',
-        value: 14,
-        type: 'number',
-        step: '1',
-        help: 'As perdas no sistema que não são explicitamente modeladas, que incluem os impactos na potência final em relação a sujeira, sombreamento, cobertura de neve, incompatibilidade, fiação, conexões, degradação induzida pela luz, classificação da placa de identificação, idade do sistema e disponibilidade operacional'
-    },
-    coef_temp: {
-        elem: 'input',
-        innerHTML: 'Coeficiente de temperatura de potência (%/°C)',
-        value: -0.35,
-        type: 'number',
-        step: '0.01',
-        help: 'A eficiência da matriz diminua a uma taxa linear em função do aumento da temperatura, governada pelo coeficiente de temperatura do painel, para maioria dos painéis este valor varia de -0,5 ate 0,1'
-    },
-    cc_ca: {
-        elem: 'input',
-        innerHTML: 'Conversão CC-CA (Eficiencia %)',
-        value: 95,
-        type: 'number',
-        step: '1',
-        help: 'O modelo proposto utiliza uma simples conversão baseada na eficiência do inversor'
-    },
-    superficie: {
-        elem: 'select',
-        innerHTML: 'Superfície | Montagem do painel',
-        value: 0,
-        options: [
-            'Vidro | Costas livre',
-            'Vidro | Costas fechada',
-            'Polímero | Costas livre',
-            'Polímero | Costas fechada'
-        ],
-        values: {
-            a: [-3.47, -2.98, -3.56, -2, 81],
-            b: [-0.0594, -0.0471, -0.075, -0.0455],
-            Delta_T: [3, 1, 3, 0],
-        },
-        setValues: function(value) {
-            this.value = value;
-
-            a = this.values.a[value];
-            b = this.values.b[value];
-            Delta_T = this.values.Delta_T[value];
-
-        },
-        help: 'Para calcular a temperatura de operação do painel é necessário determinar parâmetros que dependem da construção, materiais e montagem do painel<br><br>Costas livre um painel montado em um rack aberto<br><br>Costas fechada um painel montado sombre um telhado'
-    },
-    regiao: {
-        elem: 'select',
-        innerHTML: 'Região do Brasil',
-        value: 4,
-        options: [
-            'Centro-Oeste',
-            'Nordeste',
-            'Norte',
-            'Sudeste',
-            'Sul'
-        ],
-        setValues: function(value) {
-            this.value = value;
-        },
-        help: 'A região do país que deseja calcular os resultados'
-    },
-    button: {
-        elem: 'button',
-        innerHTML: 'Calcular'
-    }
-};
+        button: {
+            elem: 'button',
+            innerHTML: Lang[appLang].button.innerHTML,
+        }
+    };
+}
 
 const Elem_Ids = {
     Input: {
@@ -436,7 +414,7 @@ const fun_obj = {
             //Loopa no obj e calcula a potencia para cada hora do ano
             for (const i in obj) {
 
-                mes = meses[obj[i][0] - 1];
+                mes = Lang[appLang].meses[obj[i][0] - 1];
                 dia = obj[i][1];
 
                 //Inicializa o resultObj de acordo com cada referencia
@@ -535,31 +513,31 @@ const fun_obj = {
         //e adiciona um botão pra voltar ao resultado anterior caso seja mês ou dia
         if (isDay) {
 
-            div_result_title.innerHTML = 'Resultado ' + prop2 + ' de ' + mesesfull[prop1] + resultado_total;
+            div_result_title.innerHTML = Lang[appLang].result + prop2 + Lang[appLang].of + Lang[appLang].mesesfull[prop1] + resultado_total;
 
-            button.innerHTML = '<span>&#8592;</span> Voltar pro mês de ' + mesesfull[prop1];
+            button.innerHTML = '<span>&#8592;</span>' + Lang[appLang].back_month + Lang[appLang].mesesfull[prop1];
             button.onclick = function() {
                 monclick(prop1);
             };
 
             resultDiv.appendChild(button);
 
-            base_div_text = 'Hora';
+            base_div_text = Lang[appLang].hour;
 
         } else if (isMonth) {
 
-            div_result_title.innerHTML = 'Resultado ' + mesesfull[prop1] + resultado_total;
-            button.innerHTML = '<span>&#8592;</span> Voltar pro ano';
+            div_result_title.innerHTML = Lang[appLang].result + Lang[appLang].mesesfull[prop1] + resultado_total;
+            button.innerHTML = '<span>&#8592;</span>' + Lang[appLang].back_year;
             button.onclick = function() {
                 monclick();
             };
 
             resultDiv.appendChild(button);
 
-            base_div_text = 'Dia';
+            base_div_text = Lang[appLang].day;
 
         } else {
-            div_result_title.innerHTML = 'Resultado Ano' + resultado_total;
+            div_result_title.innerHTML = Lang[appLang].result + Lang[appLang].year + resultado_total;
         }
 
         resultDiv.appendChild(div_result_title);
@@ -573,7 +551,7 @@ const fun_obj = {
                     'div',
                     Elem_Ids.Result.Note,
                     'result_note',
-                    'Obs.: Clique no dia para ver o resultado por hora'
+                    Lang[appLang].obs_dia
                 )
             );
 
@@ -584,7 +562,7 @@ const fun_obj = {
                     'div',
                     Elem_Ids.Result.Note,
                     'result_note',
-                    'Obs.: Clique no mês para ver o resultado por dia'
+                    Lang[appLang].obs_month
                 )
             );
         }
@@ -615,7 +593,7 @@ const fun_obj = {
                 'div',
                 Elem_Ids.Result.Value + base_id,
                 'result_value',
-                base_div_text + '<br>kWh (CA)'
+                base_div_text + '<br>kWh ' + Lang[appLang].ac
             )
         );
 
@@ -753,26 +731,52 @@ function StartPage() {
     resultDiv = mgetElementById('result');
 
     //Seta no nome no topo
-    mgetElementById('page_title').innerHTML = 'PVModel';
+    mgetElementById('title').innerHTML = 'PVModel';
+    ReStartPage();
+    //Inicializa o analitics 
+    Startfirebase();
+
+}
+
+function ReStartPage() {
+    emptyEle(resultDiv);
+
+    mgetElementById('lang_text').innerHTML = Lang[appLang].lang;
+
+    SetLangText('lang_pt', Lang[appLang].langs[0], 'pt');
+    SetLangText('lang_en', Lang[appLang].langs[1], 'en');
 
     //Seta o about
     const about_div = mgetElementById('page_about'),
-        about_text = 'Este é um projeto em andamento da faculdade, com o objetivo de modelar painéis fotovoltaicos, esta página é usada para mostrar os resultados do modelo, para mais informações acesse o link abaixo:<br><br><a href="https://github.com/fgl27/PVModel" target="_blank">github.com/fgl27/PVModel</a>';
+        about_text = Lang[appLang].about_help +
+            '<br><br><a href="https://github.com/fgl27/PVModel" target="_blank">github.com/fgl27/PVModel</a>';
 
+    emptyEle(about_div);
     about_div.appendChild(
         mCreateElement(
             'div',
             Elem_Ids.General.About,
             'tooltip_botton',
-            'Sobre<span id="span_about" class="tooltiptextop">' + about_text + '</span>'
+            Lang[appLang].about + '<span id="span_about" class="tooltiptextop">' + about_text + '</span>'
         )
     );
 
     //Inicializa os inputs
     StartInputs();
-    //Inicializa o analitics 
-    Startfirebase();
+}
 
+function SetLangText(elem, lang, check) {
+    const element = mgetElementById(elem);
+    const enable = appLang.indexOf(check) !== -1;
+
+    element.innerHTML = '&nbsp;' + lang +
+        (enable ? '&nbsp;<i class="skipclick icon icon-check"></i>&nbsp;' : '');
+
+    if (enable) {
+        element.classList.add('lang_focus');
+    } else {
+        element.classList.remove('lang_focus');
+    }
 }
 
 function StartInputs() {
@@ -800,19 +804,19 @@ function emptyEle(el) {
 
 //Retorna se o total esta em quilo, Mega ou Giga
 function GetTotal(total) {
-    let text = ': Energia produzida total ';
+    let text = Lang[appLang].total;
 
     if (total > 1000000) {//Giga
 
-        return text + (total / 1000000).toFixed(2) + ' GWh (CA)';
+        return text + (total / 1000000).toFixed(2) + ' GWh ' + Lang[appLang].ac;
 
     } else if (total > 1000) {//Mega
 
-        return text + (total / 1000).toFixed(2) + ' MWh (CA)';
+        return text + (total / 1000).toFixed(2) + ' MWh ' + Lang[appLang].ac;
 
     }//else quilo
 
-    return text + (total).toFixed(2) + ' kWh (CA)';
+    return text + (total).toFixed(2) + ' kWh ' + Lang[appLang].ac;
 
 }
 
@@ -953,5 +957,33 @@ function Startfirebase() {
         skipfirebase = true;
     }
 }
+
+function GetLAng() {
+    const lang = localStorage.getItem('app_lang') ||
+        window.navigator.userLanguage ||
+        window.navigator.language;
+
+    return lang.toLowerCase().indexOf('en') !== -1 ? 'en' : 'pt';
+}
+
+function SetLAng(newLang) {
+    localStorage.setItem('app_lang', newLang);
+    appLang = newLang;
+    Start_Element_obj();
+    ReStartPage();
+}
+
+function showDropdown() {
+    mgetElementById("myDropdown").classList.toggle("show");
+}
+
+window.onclick = function(event) {
+    if (!event.target.matches('.skipclick') &&
+        mgetElementById("myDropdown").classList.contains('show')) {
+        //console.log('asa')
+        showDropdown();
+    }
+}
+
 
 Start();
