@@ -770,15 +770,15 @@ function GetTotal(total) {
 
     if (total > 1000000) {//Giga
 
-        return text + (total / 1000000).toFixed(2) + ' GWh';
+        return text + (total / 1000000).toFixed(2) + ' GWh (CA)';
 
     } else if (total > 1000) {//Mega
 
-        return text + (total / 1000).toFixed(2) + ' MWh';
+        return text + (total / 1000).toFixed(2) + ' MWh (CA)';
 
     }//else quilo
 
-    return text + (total).toFixed(2) + ' kWh';
+    return text + (total).toFixed(2) + ' kWh (CA)';
 
 }
 
