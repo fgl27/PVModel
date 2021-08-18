@@ -347,7 +347,7 @@ a:active {
   .Results_container {
     transform: rotate(90deg) translate(50%);
     transform-origin: center;
-    margin-top: -38%;
+    margin-top: -35%;
     padding-right: 10%;
   }
 
