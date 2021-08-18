@@ -997,6 +997,9 @@
 
         //Seta no nome no topo
         mgetElementById('title').innerHTML = 'PVModel';
+
+        //Show body only after page has loaded
+        document.body.classList.remove('hide');
         ReStartPage();
         //Inicializa o analitics 
         Startfirebase();
