@@ -404,7 +404,7 @@ html {
 }
 
 .tooltiptextop {
-  bottom: 120%;
+  bottom: 115%;
 }
 
 .tooltip_botton .tooltiptextop::after {
@@ -429,6 +429,7 @@ a:visited,
 a:active {
   color: var(--linkcolor);
   text-decoration: none;
+  font-family: 'Roboto';
 }
 
 .hide {
