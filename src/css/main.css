@@ -40,6 +40,17 @@
 
 .icon-check:before {
   content: "\62";
+  transform: translateY(10%) !important;
+}
+
+.icon-plus-circle:before {
+  content: "\63";
+  transform: translateY(40%) !important;
+}
+
+.icon-minus-circle:before {
+  content: "\64";
+  transform: translateY(40%) !important;
 }
 
 @font-face {
@@ -190,6 +201,7 @@ html {
   outline: none;
   padding: 0 !important;
   box-sizing: border-box;
+  font-size: 100%;
 }
 
 .inputsSelect {
@@ -444,7 +456,7 @@ a:active {
   color: #000;
   z-index: 1;
   font-size: 75%;
-  transform: translate(-2%, 50%);
+  transform: translate(-2%, 18%);
   border: 1px solid #999999;
   border-radius: 5px;
   padding: 10px;
@@ -454,21 +466,72 @@ a:active {
   filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.6));
 }
 
-#lang_text {
+.options_tilte {
   text-align: start;
   font-size: 90%;
   border-bottom: 2px solid;
 }
 
-#lang_pt,
-#lang_en {
+.options_item {
   text-align: center;
   font-size: 70%;
   margin-top: 10%;
 }
 
-.lang_focus {
+.options_item_focus {
   background: #24292e;
   border-radius: 5px;
   color: #FFFFFF;
+  filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.6));
+}
+
+#zoom_value {
+  padding: 4px;
+  margin-left: 6px;
+  margin-right: 6px;
+}
+
+#zoom_value_container {
+  display: inline-block;
+}
+
+#zoom_values_holder {
+  margin-top: 10px;
+}
+
+#zoom_reset {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.zoom_icon {
+  font-size: 170%;
+  line-height: 0.5em;
+}
+
+.optionButton {
+  font-size: 60%;
+  min-width: 4ch;
+  box-sizing: border-box;
+  background: #2ea44f;
+  color: #FFF;
+  padding: 5px;
+  font-family: 'Roboto-Bold';
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  border: 1px solid #000000;
+  border-radius: 6px;
+  box-shadow: 0 4px #999;
+  filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.6));
+}
+
+.optionButton:hover {
+  background-color: #299848;
+}
+
+.optionButton:active {
+  background-color: #3e8e41;
+  box-shadow: 0 2px #666;
+  transform: translateY(2px);
 }

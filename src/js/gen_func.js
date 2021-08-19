@@ -1,4 +1,37 @@
 
+
+function ChangeSize(zoom_level) {
+    appZoomLevel = parseFloat(zoom_level);
+    document.body.style.fontSize = (16 * appZoomLevel) + 'px';
+    mgetElementById('zoom_value').textContent = appZoomLevel.toFixed(1);
+
+    localStorage.setItem('zoom_level', appZoomLevel);
+}
+
+function SetDotsOption() {
+    //tree dots options
+    //lang
+    mgetElementById('lang').onclick = showDropdown;
+    mgetElementById('lang_pt').onclick = function() {
+        SetLAng('pt');
+    };
+    mgetElementById('lang_en').onclick = function() {
+        SetLAng('en');
+    };
+    //zoom
+    mgetElementById('zoom_reset').onclick = function() {
+        ChangeSize(1);
+    };
+
+    mgetElementById('zoom_plus').onclick = function() {
+        ChangeSize(appZoomLevel + 0.1);
+    };
+
+    mgetElementById('zoom_minus').onclick = function() {
+        ChangeSize(appZoomLevel - 0.1);
+    };
+}
+
 function GetLAng() {
     const lang = localStorage.getItem('app_lang') ||
         window.navigator.userLanguage ||
@@ -38,9 +71,9 @@ function SetLangText(elem, lang, check) {
         (enable ? '&nbsp;<i class="skipclick icon icon-check"></i>&nbsp;' : '');
 
     if (enable) {
-        element.classList.add('lang_focus');
+        element.classList.add('options_item_focus');
     } else {
-        element.classList.remove('lang_focus');
+        element.classList.remove('options_item_focus');
     }
 }
 

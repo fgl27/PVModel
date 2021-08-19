@@ -13,18 +13,15 @@ function Start() {
 
 let inputsDiv;
 let resultDiv;
+let appZoomLevel = 1.0;
 function StartPage() {
+    ChangeSize(localStorage.getItem('zoom_level') || appZoomLevel);
+
     //Inicializa os div de conteúdo
     inputsDiv = mgetElementById('inputs');
     resultDiv = mgetElementById('result');
 
-    mgetElementById('lang').onclick = showDropdown;
-    mgetElementById('lang_pt').onclick = function() {
-        SetLAng('pt');
-    };
-    mgetElementById('lang_en').onclick = function() {
-        SetLAng('en');
-    };
+    SetDotsOption();
 
     //Seta no nome no topo
     mgetElementById('title').innerHTML = 'PVModel';
@@ -36,6 +33,7 @@ function StartPage() {
     document.body.classList.remove('hide');
     //Inicializa o analitics 
     Startfirebase();
+
 
 }
 
