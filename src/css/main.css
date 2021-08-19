@@ -99,6 +99,11 @@ html {
 
 }
 
+.Result_Button {
+  margin-top: 0.5% !important;
+  margin-bottom: 1%;
+}
+
 .icon,
 #title,
 #page_about {

@@ -431,7 +431,7 @@ const fun_obj = {
         const button = mCreateElement(
             'button',
             Elem_Ids.Result.Button + base_id,
-            'inputsbutton'
+            'inputsbutton Result_Button'
         );
 
         //adiciona o div titulo "Resultado ___: etc..."
