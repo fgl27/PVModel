@@ -800,7 +800,7 @@
     function SetDotsOption() {
         //tree dots options
         //lang
-        mgetElementById('lang').onclick = showDropdown;
+        mgetElementById('settings').onclick = showDropdown;
         mgetElementById('lang_pt').onclick = function() {
             SetLAng('pt');
         };
@@ -821,6 +821,14 @@
         };
     }
 
+    //Se o elemente settings estiver visivel e o usuario clicar fora do elemente esconde ele
+    window.onclick = function(event) {
+        if (!event.target.matches('.skipclick') &&
+            mgetElementById("Dropdown").classList.contains('show')) {
+            showDropdown();
+        }
+    };
+
     function GetLAng() {
         const lang = localStorage.getItem('app_lang') ||
             window.navigator.userLanguage ||
@@ -838,7 +846,7 @@
     }
 
     function showDropdown() {
-        mgetElementById("myDropdown").classList.toggle("show");
+        mgetElementById("Dropdown").classList.toggle("show");
     }
 
     //Cria um elemento em relação aos valores passados
@@ -919,15 +927,6 @@
             skipfirebase = true;
         }
     }
-
-    //Se o elemente linguas estiver visivel e o usuario clicar fora do elemente esconde ele
-    window.onclick = function(event) {
-        if (!event.target.matches('.skipclick') &&
-            mgetElementById("myDropdown").classList.contains('show')) {
-            //console.log('asa')
-            showDropdown();
-        }
-    };
     const Lang = {
         pt: {
             lang: "Lingua:",
