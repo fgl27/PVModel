@@ -62,44 +62,44 @@ main_end=$(echo "$a" | sed -n '/APICENTER/,/APIEND/p' page/temp/api.js);
 
 # jshint indent all the *.js code
 js_jshint() {
-	array=( "$@" );
-	for i in "${array[@]}"; do
-		cd "$i" || exit;
-		for x in *.js; do
-	    	cat "$x" >> "$mainfolder"/page/temp/main.js
-		done
-		cd - &> /dev/null || exit;
-	done
+    array=( "$@" );
+    for i in "${array[@]}"; do
+        cd "$i" || exit;
+        for x in *.js; do
+            cat "$x" >> "$mainfolder"/page/temp/main.js
+        done
+        cd - &> /dev/null || exit;
+    done
 
-	echo "$main_end" >> "$mainfolder"/page/temp/main.js;
+    echo "$main_end" >> "$mainfolder"/page/temp/main.js;
     js-beautify "$mainfolder"/page/temp/main.js -o "$mainfolder"/page/temp/main.js
 
-	jsh_check="$(jshint "$mainfolder"/page/temp/main.js)";
-	if [ ! -z "$jsh_check" ]; then
-		echo -e "${bldred}	JSHint erros or warnings found:\\n"
-		echo -e "${bldred}	$jsh_check"
-		echo -e "\\n${bldred}	Fix the problems and try the release maker again\\n"
-		exit;
-	else
-		echo -e "${bldblu}	JSHint Test finished no errors or warnings found"
-	fi;
+    jsh_check="$(jshint "$mainfolder"/page/temp/main.js)";
+    if [ ! -z "$jsh_check" ]; then
+        echo -e "${bldred}    JSHint erros or warnings found:\\n"
+        echo -e "${bldred}    $jsh_check"
+        echo -e "\\n${bldred}    Fix the problems and try the release maker again\\n"
+        exit;
+    else
+        echo -e "${bldblu}    JSHint Test finished no errors or warnings found"
+    fi;
 }
 
 if which 'jshint' >/dev/null ; then
-	if [ "$1" == 1 ]; then
-		npm install jshint -g
-	fi;
-		
-	echo -e "${bldgrn}\nJSHint Test started...\\n";
-	echo -e '/* jshint eqeqeq: true, undef: true, unused: true, node: true, browser: true, esversion: 6 */\n/*globals PVModel, firebase, dataLayer */' > "$mainfolder"/page/temp/main.js;
-	echo "$main_start" >> "$mainfolder"/page/temp/main.js;
-	js_jshint "${js_folders[@]}";
+    if [ "$1" == 1 ]; then
+        npm install jshint -g
+    fi;
+        
+    echo -e "${bldgrn}\nJSHint Test started...\\n";
+    echo -e '/* jshint eqeqeq: true, undef: true, unused: true, node: true, browser: true, esversion: 6 */\n/*globals PVModel, firebase, dataLayer */' > "$mainfolder"/page/temp/main.js;
+    echo "$main_start" >> "$mainfolder"/page/temp/main.js;
+    js_jshint "${js_folders[@]}";
 
 else
-	echo -e "\\n${bldred}can't run jshint because it is not installed";
+    echo -e "\\n${bldred}can't run jshint because it is not installed";
         echo -e "${bldred}To install jshint read the jshint.sh notes on the top of the file\\n";
-	echo -e "${bldred}.js files not checked.\\n";
-	exit;
+    echo -e "${bldred}.js files not checked.\\n";
+    exit;
 fi;
 
 END=$(date +%s.%N);
