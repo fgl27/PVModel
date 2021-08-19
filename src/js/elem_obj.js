@@ -486,7 +486,7 @@ const fun_obj = {
                     'div',
                     Elem_Ids.Result.Note,
                     'result_note',
-                    Lang[appLang].obs_dia
+                    Lang[appLang].obs_month
                 )
             );
 
