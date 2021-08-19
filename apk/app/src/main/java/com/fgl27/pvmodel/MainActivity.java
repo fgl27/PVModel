@@ -2,6 +2,7 @@ package com.fgl27.pvmodel;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -11,19 +12,15 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
     boolean Created;
     String appUrl = "https://fgl27.github.io/PVModel/page/index.html";
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (!Created) setTheme(R.style.NoActionBar);
         super.onCreate(savedInstanceState);
 
         if (!Created) {
@@ -43,10 +40,7 @@ public class MainActivity extends AppCompatActivity {
             webView.setWebViewClient(new WebViewClient() {
 
                 public void onPageFinished(WebView view, String url) {
-                    runOnUiThread(() -> {
-                        ProgressBar loadingView = findViewById(R.id.loading);
-                        loadingView.setVisibility(View.GONE);
-                    });
+                    runOnUiThread(() -> findViewById(R.id.loading).setVisibility(View.GONE));
                 }
 
                 @SuppressWarnings({"deprecation", "RedundantSuppression"})

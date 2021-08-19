@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/secondary"
     tools:context=".MainActivity">
 
     <WebView
@@ -11,15 +10,22 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="@color/backgroundColor" />
 
-    <ProgressBar
+    <!--  ProgressBar inside FrameLayout to prevent showing a empty background color when the app load  -->
+    <FrameLayout
         android:id="@+id/loading"
-        android:layout_width="100dip"
-        android:layout_height="100dip"
-        android:layout_gravity="center"
-        android:indeterminate="true"
-        android:indeterminateTint="@color/primary"
-        tools:targetApi="lollipop" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgroundColor">
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <ProgressBar
+            android:layout_width="100dip"
+            android:layout_height="100dip"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/colorPrimaryDark" />
+
+    </FrameLayout>
+</merge>
