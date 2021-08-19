@@ -581,7 +581,7 @@
             const button = mCreateElement(
                 'button',
                 Elem_Ids.Result.Button + base_id,
-                'inputsbutton'
+                'inputsbutton Result_Button'
             );
 
             //adiciona o div titulo "Resultado ___: etc..."
@@ -636,7 +636,7 @@
                         'div',
                         Elem_Ids.Result.Note,
                         'result_note',
-                        Lang[appLang].obs_dia
+                        Lang[appLang].obs_month
                     )
                 );
 
