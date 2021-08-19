@@ -151,6 +151,8 @@
     }
     let resultObj = {};
     let resultObjID;
+    const question_icon = '<i class="icon icon-help-circled" style="-webkit-text-stroke-width:unset;"></i>';
+    const arrow = '<i class="icon icon-arrow-left"></i>';
 
     let Element_obj = {
         modelo: {
@@ -381,7 +383,7 @@
                     'div',
                     Elem_Ids.Input.Help + prop,
                     'tooltip ' + (obj.help ? '' : 'opacityZero'),
-                    '&nbsp;?&nbsp;<span class="tooltiptext">' + obj.help + '</span>'
+                    question_icon + '<span class="tooltiptext">' + obj.help + '</span>'
                 )
             );
             Inputs_Container.appendChild(Imput_Help_Container);
@@ -459,7 +461,7 @@
                     'div',
                     Elem_Ids.Input.Help + prop,
                     'tooltip ' + (obj.help ? '' : 'opacityZero'),
-                    '&nbsp;?&nbsp;<span class="tooltiptext">' + obj.help + '</span>'
+                    question_icon + '<span class="tooltiptext">' + obj.help + '</span>'
                 )
             );
 
@@ -596,7 +598,6 @@
 
             //Seta o valor se é ano, mês ou dia
             //e adiciona um botão pra voltar ao resultado anterior caso seja mês ou dia
-            const arrow = '<i class="icon icon-arrow-left"></i>';
             if (isDay) {
 
                 div_result_title.innerHTML = Lang[appLang].result + prop2 + Lang[appLang].of + Lang[appLang].mesesfull[prop1] + resultado_total;
