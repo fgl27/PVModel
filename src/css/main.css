@@ -92,7 +92,7 @@ html {
   font-family: 'Roboto-Bold';
 }
 
-#lang {
+#settings {
   position: absolute;
   top: 0;
   right: 2px;
@@ -102,7 +102,7 @@ html {
   font-size: 80%;
 }
 
-#lang:hover {
+#settings:hover {
   color: #a0a0a0;
 }
 
@@ -406,64 +406,25 @@ a:active {
   display: none !important;
 }
 
-
-@media screen and (max-width: 700px) {
-  .inputsContainer {
-    flex-direction: column;
-  }
-
-  .inputsText {
-    text-align: center;
-  }
-
-  .Results_container {
-    transform: rotate(90deg) translate(50%);
-    transform-origin: center;
-    margin-top: -35%;
-    padding-right: 10%;
-  }
-
-  .Results_inner_container {
-    transform-style: preserve-3d;
-    display: flex;
-    align-items: flex-end;
-  }
-
-  .result_value {
-    transform-style: preserve-3d;
-    transform: rotate(-90deg) scale(1);
-    white-space: nowrap;
-    min-width: 10ch;
-  }
-
-  .result_holder {
-    margin-left: -3.5ch;
-  }
-
-  .result_graf {
-    width: 40%;
-  }
-
-}
-
 .show {
   display: block !important;
 }
 
 .dropdown-content {
+  width: auto;
+  line-height: 1.1em;
   display: none;
   position: absolute;
   background-color: #ebedef;
   color: #000;
   z-index: 1;
-  font-size: 75%;
-  transform: translate(-2%, 18%);
+  font-size: 60%;
   border: 1px solid #999999;
   border-radius: 5px;
   padding: 10px;
   padding-top: 5px;
-  top: 0;
-  right: 0;
+  top: 102%;
+  right: 0.5%;
   filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.6));
 }
 
@@ -487,9 +448,9 @@ a:active {
 }
 
 #zoom_value {
-  padding: 4px;
-  margin-left: 6px;
-  margin-right: 6px;
+  padding: 0.35em;
+  margin-left: 1em;
+  margin-right: 1em;
 }
 
 #zoom_value_container {
@@ -535,4 +496,50 @@ a:active {
   background-color: #3e8e41;
   box-shadow: 0 2px #666;
   transform: translateY(2px);
+}
+
+
+
+@media screen and (max-width: 700px) {
+  .inputsContainer {
+    flex-direction: column;
+  }
+
+  .inputsText {
+    text-align: center;
+  }
+
+  .Results_container {
+    transform: rotate(90deg) translate(50%);
+    transform-origin: center;
+    margin-top: -35%;
+    padding-right: 10%;
+  }
+
+  .Results_inner_container {
+    transform-style: preserve-3d;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .result_value {
+    transform-style: preserve-3d;
+    transform: rotate(-90deg) scale(1);
+    white-space: nowrap;
+    min-width: 10ch;
+  }
+
+  .result_holder {
+    margin-left: -3.5ch;
+  }
+
+  .result_graf {
+    width: 40%;
+  }
+
+  .dropdown-content {
+    top: 106%;
+    right: 2.5%;
+  }
+
 }
