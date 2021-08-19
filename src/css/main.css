@@ -53,6 +53,11 @@
   transform: translateY(40%) !important;
 }
 
+.icon-arrow-left:before {
+  content: "\65";
+  transform: translateY(10%) !important;
+}
+
 @font-face {
   font-family: 'Roboto';
   src: url('fonts/Roboto-Regular.woff2') format('woff2');
@@ -498,7 +503,13 @@ a:active {
   transform: translateY(2px);
 }
 
-
+.text_shadown {
+  text-shadow: 1px 1px 0 #000,
+    1px 0 0 #000,
+    -1px 0 0 #000,
+    0 -1px 0 #000,
+    0 1px 0 #000;
+}
 
 @media screen and (max-width: 700px) {
   .inputsContainer {

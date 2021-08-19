@@ -329,7 +329,7 @@ const fun_obj = {
         const button = mCreateElement(
             'button',
             Elem_Ids.Input.Button,
-            'inputsbutton',
+            'inputsbutton text_shadown',
             obj.innerHTML
         );
 
@@ -431,7 +431,7 @@ const fun_obj = {
         const button = mCreateElement(
             'button',
             Elem_Ids.Result.Button + base_id,
-            'inputsbutton Result_Button'
+            'inputsbutton Result_Button text_shadown'
         );
 
         //adiciona o div titulo "Resultado ___: etc..."
@@ -446,11 +446,12 @@ const fun_obj = {
 
         //Seta o valor se é ano, mês ou dia
         //e adiciona um botão pra voltar ao resultado anterior caso seja mês ou dia
+        const arrow = '<i class="icon icon-arrow-left"></i>';
         if (isDay) {
 
             div_result_title.innerHTML = Lang[appLang].result + prop2 + Lang[appLang].of + Lang[appLang].mesesfull[prop1] + resultado_total;
 
-            button.innerHTML = '<span>&#8592;</span>' + Lang[appLang].back_month + Lang[appLang].mesesfull[prop1];
+            button.innerHTML = arrow + Lang[appLang].back_month + Lang[appLang].mesesfull[prop1];
             button.onclick = function() {
                 monclick(prop1);
             };
@@ -462,7 +463,7 @@ const fun_obj = {
         } else if (isMonth) {
 
             div_result_title.innerHTML = Lang[appLang].result + Lang[appLang].mesesfull[prop1] + resultado_total;
-            button.innerHTML = '<span>&#8592;</span>' + Lang[appLang].back_year;
+            button.innerHTML = arrow + Lang[appLang].back_year;
             button.onclick = function() {
                 monclick();
             };
