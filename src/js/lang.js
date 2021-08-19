@@ -1,7 +1,7 @@
 
 const Lang = {
     pt: {
-        lang: "Lingua:",
+        lang: "Idioma:",
         langs: [
             "🇧🇷 Português",
             "🇺🇸 Inglês"
