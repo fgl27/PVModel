@@ -474,6 +474,12 @@ a:active {
   margin-bottom: 10px;
 }
 
+#zoom_reset_text {
+  transform: scale(1.275);
+  padding-left: 0.35em;
+  padding-right: 0.35em;
+}
+
 .zoom_icon {
   font-size: 170%;
   line-height: 0.5em;
