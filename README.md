@@ -24,7 +24,7 @@ Cada pasta que necessita tem seu próprio README.md que contém mais informaçõ
 
 ## The project is divided on folder it folders has a reason
 
-- [apk](https://github.com/fgl27/PVModel/tree/master/apk) contains the source of the Android application, the APK is available for download at [Releases](https://github.com/fgl27/ PVModel/releases).
+- [apk](https://github.com/fgl27/PVModel/tree/master/apk) contains the source of the Android application, the APK is available for download at [Releases](https://github.com/fgl27/PVModel/releases).
 - [page](https://github.com/fgl27/PVModel/tree/master/page) contains the final web app files (Html, CSS, JS), the web app is generated using the script [page_maker.sh](https://github.com/fgl27/PVModel/blob/master/scripts/shell/page_maker.sh).
 - [screenshots](https://github.com/fgl27/PVModel/tree/master/screenshots) contains various app screen shots.
 - [scripts](https://github.com/fgl27/PVModel/tree/master/scripts) contains various script (Node, Python and Shell) this are used to generate web app and the app data.
