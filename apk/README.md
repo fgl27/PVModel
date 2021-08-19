@@ -1,6 +1,10 @@
 # PVModel APK
 
-## Para construir o apk:
+## APK Download
+
+[Releases](https://github.com/fgl27/PVModel/releases)
+
+## Para compilar o apk:
 
 - Instale o **Android Studio** depois de abri-lo e adicione um novo projeto ... Arquivo -> Abrir ... Selecione a pasta [PVModel/apk](https://github.com/fgl27/PVModel/tree/master/apk)
 - Espere **Studio** fazer sua preparação, ele irá carregar e baixar todas as dependências do aplicativo e etc relacionadas necessárias, se ele solicitar a instalação de dependências extras / sdk / etc, siga suas instruções.
