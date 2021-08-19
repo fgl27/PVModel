@@ -54,81 +54,81 @@ bldcya=${txtbld}$(tput setaf 6) # cyan
 
 # Exit if sed is not available
 if ! which 'sed' >/dev/null  ; then
-	echo -e "\\n${bldred}can't run sed it's not installed";
-	echo -e "${bldred}Install using command:";
-	echo -e "${bldred}sudo apt-get install sed\\n";
-	echo -e "${bldred}Release maker aborted"
-	exit;
+    echo -e "\\n${bldred}can't run sed it's not installed";
+    echo -e "${bldred}Install using command:";
+    echo -e "${bldred}sudo apt-get install sed\\n";
+    echo -e "${bldred}Release maker aborted"
+    exit;
 fi;
 
 # Exit if uglifyjs is not available
 canjshint=0;
 if which 'jshint' >/dev/null  ; then
-	# call this .sh and 1 "this.sh 1" to update uglify-js
-	if [ "$1" == 1 ]; then
-    	echo -e "${bldred}npm install jshint -g\\n";
-		npm install jshint -g
-	fi;
-	canjshint=1;
+    # call this .sh and 1 "this.sh 1" to update uglify-js
+    if [ "$1" == 1 ]; then
+        echo -e "${bldred}npm install jshint -g\\n";
+        npm install jshint -g
+    fi;
+    canjshint=1;
 else
-	echo -e "\\n${bldred}can't run jshint, as it's not installed";
-	echo -e "${bldred}To install jshint read the release maker notes on the top\\n";
-	echo -e "${bldred}Release maker aborted\\n"
-	exit;
+    echo -e "\\n${bldred}can't run jshint, as it's not installed";
+    echo -e "${bldred}To install jshint read the release maker notes on the top\\n";
+    echo -e "${bldred}Release maker aborted\\n"
+    exit;
 fi;
 
 # Exit if uglifyjs is not available
 canuglifyjs=0;
 if which 'uglifyjs' >/dev/null  ; then
-	# call this .sh and 1 "this.sh 1" to update uglify-js
-	if [ "$1" == 1 ]; then
-    	echo -e "${bldred}npm install uglify-js -g\\n";
-		npm install uglify-js -g
-	fi;
-	canuglifyjs=1;
+    # call this .sh and 1 "this.sh 1" to update uglify-js
+    if [ "$1" == 1 ]; then
+        echo -e "${bldred}npm install uglify-js -g\\n";
+        npm install uglify-js -g
+    fi;
+    canuglifyjs=1;
 else
-	echo -e "\\n${bldred}can't run uglifyjs, as it's not installed";
-	echo -e "${bldred}To install uglifyjs read the release maker notes on the top\\n";
-	echo -e "${bldred}Release maker aborted\\n"
-	exit;
+    echo -e "\\n${bldred}can't run uglifyjs, as it's not installed";
+    echo -e "${bldred}To install uglifyjs read the release maker notes on the top\\n";
+    echo -e "${bldred}Release maker aborted\\n"
+    exit;
 fi;
 
 # Exit if canhtmlminifier is not available
 canhtmlminifier=0;
 if which 'html-minifier' >/dev/null  ; then
-	# call this .sh and 1 "this.sh 1" to update uglify-js
-	if [ "$1" == 1 ]; then
-    	echo -e "${bldred}npm install html-minifier -g\\n";
-		npm install html-minifier -g
-	fi;
-	canhtmlminifier=1;
+    # call this .sh and 1 "this.sh 1" to update uglify-js
+    if [ "$1" == 1 ]; then
+        echo -e "${bldred}npm install html-minifier -g\\n";
+        npm install html-minifier -g
+    fi;
+    canhtmlminifier=1;
 else
-	echo -e "\\n${bldred}can't run html-minifier, as it's not installed";
-	echo -e "${bldred}To install html-minifier read the release maker notes on the top\\n";
-	echo -e "${bldred}Release maker aborted\\n"
-	exit;
+    echo -e "\\n${bldred}can't run html-minifier, as it's not installed";
+    echo -e "${bldred}To install html-minifier read the release maker notes on the top\\n";
+    echo -e "${bldred}Release maker aborted\\n"
+    exit;
 fi;
 
 # Check crass
 cancrass=0;
 if which 'crass' >/dev/null  ; then
-	# call this .sh and 1 "this.sh 1" to update uglify-js
-	if [ "$1" == 1 ]; then
-    	echo -e "${bldred}npm install crass -g\\n";
-		npm install crass -g
-	fi;
-	cancrass=1;
+    # call this .sh and 1 "this.sh 1" to update uglify-js
+    if [ "$1" == 1 ]; then
+        echo -e "${bldred}npm install crass -g\\n";
+        npm install crass -g
+    fi;
+    cancrass=1;
 else
-	echo -e "\\n${bldred}can't run cancrass, as it's not installed";
-	echo -e "${bldred}To install cancrass read the release maker notes on the top\\n";
-	echo -e "${bldred}Release wil work but it can be more compressed using crass"
+    echo -e "\\n${bldred}can't run cancrass, as it's not installed";
+    echo -e "${bldred}To install cancrass read the release maker notes on the top\\n";
+    echo -e "${bldred}Release wil work but it can be more compressed using crass"
 fi;
 
 if which 'firebase' >/dev/null  ; then
-	if [ "$1" == 1 ]; then
-    	echo -e "${bldred}npm install firebase-tools -g\\n";
-		npm install -g firebase-tools
-	fi;
+    if [ "$1" == 1 ]; then
+        echo -e "${bldred}npm install firebase-tools -g\\n";
+        npm install -g firebase-tools
+    fi;
 fi;
 
 # this .sh folder used for cd back and for
@@ -142,55 +142,59 @@ mkdir -p page/js
 cp -rf page/api.js "$temp_maker_folder"api.js
 
 js_jshint() {
-	array=( "$@" );
-	for i in "${array[@]}"; do
-		cd "$i" || exit;
-		for x in *.js; do
-   			cat "$x" >> "$mainfolder"/page/temp/main.js
-		done
-		cd - &> /dev/null || exit;
-	done
+    array=( "$@" );
+    for i in "${array[@]}"; do
+        cd "$i" || exit;
+        for x in *.js; do
+            cat "$x" >> "$mainfolder"/page/temp/main.js
+        done
+        cd - &> /dev/null || exit;
+    done
 
-	echo "$main_end" >> "$mainfolder"/page/temp/main.js;
+    echo "$main_end" >> "$mainfolder"/page/temp/main.js;
 
     # this fun is used for testing
     sed -i 's/Start();/\/\/Start();/g' page/temp/main.js;
         
-	jsh_check="$(jshint "$mainfolder"/page/temp/main.js)";
-	if [ ! -z "$jsh_check" ]; then
-		echo -e "${bldred}	JSHint erros or warnings found:\\n"
-		echo -e "${bldred}	$jsh_check"
-		echo -e "\\n${bldred}	Fix the problems and try the release maker again\\n"
-		exit;
-	else
-		echo -e "${bldblu}JSHint Test finished no errors or warnings found\\n"
+    jsh_check="$(jshint "$mainfolder"/page/temp/main.js)";
+    if [ ! -z "$jsh_check" ]; then
+        echo -e "${bldred}    JSHint erros or warnings found:\\n"
+        echo -e "${bldred}    $jsh_check"
+        echo -e "\\n${bldred}    Fix the problems and try the release maker again\\n"
+        exit;
+    else
+        echo -e "${bldblu}JSHint Test finished no errors or warnings found\\n"
 
-		cp -rf "$mainfolder"/page/temp/main.js "$mainfolder"/page/js/main_uncompressed.js;
-		js-beautify -q "$mainfolder"/page/js/main_uncompressed.js -o "$mainfolder"/page/js/main_uncompressed.js
-	fi;
+        cp -rf "$mainfolder"/page/temp/main.js "$mainfolder"/page/js/main_uncompressed.js;
+        js-beautify -q "$mainfolder"/page/js/main_uncompressed.js -o "$mainfolder"/page/js/main_uncompressed.js
+    fi;
 
 }
 
 sed_js_html() {
-	array=( "$@" );
-	for i in "${array[@]}"; do
-		sed -i "/js\/$i\.js/d" page/index.html;
-	done
+    cd src/js/ || exit;
+    for i in *.js; do
+        if [[ ! $i == *"main"* ]]; then
+            echo -e "$i"
+            sed -i "/js\/$i/d" ../../page/index.html;
+        fi
+    done
+    cd - &> /dev/null || exit;
 }
 
 
 main_start=$(echo "$a" | sed '/APISTART/,/APIMID/!d;/APIMID/d;/APISTART/d' page/temp/api.js);
 main_end=$(echo "$a" | sed '/APICENTER/,/APIEND/!d;/APIEND/d;/APICENTER/d' page/temp/api.js);
 
-echo -e "\\n${bldred}####################################\\n#				   #";
-echo -e "#				   #\\n#	${bldcya}Starting Release maker${bldred}	   #\\n#				   #";
-echo -e "#				   #\\n####################################\\n";
+echo -e "\\n${bldred}####################################\\n#                                 #";
+echo -e "#                                 #\\n#    ${bldcya}Starting Release maker${bldred}        #\\n#                                 #";
+echo -e "#                                 #\\n####################################\\n";
 
 if [ "$canjshint" == 1 ]; then
-	echo -e "${bldgrn}JSHint Test started...\\n";
-	echo -e '/* jshint eqeqeq: true, undef: true, unused: true, node: true, browser: true, esversion: 6 */\n/*globals PVModel, firebase, dataLayer */' > "$mainfolder"/page/temp/main.js;
-	echo "$main_start" >> "$mainfolder"/page/temp/main.js;
-	js_jshint "${js_folders[@]}";
+    echo -e "${bldgrn}JSHint Test started...\\n";
+    echo -e '/* jshint eqeqeq: true, undef: true, unused: true, node: true, browser: true, esversion: 6 */\n/*globals PVModel, firebase, dataLayer */' > "$mainfolder"/page/temp/main.js;
+    echo "$main_start" >> "$mainfolder"/page/temp/main.js;
+    js_jshint "${js_folders[@]}";
 fi;
 
 # make the page/temp/index.html
@@ -203,7 +207,7 @@ echo -e "\\n${bldgrn}Compressing Start\\n";
 # run the cleans/compress tools
 
 if [ "$canhtmlminifier" == 1 ]; then
-	html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --use-short-doctype --minify-css true --minify-js true page/index.html -o page/index.html
+    html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --use-short-doctype --minify-css true --minify-js true page/index.html -o page/index.html
 fi;
 
 cp -rf src/css page/
@@ -211,15 +215,15 @@ cp -rf src/images page/
 
 # Compress using crass, just compress no optimization is needed as it will cause css problems
 if [ "$cancrass" == 1 ]; then
-	crass src/css/main.css > page/css/main.css
+    crass src/css/main.css > page/css/main.css
 fi;
 
 cd page/temp/ || exit
 
 # Run uglifyjs one more time with "toplevel" enable, only here as if run before js files don't work, the result is around 10% compression improve
 if [ "$canuglifyjs" == 1 ]; then
-	echo -e "${bldblu}	uglifyjs  main.js";
-	uglifyjs main.js -c -m toplevel=true,eval=true -o main.js;
+    echo -e "${bldblu}    uglifyjs  main.js";
+    uglifyjs main.js -c -m toplevel=true,eval=true -o main.js;
 fi;
 
 echo -e "\\n${bldgrn}Compression done\\n";
@@ -232,8 +236,8 @@ cd - &> /dev/null || exit;
 # Warn if a change was detected to main.js and page/temp/html
 git_check="$(git status | grep modified)";
 if [ ! -z "$git_check" ]; then
-	echo -e "${bldgrn}Is necessary to update githubio as below files are modify:\\n"
-	echo -e "${bldred}	$git_check"
+    echo -e "${bldgrn}Is necessary to update githubio as below files are modify:\\n"
+    echo -e "${bldred}    $git_check"
 fi;
 
 END=$(date +%s.%N);
