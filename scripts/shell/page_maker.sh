@@ -175,7 +175,6 @@ sed_js_html() {
     cd src/js/ || exit;
     for i in *.js; do
         if [[ ! $i == *"main"* ]]; then
-            echo -e "$i"
             sed -i "/js\/$i/d" ../../page/index.html;
         fi
     done
@@ -186,9 +185,9 @@ sed_js_html() {
 main_start=$(echo "$a" | sed '/APISTART/,/APIMID/!d;/APIMID/d;/APISTART/d' page/temp/api.js);
 main_end=$(echo "$a" | sed '/APICENTER/,/APIEND/!d;/APIEND/d;/APICENTER/d' page/temp/api.js);
 
-echo -e "\\n${bldred}####################################\\n#                                 #";
-echo -e "#                                 #\\n#    ${bldcya}Starting Release maker${bldred}        #\\n#                                 #";
-echo -e "#                                 #\\n####################################\\n";
+echo -e "\\n${bldred}####################################\\n#                                  #";
+echo -e "#                                  #\\n#    ${bldcya}Starting Release maker${bldred}        #\\n#                                  #";
+echo -e "#                                  #\\n####################################\\n";
 
 if [ "$canjshint" == 1 ]; then
     echo -e "${bldgrn}JSHint Test started...\\n";
