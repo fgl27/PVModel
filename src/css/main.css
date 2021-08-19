@@ -456,7 +456,8 @@ a:active {
 
 #lang_text {
   text-align: start;
-  font-size: 90%
+  font-size: 90%;
+  border-bottom: 2px solid;
 }
 
 #lang_pt,
