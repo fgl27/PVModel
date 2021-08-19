@@ -5,195 +5,175 @@ let resultObj = {};
 let resultObjID;
 let appLang = GetLAng();
 
-let Element_obj;
-Start_Element_obj();
-
-function Start_Element_obj() {
-    Element_obj = {
-        modelo: {
-            elem: 'select',
-            innerHTML: Lang[appLang].modelo.innerHTML,
-            value: 0,
-            options: Lang[appLang].modelo.options,
-            values: [
-                [// os elementos disponíveis no modo Pot nominal
-                    'modelo',
-                    'regiao',
-                    'pot_nominal_array',
-                    'coef_temp',
-                    'superficie',
-                    'perda',
-                    'cc_ca',
-                    'button'
-                ],
-                [// os elementos disponíveis no modo Área total
-                    'modelo',
-                    'regiao',
-                    'area',
-                    'area_painel',
-                    'pot_nominal_painel',
-                    'quantidade',
-                    'pot_nominal_array',
-                    'coef_temp',
-                    'superficie',
-                    'perda',
-                    'cc_ca',
-                    'button'
-                ],
-                [// os elementos disponíveis no modo quantidade painéis
-                    'modelo',
-                    'regiao',
-                    'pot_nominal_painel',
-                    'quantidade',
-                    'pot_nominal_array',
-                    'coef_temp',
-                    'superficie',
-                    'perda',
-                    'cc_ca',
-                    'button'
-                ]
+let Element_obj = {
+    modelo: {
+        elem: 'select',
+        value: 0,
+        values: [
+            [// os elementos disponíveis no modo Pot nominal
+                'modelo',
+                'regiao',
+                'pot_nominal_array',
+                'coef_temp',
+                'superficie',
+                'perda',
+                'cc_ca',
+                'button'
             ],
-            setValues: function(value) {
-                value = parseInt(value);
+            [// os elementos disponíveis no modo Área total
+                'modelo',
+                'regiao',
+                'area',
+                'area_painel',
+                'pot_nominal_painel',
+                'quantidade',
+                'pot_nominal_array',
+                'coef_temp',
+                'superficie',
+                'perda',
+                'cc_ca',
+                'button'
+            ],
+            [// os elementos disponíveis no modo quantidade painéis
+                'modelo',
+                'regiao',
+                'pot_nominal_painel',
+                'quantidade',
+                'pot_nominal_array',
+                'coef_temp',
+                'superficie',
+                'perda',
+                'cc_ca',
+                'button'
+            ]
+        ],
+        setValues: function(value) {
+            value = parseInt(value);
 
-                if (this.value !== value) {
+            if (this.value !== value) {
 
-                    this.value = value;
-                    UpdatePotNominal();
-                    StartInputs();
+                this.value = value;
+                UpdatePotNominal();
+                StartInputs();
 
-                    const disabled = Boolean(value);
-                    mgetElementById(Elem_Ids.Input.Input + 'pot_nominal_array').disabled = disabled;
+                const disabled = Boolean(value);
+                mgetElementById(Elem_Ids.Input.Input + 'pot_nominal_array').disabled = disabled;
 
-                    //bloqueia que se altere os valores dos elementos que seu valor é calculado em relação a outros valores
-                    if (disabled) {
+                //bloqueia que se altere os valores dos elementos que seu valor é calculado em relação a outros valores
+                if (disabled) {
 
-                        mgetElementById(Elem_Ids.Input.Span + 'pot_nominal_array').className =
-                            'tooltiptext tooltiptext_disabled';
-                        mgetElementById(Elem_Ids.Input.Span + 'pot_nominal_array').innerHTML =
-                            Lang[appLang].modelo.setValues[0];
-
-                    }
-
-                    if (value === 1) {
-
-                        mgetElementById(Elem_Ids.Input.Input + 'quantidade').disabled = true;
-                        mgetElementById(Elem_Ids.Input.Span + 'quantidade').className =
-                            'tooltiptext tooltiptext_disabled';
-                        mgetElementById(Elem_Ids.Input.Span + 'quantidade').innerHTML =
-                            Lang[appLang].modelo.setValues[1];
-                    }
-
+                    mgetElementById(Elem_Ids.Input.Span + 'pot_nominal_array').className =
+                        'tooltiptext tooltiptext_disabled';
+                    mgetElementById(Elem_Ids.Input.Span + 'pot_nominal_array').innerHTML =
+                        Lang[appLang].pot_nominal_array.disabledHelp;
 
                 }
 
-            },
-            help: Lang[appLang].modelo.help
-        },
-        pot_nominal_array: {
-            elem: 'input',
-            innerHTML: Lang[appLang].pot_nominal_array.innerHTML,
-            help: Lang[appLang].pot_nominal_array.help,
-            value: 1000,
-            type: 'number',
-            step: '10',
-            UpdateValue: UpdatePotNominal
-        },
-        pot_nominal_painel: {
-            elem: 'input',
-            innerHTML: Lang[appLang].pot_nominal_painel.innerHTML,
-            help: Lang[appLang].pot_nominal_painel.help,
-            value: 300,
-            type: 'number',
-            step: '10',
-            UpdateValue: UpdatePotNominal
-        },
-        area_painel: {
-            elem: 'input',
-            innerHTML: Lang[appLang].area_painel.innerHTML,
-            help: Lang[appLang].area_painel.help,
-            value: 1.64,
-            type: 'number',
-            step: '0.01',
-            UpdateValue: UpdatePotNominal
-        },
-        area: {
-            elem: 'input',
-            innerHTML: Lang[appLang].area.innerHTML,
-            help: Lang[appLang].area.help,
-            value: 6,
-            type: 'number',
-            step: '1',
-            UpdateValue: UpdatePotNominal
-        },
-        quantidade: {
-            elem: 'input',
-            innerHTML: Lang[appLang].quantidade.innerHTML,
-            help: Lang[appLang].quantidade.help,
-            value: 3,
-            type: 'number',
-            step: '1',
-            UpdateValue: UpdatePotNominal
-        },
-        perda: {
-            elem: 'input',
-            innerHTML: Lang[appLang].perda.innerHTML,
-            help: Lang[appLang].perda.help,
-            value: 14,
-            type: 'number',
-            step: '1',
-        },
-        coef_temp: {
-            elem: 'input',
-            innerHTML: Lang[appLang].coef_temp.innerHTML,
-            help: Lang[appLang].coef_temp.help,
-            value: -0.35,
-            type: 'number',
-            step: '0.01',
-        },
-        cc_ca: {
-            elem: 'input',
-            innerHTML: Lang[appLang].cc_ca.innerHTML,
-            help: Lang[appLang].cc_ca.help,
-            value: 95,
-            type: 'number',
-            step: '1',
-        },
-        superficie: {
-            elem: 'select',
-            innerHTML: Lang[appLang].superficie.innerHTML,
-            help: Lang[appLang].superficie.help,
-            options: Lang[appLang].superficie.options,
-            value: 0,
-            values: {
-                a: [-3.47, -2.98, -3.56, -2, 81],
-                b: [-0.0594, -0.0471, -0.075, -0.0455],
-                Delta_T: [3, 1, 3, 0],
-            },
-            setValues: function(value) {
-                this.value = value;
+                if (value === 1) {
 
-                a = this.values.a[value];
-                b = this.values.b[value];
-                Delta_T = this.values.Delta_T[value];
+                    mgetElementById(Elem_Ids.Input.Input + 'quantidade').disabled = true;
+                    mgetElementById(Elem_Ids.Input.Span + 'quantidade').className =
+                        'tooltiptext tooltiptext_disabled';
+                    mgetElementById(Elem_Ids.Input.Span + 'quantidade').innerHTML =
+                        Lang[appLang].quantidade.disabledHelp;
+                }
 
-            },
-        },
-        regiao: {
-            elem: 'select',
-            innerHTML: Lang[appLang].regiao.innerHTML,
-            help: Lang[appLang].regiao.help,
-            options: Lang[appLang].regiao.options,
-            value: 4,
-            setValues: function(value) {
-                this.value = value;
+
             }
-        },
-        button: {
-            elem: 'button',
-            innerHTML: Lang[appLang].button.innerHTML,
+
         }
-    };
+    },
+    pot_nominal_array: {
+        elem: 'input',
+        value: 1000,
+        type: 'number',
+        step: '10',
+        UpdateValue: UpdatePotNominal
+    },
+    pot_nominal_painel: {
+        elem: 'input',
+        value: 300,
+        type: 'number',
+        step: '10',
+        UpdateValue: UpdatePotNominal
+    },
+    area_painel: {
+        elem: 'input',
+        value: 1.64,
+        type: 'number',
+        step: '0.01',
+        UpdateValue: UpdatePotNominal
+    },
+    area: {
+        elem: 'input',
+        value: 6,
+        type: 'number',
+        step: '1',
+        UpdateValue: UpdatePotNominal
+    },
+    quantidade: {
+        elem: 'input',
+        value: 3,
+        type: 'number',
+        step: '1',
+        UpdateValue: UpdatePotNominal
+    },
+    perda: {
+        elem: 'input',
+        value: 14,
+        type: 'number',
+        step: '1',
+    },
+    coef_temp: {
+        elem: 'input',
+        value: -0.35,
+        type: 'number',
+        step: '0.01',
+    },
+    cc_ca: {
+        elem: 'input',
+        value: 95,
+        type: 'number',
+        step: '1',
+    },
+    superficie: {
+        elem: 'select',
+        value: 0,
+        values: {
+            a: [-3.47, -2.98, -3.56, -2, 81],
+            b: [-0.0594, -0.0471, -0.075, -0.0455],
+            Delta_T: [3, 1, 3, 0],
+        },
+        setValues: function(value) {
+            this.value = value;
+
+            a = this.values.a[value];
+            b = this.values.b[value];
+            Delta_T = this.values.Delta_T[value];
+
+        },
+    },
+    regiao: {
+        elem: 'select',
+        value: 4,
+        setValues: function(value) {
+            this.value = value;
+        }
+    },
+    button: {
+        elem: 'button',
+    }
+};
+Set_Element_obj_Strings();
+
+function Set_Element_obj_Strings() {
+    for (const prop in Lang[appLang]) {
+        for (const value in Lang[appLang][prop]) {
+            if (Element_obj.hasOwnProperty(prop)) {
+                Element_obj[prop][value] = Lang[appLang][prop][value];
+            }
+        }
+    }
 }
 
 const Elem_Ids = {
@@ -981,7 +961,7 @@ function SetLAng(newLang) {
     /* eslint-enable */
     localStorage.setItem('app_lang', newLang);
     appLang = newLang;
-    Start_Element_obj();
+    Set_Element_obj_Strings();
     ReStartPage();
 }
 

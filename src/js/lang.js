@@ -1,3 +1,4 @@
+
 const Lang = {
     pt: {
         lang: "Lingua:",
@@ -42,15 +43,12 @@ const Lang = {
                 'Potência nominal total',
                 'Área total',
                 'Quantidade painéis',
-            ],
-            setValues: [
-                'Neste modo a potência nominal total é igual:<br><br>A potência nominal de um painel vezes a quatidade de painéis',
-                'Neste modo a quantidade é igual:<br><br>A área total pela área de um painel'
             ]
         },
         pot_nominal_array: {
             innerHTML: 'Potência nominal total da matriz (W/m²)',
             help: 'O valor nominal total da matriz fotovoltaica instalada em W/m²',
+            disabledHelp: 'Neste modo a potência nominal total é igual:<br><br>A potência nominal de um painel vezes a quatidade de painéis',
         },
         pot_nominal_painel: {
             innerHTML: 'Potência nominal de um painel (W/m²)',
@@ -66,7 +64,8 @@ const Lang = {
         },
         quantidade: {
             innerHTML: 'Quantidade painéis',
-            help: 'A quantidade total de painéis possível'
+            help: 'A quantidade total de painéis possível',
+            disabledHelp: 'Neste modo a quantidade é igual:<br><br>A área total pela área de um painel'
         },
         perda: {
             innerHTML: 'Perdas do sistema (%)',
@@ -74,7 +73,7 @@ const Lang = {
         },
         coef_temp: {
             innerHTML: 'Coeficiente de temperatura de potência (%/°C)',
-            help: 'A eficiência da matriz diminua a uma taxa linear em função do aumento da temperatura, governada pelo coeficiente de temperatura do painel, para maioria dos painéis este valor varia de -0,5 ate 0,1'
+            help: 'A eficiência da matriz diminua a uma taxa linear em função do aumento da temperatura, governada pelo coeficiente de temperatura do painel, para maioria dos painéis este valor varia de -0,5 ate -0,1'
         },
         cc_ca: {
             innerHTML: 'Conversão CC-CA (Eficiencia %)',
@@ -160,10 +159,6 @@ const Lang = {
                 'Total area',
                 'Amount of panels',
             ],
-            setValues: [
-                'In this mode the total rated power is equal:<br><br>The rated power of a panel times the quantity of panels',
-                'In this mode the amount is equal:<br><br>The total area divided by tye area of a panel'
-            ],
             help: 'Total rated power:<br><br>The calculation is made by the total rated power of the set of panels<br><br>' +
                 'Total area:<br><br>The calculation is done by determining the total rated power of the set of panels in relation to how many panels fit in the total area<br><br>' +
                 'Amount of panels:<br><br>The calculation is made to determine the total rated power of the set of panels in relation to the total number of panels'
@@ -171,6 +166,7 @@ const Lang = {
         pot_nominal_array: {
             innerHTML: 'Total nominal power of the array (W/m²)',
             help: 'The total nominal value of the installed photovoltaic array in W/m²',
+            disabledHelp: 'In this mode the total rated power is equal:<br><br>The rated power of a panel times the quantity of panels',
         },
         pot_nominal_painel: {
             innerHTML: 'Rated power of a panel (W/m²)',
@@ -186,7 +182,8 @@ const Lang = {
         },
         quantidade: {
             innerHTML: 'Amount of panels',
-            help: 'The total number of panels possible'
+            help: 'The total number of panels possible',
+            disabledHelp: 'In this mode the amount is equal:<br><br>The total area divided by tye area of a panel'
         },
         perda: {
             innerHTML: 'System Losses (%)',
@@ -194,7 +191,7 @@ const Lang = {
         },
         coef_temp: {
             innerHTML: 'Power temperature coefficient (%/°C)',
-            help: 'The matrix efficiency decreases at a linear rate as a function of temperature increase, governed by the panel temperature coefficient, for most panels this value ranges from -0.5 to 0.1'
+            help: 'The matrix efficiency decreases at a linear rate as a function of temperature increase, governed by the panel temperature coefficient, for most panels this value ranges from -0.5 to -0.1'
         },
         cc_ca: {
             innerHTML: 'CC-CA Conversion (% Efficiency)',
