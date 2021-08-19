@@ -58,6 +58,11 @@
   transform: translateY(10%) !important;
 }
 
+.icon-help-circled:before {
+  content: "\66";
+  transform: translate(-13%, 13%) scale(1.25) !important;
+}
+
 @font-face {
   font-family: 'Roboto';
   src: url('fonts/Roboto-Regular.woff2') format('woff2');
@@ -318,13 +323,11 @@ html {
 .tooltip {
   position: relative;
   display: inline-block;
-  border-bottom: 0.15em dotted #24292e;
   margin-left: 1ch;
 }
 
 .tooltip_botton,
 .tooltip_disabled {
-  border-bottom: 0 !important;
   margin: 0 !important;
 }
 
