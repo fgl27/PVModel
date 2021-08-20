@@ -165,17 +165,17 @@ html {
 
 .inputsContainer {
   width: fit-content;
-  display: inline-block;
   background: white;
   border: 1px solid var(--inputsBorder);
   border-top: 0;
   padding: 5px;
-  max-width: 94vw;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
   border-radius: 1px;
+  width: 33em;
+  max-width: 90vw;
 }
 
 .Imput_Help_Container {
@@ -208,8 +208,13 @@ html {
 .inputsText {
   display: inline-block;
   font-family: 'Roboto-Bold';
-  min-width: 38ch;
+  min-width: 50%;
   text-align: start;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-grow: 1;
+  width: 100%;
 }
 
 .inputsSelect,
@@ -217,7 +222,7 @@ html {
   display: inline-block;
   text-align: center !important;
   font-family: 'Roboto-Bold';
-  width: 24ch;
+  width: 12em;
   background-color: var(--background);
   border: 1px solid black;
   border-radius: 3px;
@@ -225,6 +230,10 @@ html {
   padding: 0 !important;
   box-sizing: border-box;
   font-size: 100%;
+  max-width: 39vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .inputsSelect {
@@ -343,6 +352,7 @@ html {
   position: relative;
   display: inline-block;
   margin-left: 1ch;
+  max-width: 90%;
 }
 
 .tooltip_botton,
@@ -504,6 +514,7 @@ a:active {
   line-height: 0.5em;
 }
 
+.optionButtonDisabled,
 .optionButton {
   font-size: 60%;
   min-width: 4ch;
@@ -518,6 +529,10 @@ a:active {
   border: 1px solid black;
   border-radius: 6px;
   box-shadow: 0 4px var(--inputsBorder);
+}
+
+.optionButtonDisabled {
+  background: var(--buttonColorActiveShaddow);
 }
 
 .optionButton:hover {
@@ -541,11 +556,19 @@ a:active {
 @media screen and (max-width: 700px) {
   .inputsContainer {
     flex-direction: column;
+    min-width: 90vw;
   }
 
   .inputsText {
     text-align: center;
+    min-width: 100%;
   }
+
+  .inputsSelect,
+  .inputsInput {
+    max-width: 75vw;
+  }
+
 
   .Results_container {
     transform: rotate(90deg) translate(50%);

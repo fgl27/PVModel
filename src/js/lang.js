@@ -72,7 +72,7 @@ const Lang = {
             help: 'As perdas no sistema que não são explicitamente modeladas, que incluem os impactos na potência final devido: sujeira, sombreamento, cobertura de neve, incompatibilidade, fiação, conexões, degradação induzida pela luz, classificação da placa de identificação, idade do sistema e disponibilidade operacional'
         },
         coef_temp: {
-            innerHTML: 'Coeficiente de temperatura de potência (%/°C)',
+            innerHTML: 'Coeficiente de temperatura (%/°C)',
             help: 'A eficiência da matriz diminua a uma taxa linear em função do aumento da temperatura, governada pelo coeficiente de temperatura do painel, para maioria dos painéis este valor varia de -0,5 ate -0,1'
         },
         cc_ca: {
@@ -190,7 +190,7 @@ const Lang = {
             help: 'System losses that are not explicitly modeled, which  impacts the panel nominal power due to: dirt, shading, snow cover, mismatch, wiring, connections, light-induced degradation, nameplate rating, system age and operational availability'
         },
         coef_temp: {
-            innerHTML: 'Power temperature coefficient (%/°C)',
+            innerHTML: 'Temperature coefficient (%/°C)',
             help: 'The matrix efficiency decreases at a linear rate as a function of temperature increase, governed by the panel temperature coefficient, for most panels this value ranges from -0.5 to -0.1'
         },
         cc_ca: {

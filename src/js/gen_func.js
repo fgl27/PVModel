@@ -1,9 +1,12 @@
 
-
+let zoomValueDiv;
+let zoomMinusDiv;
 function ChangeSize(zoom_level) {
+    if (isNaN(zoom_level)) zoom_level = 1;
+
     appZoomLevel = parseFloat(zoom_level);
     document.body.style.fontSize = (16 * appZoomLevel) + 'px';
-    mgetElementById('zoom_value').textContent = appZoomLevel.toFixed(1);
+    zoomValueDiv.textContent = Math.round(appZoomLevel * 100) + '%';
 
     localStorage.setItem('zoom_level', appZoomLevel);
 }
@@ -24,12 +27,28 @@ function SetDotsOption() {
     };
 
     mgetElementById('zoom_plus').onclick = function() {
-        ChangeSize(appZoomLevel + 0.1);
+        UpdateZoom(0.05);
     };
 
     mgetElementById('zoom_minus').onclick = function() {
-        ChangeSize(appZoomLevel - 0.1);
+        UpdateZoom(-0.05);
     };
+
+    zoomMinusDiv = mgetElementById('zoom_minus');
+    zoomValueDiv = mgetElementById('zoom_value');
+}
+
+function UpdateZoom(adder) {
+    const currentValue = appZoomLevel + adder;
+
+    if (currentValue <= 0.5) {
+        zoomMinusDiv.classList = 'optionButtonDisabled skipclick';
+        return;
+    } else if (currentValue > 0.5) {
+        zoomMinusDiv.classList = 'optionButton skipclick';
+    }
+
+    ChangeSize(currentValue);
 }
 
 //Se o elemente settings estiver visivel e o usuario clicar fora do elemente esconde ele

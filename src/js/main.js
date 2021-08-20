@@ -15,13 +15,13 @@ let inputsDiv;
 let resultDiv;
 let appZoomLevel = 1.0;
 function StartPage() {
-    ChangeSize(localStorage.getItem('zoom_level') || appZoomLevel);
-
     //Inicializa os div de conteúdo
     inputsDiv = mgetElementById('inputs');
     resultDiv = mgetElementById('result');
 
+    //Inicias as opções 3 pontos
     SetDotsOption();
+    ChangeSize(localStorage.getItem('zoom_level') || appZoomLevel);
 
     //Seta no nome no topo
     mgetElementById('title').innerHTML = 'PVModel';
