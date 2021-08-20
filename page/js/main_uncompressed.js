@@ -790,11 +790,15 @@
 
         }
     };
+    let zoomValueDiv;
+    let zoomMinusDiv;
 
     function ChangeSize(zoom_level) {
+        if (isNaN(zoom_level)) zoom_level = 1;
+
         appZoomLevel = parseFloat(zoom_level);
         document.body.style.fontSize = (16 * appZoomLevel) + 'px';
-        mgetElementById('zoom_value').textContent = appZoomLevel.toFixed(1);
+        zoomValueDiv.textContent = Math.round(appZoomLevel * 100) + '%';
 
         localStorage.setItem('zoom_level', appZoomLevel);
     }
@@ -815,12 +819,28 @@
         };
 
         mgetElementById('zoom_plus').onclick = function() {
-            ChangeSize(appZoomLevel + 0.1);
+            UpdateZoom(0.05);
         };
 
         mgetElementById('zoom_minus').onclick = function() {
-            ChangeSize(appZoomLevel - 0.1);
+            UpdateZoom(-0.05);
         };
+
+        zoomMinusDiv = mgetElementById('zoom_minus');
+        zoomValueDiv = mgetElementById('zoom_value');
+    }
+
+    function UpdateZoom(adder) {
+        const currentValue = appZoomLevel + adder;
+
+        if (currentValue <= 0.5) {
+            zoomMinusDiv.classList = 'optionButtonDisabled skipclick';
+            return;
+        } else if (currentValue > 0.5) {
+            zoomMinusDiv.classList = 'optionButton skipclick';
+        }
+
+        ChangeSize(currentValue);
     }
 
     //Se o elemente settings estiver visivel e o usuario clicar fora do elemente esconde ele
@@ -1002,7 +1022,7 @@
                 help: 'As perdas no sistema que não são explicitamente modeladas, que incluem os impactos na potência final devido: sujeira, sombreamento, cobertura de neve, incompatibilidade, fiação, conexões, degradação induzida pela luz, classificação da placa de identificação, idade do sistema e disponibilidade operacional'
             },
             coef_temp: {
-                innerHTML: 'Coeficiente de temperatura de potência (%/°C)',
+                innerHTML: 'Coeficiente de temperatura (%/°C)',
                 help: 'A eficiência da matriz diminua a uma taxa linear em função do aumento da temperatura, governada pelo coeficiente de temperatura do painel, para maioria dos painéis este valor varia de -0,5 ate -0,1'
             },
             cc_ca: {
@@ -1120,7 +1140,7 @@
                 help: 'System losses that are not explicitly modeled, which  impacts the panel nominal power due to: dirt, shading, snow cover, mismatch, wiring, connections, light-induced degradation, nameplate rating, system age and operational availability'
             },
             coef_temp: {
-                innerHTML: 'Power temperature coefficient (%/°C)',
+                innerHTML: 'Temperature coefficient (%/°C)',
                 help: 'The matrix efficiency decreases at a linear rate as a function of temperature increase, governed by the panel temperature coefficient, for most panels this value ranges from -0.5 to -0.1'
             },
             cc_ca: {
@@ -1185,13 +1205,13 @@
     let appZoomLevel = 1.0;
 
     function StartPage() {
-        ChangeSize(localStorage.getItem('zoom_level') || appZoomLevel);
-
         //Inicializa os div de conteúdo
         inputsDiv = mgetElementById('inputs');
         resultDiv = mgetElementById('result');
 
+        //Inicias as opções 3 pontos
         SetDotsOption();
+        ChangeSize(localStorage.getItem('zoom_level') || appZoomLevel);
 
         //Seta no nome no topo
         mgetElementById('title').innerHTML = 'PVModel';
