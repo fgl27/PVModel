@@ -833,10 +833,10 @@
     function UpdateZoom(adder) {
         const currentValue = appZoomLevel + adder;
 
-        if (currentValue <= 0.5) {
+        if (currentValue <= 0.45) {
             zoomMinusDiv.classList = 'optionButtonDisabled skipclick';
             return;
-        } else if (currentValue > 0.5) {
+        } else if (currentValue > 0.45) {
             zoomMinusDiv.classList = 'optionButton skipclick';
         }
 
