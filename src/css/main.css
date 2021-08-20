@@ -95,7 +95,6 @@ html {
   background-color: var(--background);
   font-family: 'Roboto', 'Roboto-Bold';
   margin: 0;
-  -webkit-text-stroke: 0.005em;
   overflow-x: hidden;
   overflow-y: scroll !important;
   position: absolute;
