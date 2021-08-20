@@ -3,6 +3,7 @@
     package="com.fgl27.pvmodel">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <queries>
         <!--https://developer.android.com/about/versions/11/privacy/package-visibility-->

@@ -209,6 +209,8 @@ if [ "$canhtmlminifier" == 1 ]; then
     html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --use-short-doctype --minify-css true --minify-js true page/index.html -o page/index.html
 fi;
 
+rm -rf page/css
+rm -rf page/images
 cp -rf src/css page/
 cp -rf src/images page/
 
@@ -230,7 +232,12 @@ echo -e "\\n${bldgrn}Compression done\\n";
 # copy main.js temp files to githubio/js/
 cp -rf main.js ../js/main.js;
 cd - &> /dev/null || exit;
-#rm -rf "$temp_maker_folder"
+rm -rf apk/app/src/main/assets/page
+cp -rf page/ apk/app/src/main/assets/page
+rm -rf apk/app/src/main/assets/page/temp
+rm -rf apk/app/src/main/assets/page/api.js
+rm -rf apk/app/src/main/assets/page/.gitignore
+rm -rf apk/app/src/main/assets/page/js/main_uncompressed.js
 
 # Warn if a change was detected to main.js and page/temp/html
 git_check="$(git status | grep modified)";
