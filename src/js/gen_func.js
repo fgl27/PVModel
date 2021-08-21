@@ -39,12 +39,12 @@ function SetDotsOption() {
 }
 
 function UpdateZoom(adder) {
-    const currentValue = appZoomLevel + adder;
+    let currentValue = appZoomLevel + adder;
 
-    if (currentValue <= 0.45) {
+    if (currentValue <= 0.1) {
         zoomMinusDiv.classList = 'optionButtonDisabled skipclick';
-        return;
-    } else if (currentValue > 0.45) {
+        currentValue = 0.1;
+    } else if (currentValue < 0.2) {
         zoomMinusDiv.classList = 'optionButton skipclick';
     }
 
