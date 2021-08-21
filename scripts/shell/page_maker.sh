@@ -209,6 +209,7 @@ if [ "$canhtmlminifier" == 1 ]; then
     html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --use-short-doctype --minify-css true --minify-js true page/index.html -o page/index.html
 fi;
 
+# Update page css and image files, make sure delete first
 rm -rf page/css
 rm -rf page/images
 cp -rf src/css page/
@@ -232,6 +233,8 @@ echo -e "\\n${bldgrn}Compression done\\n";
 # copy main.js temp files to githubio/js/
 cp -rf main.js ../js/main.js;
 cd - &> /dev/null || exit;
+
+# copy page files to assets, they are used as a offline option for the apk
 rm -rf apk/app/src/main/assets/page
 cp -rf page/ apk/app/src/main/assets/page
 rm -rf apk/app/src/main/assets/page/temp
