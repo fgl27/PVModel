@@ -173,7 +173,7 @@ html {
   align-items: center;
   justify-content: space-around;
   border-radius: 1px;
-  width: 33em;
+  width: 34em;
   max-width: 90vw;
 }
 
@@ -207,13 +207,14 @@ html {
 .inputsText {
   display: inline-block;
   font-family: 'Roboto-Bold';
-  min-width: 50%;
+  min-width: 45%;
   text-align: start;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   flex-grow: 1;
   width: 100%;
+  padding-left: 0.5em;
 }
 
 .inputsSelect,
@@ -350,7 +351,8 @@ html {
 .tooltip {
   position: relative;
   display: inline-block;
-  margin-left: 1ch;
+  margin-left: 0.9em;
+  margin-right: 0.4em;
   max-width: 90%;
 }
 
@@ -555,17 +557,18 @@ a:active {
 @media screen and (max-width: 700px) {
   .inputsContainer {
     flex-direction: column;
-    min-width: 90vw;
+    width: 19em;
   }
 
   .inputsText {
     text-align: center;
     min-width: 100%;
+    padding-left: 0;
   }
 
   .inputsSelect,
   .inputsInput {
-    max-width: 75vw;
+    max-width: 71vw;
   }
 
 
