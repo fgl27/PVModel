@@ -1,5 +1,13 @@
 # PVModel APK
 
+## Como o APK funciona
+
+Este APK funciona apenas para encapsular o aplicativo web, sua logica e layout tem apenas o necessário para mostrar o conteúdo web, podendo assim ser distribuído no formato APK. 
+
+## How the APK works
+
+This APK works only to encapsulate the web application, its logic and layout have just what is needed to show the web content, so it can be distributed in APK format.
+
 ## APK Download
 
 [Releases](https://github.com/fgl27/PVModel/releases)
