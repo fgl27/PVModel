@@ -1026,7 +1026,7 @@
                 help: 'A eficiência da matriz diminua a uma taxa linear em função do aumento da temperatura, governada pelo coeficiente de temperatura do painel, para maioria dos painéis este valor varia de -0,5 ate -0,1'
             },
             cc_ca: {
-                innerHTML: 'Conversão CC-CA (Eficiencia %)',
+                innerHTML: 'Conversão CC-CA (Eficiência %)',
                 help: 'O modelo proposto utiliza uma simples conversão baseada na eficiência do inversor'
             },
             superficie: {
