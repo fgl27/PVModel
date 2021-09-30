@@ -23,6 +23,7 @@ function SetDotsOption() {
     };
     //zoom
     mgetElementById('zoom_reset').onclick = function() {
+        zoomMinusDiv.classList = 'optionButton skipclick';
         ChangeSize(1);
     };
 

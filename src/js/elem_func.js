@@ -9,7 +9,9 @@ function modeloSetValues(value, obj) {
         StartInputs();
 
         const disabled = Boolean(value);
-        mgetElementById(Elem_Ids.Input.Input + 'pot_nominal_array').disabled = disabled;
+        let ele = mgetElementById(Elem_Ids.Input.Input + 'pot_nominal_array');
+        ele.disabled = disabled;
+        if (disabled) ele.classList.add('CursorDisable');
 
         //bloqueia que se altere os valores dos elementos que seu valor é calculado em relação a outros valores
         if (disabled) {
@@ -23,7 +25,10 @@ function modeloSetValues(value, obj) {
 
         if (value === 1) {
 
-            mgetElementById(Elem_Ids.Input.Input + 'quantidade').disabled = true;
+            ele = mgetElementById(Elem_Ids.Input.Input + 'quantidade');
+            ele.disabled = true;
+            ele.classList.add('CursorDisable');
+            console.log(ele)
             mgetElementById(Elem_Ids.Input.Span + 'quantidade').className =
                 'tooltiptext tooltiptext_disabled';
             mgetElementById(Elem_Ids.Input.Span + 'quantidade').innerHTML =
