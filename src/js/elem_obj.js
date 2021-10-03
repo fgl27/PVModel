@@ -10,6 +10,7 @@ let Element_obj = {
         value: 0,
         values: [
             [// os elementos disponíveis no modo Pot nominal
+                'energi_title',
                 'modelo',
                 'regiao',
                 'pot_nominal_array',
@@ -17,9 +18,23 @@ let Element_obj = {
                 'superficie',
                 'perda',
                 'cc_ca',
-                'button'
+                'cost_title',
+                'kwh',
+                'custo_painel',
+                'custo_inv',
+                'custo_estrutura',
+                'estacao_ultra_quanti',
+                'estacao_ultra_custo',
+                'estacao_ultra_quanti',
+                'estacao_ultra_custo',
+                'estacao_fast_quanti',
+                'estacao_fast_custo',
+                'estacao_slow_quanti',
+                'estacao_slow_custo',
+                'button',
             ],
             [// os elementos disponíveis no modo Área total
+                'energi_title',
                 'modelo',
                 'regiao',
                 'area',
@@ -31,9 +46,21 @@ let Element_obj = {
                 'superficie',
                 'perda',
                 'cc_ca',
-                'button'
+                'cost_title',
+                'kwh',
+                'custo_painel',
+                'custo_inv',
+                'custo_estrutura',
+                'estacao_ultra_quanti',
+                'estacao_ultra_custo',
+                'estacao_fast_quanti',
+                'estacao_fast_custo',
+                'estacao_slow_quanti',
+                'estacao_slow_custo',
+                'button',
             ],
             [// os elementos disponíveis no modo quantidade painéis
+                'energi_title',
                 'modelo',
                 'regiao',
                 'pot_nominal_painel',
@@ -43,12 +70,31 @@ let Element_obj = {
                 'superficie',
                 'perda',
                 'cc_ca',
-                'button'
+                'cost_title',
+                'kwh',
+                'custo_painel',
+                'custo_inv',
+                'custo_estrutura',
+                'estacao_ultra_quanti',
+                'estacao_ultra_custo',
+                'estacao_ultra_quanti',
+                'estacao_ultra_custo',
+                'estacao_fast_quanti',
+                'estacao_fast_custo',
+                'estacao_slow_quanti',
+                'estacao_slow_custo',
+                'button',
             ]
         ],
         setValues: function(value) {
             modeloSetValues(value, this);
         }
+    },
+    energi_title: {
+        elem: 'title',
+    },
+    cost_title: {
+        elem: 'title',
     },
     pot_nominal_array: {
         elem: 'input',
@@ -124,7 +170,67 @@ let Element_obj = {
     },
     button: {
         elem: 'button',
-    }
+    },
+    kwh: {
+        elem: 'input',
+        value: 0.85,
+        type: 'number',
+        step: '0.01',
+    },
+    custo_painel: {
+        elem: 'input',
+        value: 2.2,
+        type: 'number',
+        step: '0.01',
+    },
+    custo_inv: {
+        elem: 'input',
+        value: 1000,
+        type: 'number',
+        step: '1',
+    },
+    custo_estrutura: {
+        elem: 'input',
+        value: 500,
+        type: 'number',
+        step: '1',
+    },
+    estacao_ultra_quanti: {
+        elem: 'input',
+        value: 0,
+        type: 'number',
+        step: '1',
+    },
+    estacao_ultra_custo: {
+        elem: 'input',
+        value: 50000,
+        type: 'number',
+        step: '1',
+    },
+    estacao_fast_quanti: {
+        elem: 'input',
+        value: 0,
+        type: 'number',
+        step: '1',
+    },
+    estacao_fast_custo: {
+        elem: 'input',
+        value: 50000,
+        type: 'number',
+        step: '1',
+    },
+    estacao_slow_quanti: {
+        elem: 'input',
+        value: 0,
+        type: 'number',
+        step: '1',
+    },
+    estacao_slow_custo: {
+        elem: 'input',
+        value: 50000,
+        type: 'number',
+        step: '1',
+    },
 };
 
 const Elem_Ids = {
@@ -163,6 +269,34 @@ let Delta_T = Element_obj.superficie.values.Delta_T[0];
 const k = 0.0015;//Fator de correção de erro
 
 const fun_obj = {
+    title: function(prop) {
+        //cria o elemento de entrada de valor
+        let obj = Element_obj[prop];
+
+        const Inputs_Container = mCreateElement(
+            'div',
+            Elem_Ids.Input.Container + prop,
+            'inputsContainer'
+        );
+
+        //cria os elementos de acordo com as entradas
+        Inputs_Container.appendChild(
+            mCreateElement(
+                'div',
+                Elem_Ids.Input.Text + prop,
+                'inputsTitle',
+                obj.innerHTML
+            )
+        );
+
+        const container = mCreateElement(
+            'div',
+            prop
+        );
+
+        container.appendChild(Inputs_Container);
+        inputsDiv.appendChild(container);
+    },
     input: function(prop) {
         //cria o elemento de entrada de valor
         let obj = Element_obj[prop];
@@ -196,7 +330,7 @@ const fun_obj = {
         //seta o seu passo se é numero de 0.1 em 0.1 por ex.
         Input.step = obj.step;
         //seta o valor inicial
-        if (obj.value) Input.value = obj.value;
+        if (obj.value || obj.value === 0) Input.value = obj.value;
 
         //seta a função a ser chamada quando o valor muda
         Input.onchange = function() {

@@ -45,6 +45,12 @@ const Lang = {
                 'Quantidade painéis',
             ]
         },
+        energi_title: {
+            innerHTML: 'Entradas sistema PV',
+        },
+        cost_title: {
+            innerHTML: 'Entradas custos e retornos',
+        },
         pot_nominal_array: {
             innerHTML: 'Potência nominal total da matriz (W/m²)',
             help: 'O valor nominal total da matriz fotovoltaica instalada em W/m²',
@@ -99,6 +105,46 @@ const Lang = {
                 'Sudeste',
                 'Sul'
             ]
+        },
+        kwh: {
+            innerHTML: 'Custo do kWh (R$)',
+            help: 'Utilizado para calcular o retorno financeiro da produção ou consumo de energia'
+        },
+        custo_painel: {
+            innerHTML: 'Custo Wp painel (R$)',
+            help: 'Wp Watt-pico, Valor médio de um Wp, este valor é multiplicado pela potência nominal total da matriz para calcular o custo total dos painéis'
+        },
+        custo_inv: {
+            innerHTML: 'Custo Inversor ou Otimizador (R$)',
+            help: 'Valor médio por kW produzido'
+        },
+        custo_estrutura: {
+            innerHTML: 'Custo com estruturas de suporte (R$)',
+            help: 'Estruturas de laje, telhado ou de garagem usadas como suporte para os painéis'
+        },
+        estacao_ultra_quanti: {
+            innerHTML: 'Quantidade estações ultrarrápidos (un)',
+            help: 'Quantidade estações ultrarrápidos a serem instaladas'
+        },
+        estacao_ultra_custo: {
+            innerHTML: 'Custo estações ultrarrápidas (R$)',
+            help: 'Custo de uma estações ultrarrápidos'
+        },
+        estacao_fast_quanti: {
+            innerHTML: 'Quantidade estações rápidas (un)',
+            help: 'Quantidade estações rápidas a serem instaladas'
+        },
+        estacao_fast_custo: {
+            innerHTML: 'Custo estações rápidas (R$)',
+            help: 'Custo de uma estações rápidas'
+        },
+        estacao_slow_quanti: {
+            innerHTML: 'Quantidade estações lentas (un)',
+            help: 'Quantidade estações lentas a serem instaladas'
+        },
+        estacao_slow_custo: {
+            innerHTML: 'Custo estações lentas (R$)',
+            help: 'Custo de uma estações lentas'
         },
         button: {
             innerHTML: 'Calcular'
@@ -163,6 +209,12 @@ const Lang = {
                 'Total area:<br><br>The calculation is done by determining the total rated power of the set of panels in relation to how many panels fit in the total area<br><br>' +
                 'Amount of panels:<br><br>The calculation is made to determine the total rated power of the set of panels in relation to the total number of panels'
         },
+        energi_title: {
+            innerHTML: 'PV system inputs',
+        },
+        cost_title: {
+            innerHTML: 'Costs and returns inputs',
+        },
         pot_nominal_array: {
             innerHTML: 'Total nominal power of the array (W/m²)',
             help: 'The total nominal value of the installed photovoltaic array in W/m²',
@@ -217,6 +269,46 @@ const Lang = {
                 'Southeast',
                 'South'
             ]
+        },
+        kwh: {
+            innerHTML: 'kWh cost (BRL)',
+            help: 'Used to calculate the financial return on energy production or consumption'
+        },
+        custo_painel: {
+            innerHTML: 'Wp Panel Cost (BRL)',
+            help: 'Wp Watt-peak, Average value of a Wp, this value is multiplied by the total nominal power of the matrix to calculate the total cost of the panels'
+        },
+        custo_inv: {
+            innerHTML: 'Inverter or Optimizer Cost (BRL)',
+            help: 'Average value per kW produced'
+        },
+        custo_estrutura: {
+            innerHTML: 'Cost of support structures (BRL)',
+            help: 'Slab, roof or garage structures used as support for the panels'
+        },
+        estacao_ultra_quanti: {
+            innerHTML: 'Quantity of Rapid chargers stations (un)',
+            help: 'How many Rapid chargers stations to install'
+        },
+        estacao_ultra_custo: {
+            innerHTML: 'Cost ultrafast stations (R$)',
+            help: 'Cost of one ultrafast stations'
+        },
+        estacao_fast_quanti: {
+            innerHTML: 'Amount of fast stations (un)',
+            help: 'How many fast stations to install'
+        },
+        estacao_fast_custo: {
+            innerHTML: 'Fast stations cost (R$)',
+            help: 'Cost of a fast stations'
+        },
+        estacao_slow_quanti: {
+            innerHTML: 'Amount of slow stations (un)',
+            help: 'How many slow stations to install'
+        },
+        estacao_slow_custo: {
+            innerHTML: 'Cost slow stations (R$)',
+            help: 'Cost of a slow stations'
         },
         button: {
             innerHTML: 'Calculate'

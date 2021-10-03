@@ -79,6 +79,7 @@ function StartInputs() {
     //Aredonda os cantos do primeiro e ultimo elemento de entrada
     mgetElementById(Elem_Ids.Input.Container + objArray[0]).classList.add('inputsContainerTop');
     mgetElementById(Elem_Ids.Input.Container + objArray[objArray.length - 2]).classList.add('inputsContainerBottom');
+
 }
 
 function GenDiv(prop) {
