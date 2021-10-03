@@ -17,21 +17,7 @@ let Element_obj = {
                 'coef_temp',
                 'superficie',
                 'perda',
-                'cc_ca',
-                'cost_title',
-                'kwh',
-                'custo_painel',
-                'custo_inv',
-                'custo_estrutura',
-                'estacao_ultra_quanti',
-                'estacao_ultra_custo',
-                'estacao_ultra_quanti',
-                'estacao_ultra_custo',
-                'estacao_fast_quanti',
-                'estacao_fast_custo',
-                'estacao_slow_quanti',
-                'estacao_slow_custo',
-                'button',
+                'cc_ca'
             ],
             [// os elementos disponíveis no modo Área total
                 'energi_title',
@@ -45,19 +31,7 @@ let Element_obj = {
                 'coef_temp',
                 'superficie',
                 'perda',
-                'cc_ca',
-                'cost_title',
-                'kwh',
-                'custo_painel',
-                'custo_inv',
-                'custo_estrutura',
-                'estacao_ultra_quanti',
-                'estacao_ultra_custo',
-                'estacao_fast_quanti',
-                'estacao_fast_custo',
-                'estacao_slow_quanti',
-                'estacao_slow_custo',
-                'button',
+                'cc_ca'
             ],
             [// os elementos disponíveis no modo quantidade painéis
                 'energi_title',
@@ -69,21 +43,7 @@ let Element_obj = {
                 'coef_temp',
                 'superficie',
                 'perda',
-                'cc_ca',
-                'cost_title',
-                'kwh',
-                'custo_painel',
-                'custo_inv',
-                'custo_estrutura',
-                'estacao_ultra_quanti',
-                'estacao_ultra_custo',
-                'estacao_ultra_quanti',
-                'estacao_ultra_custo',
-                'estacao_fast_quanti',
-                'estacao_fast_custo',
-                'estacao_slow_quanti',
-                'estacao_slow_custo',
-                'button',
+                'cc_ca'
             ]
         ],
         setValues: function(value) {
@@ -189,11 +149,45 @@ let Element_obj = {
         type: 'number',
         step: '1',
     },
+    tem_estrutura: {
+        elem: 'select',
+        value: 0,
+        setValues: function(value) {
+            this.value = parseInt(value);
+            StartInputs();
+        }
+    },
     custo_estrutura: {
         elem: 'input',
         value: 500,
         type: 'number',
         step: '1',
+    },
+    quantidade_estrutura: {
+        elem: 'input',
+        value: 1,
+        type: 'number',
+        step: '1',
+    },
+    custo_estrutura_garagem: {
+        elem: 'input',
+        value: 10000,
+        type: 'number',
+        step: '1',
+    },
+    quantidade_estrutura_garagem: {
+        elem: 'input',
+        value: 1,
+        type: 'number',
+        step: '1',
+    },
+    tem_estacao: {
+        elem: 'select',
+        value: 0,
+        setValues: function(value) {
+            this.value = parseInt(value);
+            StartInputs();
+        }
     },
     estacao_ultra_quanti: {
         elem: 'input',
@@ -296,6 +290,50 @@ const fun_obj = {
 
         container.appendChild(Inputs_Container);
         inputsDiv.appendChild(container);
+    },
+    result: function(prop, extra_class, text, result) {
+
+        const Inputs_Container = mCreateElement(
+            'div',
+            Elem_Ids.Input.Container + prop,
+            'inputsContainer ' + (extra_class ? extra_class : '')
+        );
+
+        const Imput_Help_Container = mCreateElement(
+            'div',
+            Elem_Ids.Input.Imput_Help_Container + prop,
+            'Imput_Help_Container',
+        );
+
+        if (result) {
+            Imput_Help_Container.appendChild(
+                mCreateElement(
+                    'div',
+                    Elem_Ids.Input.Help + prop,
+                    'resultText',
+                    result
+                )
+            );
+        }
+
+        Inputs_Container.appendChild(
+            mCreateElement(
+                'div',
+                Elem_Ids.Input.Text + prop,
+                result ? 'inputsText' : 'inputsTitle',
+                text
+            )
+        );
+
+        Inputs_Container.appendChild(Imput_Help_Container);
+
+        const container = mCreateElement(
+            'div',
+            prop
+        );
+
+        container.appendChild(Inputs_Container);
+        resultDiv.appendChild(container);
     },
     input: function(prop) {
         //cria o elemento de entrada de valor
@@ -570,21 +608,18 @@ const fun_obj = {
             'inputsbutton Result_Button text_shadown'
         );
 
-        //adiciona o div titulo "Resultado ___: etc..."
-        const div_result_title = mCreateElement(
-            'div',
-            Elem_Ids.Result.Title + base_id,
-            'result_title'
-        );
-
         //obtem o valor total que vai no texto Resultado
-        const resultado_total = GetTotal(obj.total * CC_CA);
+        const total_kw = obj.total * CC_CA,
+            resultado_total = GetTotal(total_kw),
+            result_title = Lang[appLang].result;
+
+        let result_title_extra;
 
         //Seta o valor se é ano, mês ou dia
         //e adiciona um botão pra voltar ao resultado anterior caso seja mês ou dia
         if (isDay) {
 
-            div_result_title.innerHTML = Lang[appLang].result + prop2 + Lang[appLang].of + Lang[appLang].mesesfull[prop1] + resultado_total;
+            result_title_extra = prop2 + Lang[appLang].of + Lang[appLang].mesesfull[prop1];
 
             button.innerHTML = arrow + Lang[appLang].back_month + Lang[appLang].mesesfull[prop1];
             button.onclick = function() {
@@ -597,7 +632,7 @@ const fun_obj = {
 
         } else if (isMonth) {
 
-            div_result_title.innerHTML = Lang[appLang].result + Lang[appLang].mesesfull[prop1] + resultado_total;
+            result_title_extra = Lang[appLang].mesesfull[prop1];
             button.innerHTML = arrow + Lang[appLang].back_year;
             button.onclick = function() {
                 monclick();
@@ -608,11 +643,19 @@ const fun_obj = {
             base_div_text = Lang[appLang].day;
 
         } else {
-            div_result_title.innerHTML = Lang[appLang].result + Lang[appLang].year + resultado_total;
+            result_title_extra = Lang[appLang].year;
         }
 
-        resultDiv.appendChild(div_result_title);
+        fun_obj.result('result_title', 'inputsContainerTop', result_title + result_title_extra);
+        fun_obj.result('result_total', null, Lang[appLang].total_en, resultado_total);
+        fun_obj.result('result_kwh_ret', null, Lang[appLang].ret_kwh, GetTotalkWhRetorno(total_kw));
+        fun_obj.result('result_custo_ret', null, Lang[appLang].ret_custo, GetCustoPV(total_kw));
+        if (Element_obj['tem_estacao'].value) {
+            fun_obj.result('result_kwh_ret', null, Lang[appLang].ret_estacao, GetTotalkWhRetorno(total_kw));
+            fun_obj.result('result_custo_ret', null, Lang[appLang].ret_estacao_custo, GetCustoEstação(total_kw));
+        }
 
+        fun_obj.result('result_title', null, Lang[appLang].result + Lang[appLang].total);
 
         //Adiciona a observação para meses e dias
         if (isMonth) {

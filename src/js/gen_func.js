@@ -60,12 +60,22 @@ window.onclick = function(event) {
     }
 };
 
+let locale;
 function GetLAng() {
     const lang = localStorage.getItem('app_lang') ||
         window.navigator.userLanguage ||
         window.navigator.language;
 
-    return lang.toLowerCase().indexOf('en') !== -1 ? 'en' : 'pt';
+    if (lang.toLowerCase().indexOf('en') !== -1) {
+        locale = 'en-EN';
+
+        return 'en';
+    } else {
+        locale = 'pt-BR';
+
+        return 'pt';
+    }
+
 }
 
 function SetLAng(newLang) {

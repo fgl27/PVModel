@@ -630,3 +630,10 @@ a:active {
   }
 
 }
+
+.resultText {
+  width: 12em;
+  display: inline-block;
+  text-align: center !important;
+  font-family: 'Roboto-Bold';
+}

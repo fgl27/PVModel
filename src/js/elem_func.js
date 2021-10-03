@@ -141,3 +141,76 @@ function calcPotCC(PM0, DNI, EG_ED, TA, WS) {
     //Calcula a potencia CC já com as perdas
     return PM * (1 - (Element_obj.perda.value / 100));
 }
+
+//Retorna se o total esta em quilo, Mega ou Giga
+function GetTotal(total) {
+    let text = '';
+
+    if (total > 1000000) {//Giga
+
+        return text + formatNumber(total / 1000000.0, 4) + ' GWh ' + Lang[appLang].ac;
+
+    } else if (total > 1000) {//Mega
+
+        return text + formatNumber(total / 1000.0, 4) + ' MWh ' + Lang[appLang].ac;
+
+    }//else quilo
+
+    return text + formatNumber(total, 4) + ' kWh ' + Lang[appLang].ac;
+
+}
+
+//Retorna o valor financeiro total em relação aos kwh produzidos
+function GetTotalkWhRetorno(total_kWh) {
+    return formatNumber(total_kWh * Element_obj.kwh.value) + Lang[appLang].real;
+}
+
+function GetCustoPV(total_kWh) {
+    let total_cost = 0;
+
+    //custo paineis
+    total_cost += Element_obj.pot_nominal_array.value * Element_obj.custo_painel.value;
+
+    //Custo inversores ou otimizadores
+    total_cost += total_kWh / 1000 * Element_obj.custo_inv.value;
+
+    //Custo extrutura
+    if (Element_obj['tem_estrutura'].value === 1) {
+
+        total_cost += Element_obj.quantidade_estrutura.value * Element_obj.custo_estrutura.value;
+
+    } else if (Element_obj['tem_estrutura'].value === 2) {
+
+        total_cost += Element_obj.quantidade_estrutura_garagem.value * Element_obj.custo_estrutura_garagem.value;
+
+    } else if (Element_obj['tem_estrutura'].value === 3) {
+
+        total_cost += Element_obj.quantidade_estrutura.value * Element_obj.custo_estrutura.value;
+        total_cost += Element_obj.quantidade_estrutura_garagem.value * Element_obj.custo_estrutura_garagem.value;
+
+    }
+
+    return formatNumber(total_cost) + Lang[appLang].real;
+}
+
+function GetCustoEstação() {
+    let total_cost = 0;
+
+    //custo ultrarapido
+    total_cost += Element_obj.estacao_ultra_quanti.value * Element_obj.estacao_ultra_custo.value;
+
+    //Custo rapido
+    total_cost += Element_obj.estacao_fast_quanti.value * Element_obj.estacao_fast_custo.value;
+
+    //Custo lento
+    total_cost += Element_obj.estacao_slow_quanti.value * Element_obj.estacao_slow_quanti.value;
+
+
+    return formatNumber(total_cost) + Lang[appLang].real;
+}
+
+function formatNumber(number, max) {
+    return number.toLocaleString(locale, {maximumFractionDigits: max ? max : 2})
+
+}
+

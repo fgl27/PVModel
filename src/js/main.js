@@ -75,33 +75,66 @@ function StartInputs() {
 
     //Gera a lista de entradas em relação ao array Element_obj.modelo.values
     objArray.forEach(GenDiv);
-
+    GenDivFinanceiro();
     //Aredonda os cantos do primeiro e ultimo elemento de entrada
     mgetElementById(Elem_Ids.Input.Container + objArray[0]).classList.add('inputsContainerTop');
-    mgetElementById(Elem_Ids.Input.Container + objArray[objArray.length - 2]).classList.add('inputsContainerBottom');
 
+    fun_obj[Element_obj.button.elem]('button');
+}
+
+const default_value = [
+    'cost_title',
+    'kwh',
+    'custo_painel',
+    'custo_inv'
+];
+const estacao_values = [
+    'estacao_ultra_quanti',
+    'estacao_ultra_custo',
+    'estacao_ultra_quanti',
+    'estacao_ultra_custo',
+    'estacao_fast_quanti',
+    'estacao_fast_custo',
+    'estacao_slow_quanti',
+    'estacao_slow_custo'
+];
+
+function GenDivFinanceiro() {
+
+    default_value.forEach(GenDiv);
+
+    GenDiv('tem_estrutura');
+
+    if (Element_obj['tem_estrutura'].value === 1) {
+
+        GenDiv('quantidade_estrutura');
+        GenDiv('custo_estrutura');
+
+    } else if (Element_obj['tem_estrutura'].value === 2) {
+
+        GenDiv('quantidade_estrutura_garagem');
+        GenDiv('custo_estrutura_garagem');
+
+    } else if (Element_obj['tem_estrutura'].value === 3) {
+
+        GenDiv('quantidade_estrutura');
+        GenDiv('custo_estrutura');
+        GenDiv('quantidade_estrutura_garagem');
+        GenDiv('custo_estrutura_garagem');
+
+    }
+
+    GenDiv('tem_estacao');
+    if (Element_obj['tem_estacao'].value === 1) {
+        estacao_values.forEach(GenDiv);
+        mgetElementById(Elem_Ids.Input.Container + estacao_values[estacao_values.length - 1]).classList.add('inputsContainerBottom');
+    } else {
+        mgetElementById(Elem_Ids.Input.Container + 'tem_estacao').classList.add('inputsContainerBottom');
+    }
 }
 
 function GenDiv(prop) {
     fun_obj[Element_obj[prop].elem](prop);
-}
-
-//Retorna se o total esta em quilo, Mega ou Giga
-function GetTotal(total) {
-    let text = Lang[appLang].total;
-
-    if (total > 1000000) {//Giga
-
-        return text + (total / 1000000).toFixed(2) + ' GWh ' + Lang[appLang].ac;
-
-    } else if (total > 1000) {//Mega
-
-        return text + (total / 1000).toFixed(2) + ' MWh ' + Lang[appLang].ac;
-
-    }//else quilo
-
-    return text + (total).toFixed(2) + ' kWh ' + Lang[appLang].ac;
-
 }
 
 Start();

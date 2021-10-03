@@ -49,7 +49,7 @@ const Lang = {
             innerHTML: 'Entradas sistema PV',
         },
         cost_title: {
-            innerHTML: 'Entradas custos e retornos',
+            innerHTML: 'Entradas sistema financeiro',
         },
         pot_nominal_array: {
             innerHTML: 'Potência nominal total da matriz (W/m²)',
@@ -118,9 +118,39 @@ const Lang = {
             innerHTML: 'Custo Inversor ou Otimizador (R$)',
             help: 'Valor médio por kW produzido'
         },
+        tem_estrutura: {
+            innerHTML: 'Estruturas de suporte',
+            help: 'Caso seja necessario adquirir estruturas para suportar os paíneis',
+            options: [
+                'Sem',
+                'Lage/telhado',
+                'Garagem',
+                'Com ambas'
+            ]
+        },
         custo_estrutura: {
-            innerHTML: 'Custo com estruturas de suporte (R$)',
-            help: 'Estruturas de laje, telhado ou de garagem usadas como suporte para os painéis'
+            innerHTML: 'Custo estruturas de telhado (R$)',
+            help: 'Custo por unidade de estrutura'
+        },
+        quantidade_estrutura: {
+            innerHTML: 'Quantidade estruturas de telhado (R$)',
+            help: 'Quantidade de estruturas, algumas são um painel por estrutura outras são multiplas'
+        },
+        custo_estrutura_garagem: {
+            innerHTML: 'Custo estruturas de garagem (R$)',
+            help: 'Custo por unidade de estrutura'
+        },
+        quantidade_estrutura_garagem: {
+            innerHTML: 'Quantidade estruturas de garagem (Un)',
+            help: 'Quantidade de estruturas, algumas são um painel por estrutura outras são multiplas'
+        },
+        tem_estacao: {
+            innerHTML: 'Estações de recarga VE',
+            help: 'Caso o estabelecimento implatar estações de recarga',
+            options: [
+                'Sem',
+                'Com'
+            ]
         },
         estacao_ultra_quanti: {
             innerHTML: 'Quantidade estações ultrarrápidos (un)',
@@ -150,6 +180,7 @@ const Lang = {
             innerHTML: 'Calcular'
         },
         result: "Resultado ",
+        total: "total ",
         of: " de ",
         year: " ano ",
         day: "dia",
@@ -159,8 +190,13 @@ const Lang = {
         obs_month: 'Obs.: Clique no mês para ver o resultado por dia',
         back_year: "  Voltar pro ano",
         back_month: "  Voltar pro mês de ",
-        total: ": Energia produzida total ",
+        total_en: "Energia produzida total ",
         ac: "(CA)",
+        ret_kwh: "Retorno produção de energia",
+        ret_custo: "Custo total do sistema PV",
+        ret_estacao: "Retorno estações de recarga",
+        ret_estacao_custo: "Custo total estações",
+        real: " (R$)",
         about: "Sobre",
         about_help: "Este é um projeto em andamento da faculdade, com o objetivo de modelar painéis fotovoltaicos, esta página é usada para mostrar os resultados do modelo, para mais informações acesse o link abaixo:",
     },
@@ -213,7 +249,7 @@ const Lang = {
             innerHTML: 'PV system inputs',
         },
         cost_title: {
-            innerHTML: 'Costs and returns inputs',
+            innerHTML: 'Financial system inputs',
         },
         pot_nominal_array: {
             innerHTML: 'Total nominal power of the array (W/m²)',
@@ -282,9 +318,31 @@ const Lang = {
             innerHTML: 'Inverter or Optimizer Cost (BRL)',
             help: 'Average value per kW produced'
         },
+        tem_estrutura: {
+            innerHTML: 'Support structures',
+            help: 'If necessary to acquire structures to support the panels',
+            options: [
+                'Not',
+                'Lage/roof',
+                'Garage',
+                'Both'
+            ]
+        },
         custo_estrutura: {
-            innerHTML: 'Cost of support structures (BRL)',
-            help: 'Slab, roof or garage structures used as support for the panels'
+            innerHTML: 'Cost structures for slab or roof (R$)',
+            help: 'Cost per structure unit'
+        },
+        quantidade_estrutura: {
+            innerHTML: 'Amount of structures for slab or roof (R$)',
+            help: 'Number of structures, some are one panel per structure others are multiple'
+        },
+        custo_estrutura_garagem: {
+            innerHTML: 'Cost structures for slab or roof (R$)',
+            help: 'Cost per structure unit'
+        },
+        quantidade_estrutura_garagem: {
+            innerHTML: 'Amount of structures for slab or roof (R$)',
+            help: 'Number of structures, some are one panel per structure others are multiple'
         },
         estacao_ultra_quanti: {
             innerHTML: 'Quantity of Rapid chargers stations (un)',
@@ -314,6 +372,7 @@ const Lang = {
             innerHTML: 'Calculate'
         },
         result: "Result ",
+        total: "total ",
         of: " of ",
         year: " year ",
         day: "day",
@@ -323,8 +382,13 @@ const Lang = {
         obs_month: 'Note: Click on the month to see the result by day',
         back_year: "Back to the year",
         back_month: " Back to month of ",
-        total: ": Total produced energy ",
+        total_en: "Total produced energy ",
         ac: "(AC)",
+        ret_kwh: "Energy production return",
+        ret_custo: "Total PV system cost",
+        ret_estacao: "Return charging stations",
+        ret_estacao_custo: "Total cost stations",
+        real: " (BRL)",
         about: "About",
         about_help: "This is an ongoing college project, with the objective of modeling photovoltaic panels, this page is used to show the model results, for more information visit the link below:",
     }
