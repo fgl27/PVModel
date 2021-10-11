@@ -89,14 +89,20 @@ const default_value = [
     'custo_inv'
 ];
 const estacao_values = [
+    'ultra_title',
     'estacao_ultra_quanti',
     'estacao_ultra_custo',
-    'estacao_ultra_quanti',
-    'estacao_ultra_custo',
+    'estacao_ultra_pot',
+
+    'fast_title',
     'estacao_fast_quanti',
     'estacao_fast_custo',
+    'estacao_fast_pot',
+
+    'slow_title',
     'estacao_slow_quanti',
-    'estacao_slow_custo'
+    'estacao_slow_custo',
+    'estacao_slow_pot'
 ];
 
 function GenDivFinanceiro() {
@@ -124,12 +130,27 @@ function GenDivFinanceiro() {
 
     }
 
+    GenDiv('estacao_title');
     GenDiv('tem_estacao');
+
     if (Element_obj['tem_estacao'].value === 1) {
+
+        GenDiv('kwh_venda');
+        GenDiv('days_active');
+        GenDiv('hours_active');
+
         estacao_values.forEach(GenDiv);
-        mgetElementById(Elem_Ids.Input.Container + estacao_values[estacao_values.length - 1]).classList.add('inputsContainerBottom');
+
+        mgetElementById(
+            Elem_Ids.Input.Container + estacao_values[estacao_values.length - 1]
+        ).classList.add('inputsContainerBottom');
+
     } else {
-        mgetElementById(Elem_Ids.Input.Container + 'tem_estacao').classList.add('inputsContainerBottom');
+
+        mgetElementById(
+            Elem_Ids.Input.Container + 'tem_estacao'
+        ).classList.add('inputsContainerBottom');
+
     }
 }
 

@@ -53,9 +53,6 @@ let Element_obj = {
     energi_title: {
         elem: 'title',
     },
-    cost_title: {
-        elem: 'title',
-    },
     pot_nominal_array: {
         elem: 'input',
         value: 1000,
@@ -131,6 +128,9 @@ let Element_obj = {
     button: {
         elem: 'button',
     },
+    cost_title: {
+        elem: 'title',
+    },
     kwh: {
         elem: 'input',
         value: 0.85,
@@ -181,6 +181,9 @@ let Element_obj = {
         type: 'number',
         step: '1',
     },
+    estacao_title: {
+        elem: 'title',
+    },
     tem_estacao: {
         elem: 'select',
         value: 0,
@@ -188,6 +191,27 @@ let Element_obj = {
             this.value = parseInt(value);
             StartInputs();
         }
+    },
+    ultra_title: {
+        elem: 'title',
+    },
+    days_active: {
+        elem: 'input',
+        value: 7,
+        type: 'number',
+        step: '1',
+    },
+    hours_active: {
+        elem: 'input',
+        value: 3,
+        type: 'number',
+        step: '1',
+    },
+    kwh_venda: {
+        elem: 'input',
+        value: 1.0,
+        type: 'number',
+        step: '0.1',
     },
     estacao_ultra_quanti: {
         elem: 'input',
@@ -201,6 +225,15 @@ let Element_obj = {
         type: 'number',
         step: '1',
     },
+    estacao_ultra_pot: {
+        elem: 'input',
+        value: 75,
+        type: 'number',
+        step: '1',
+    },
+    fast_title: {
+        elem: 'title',
+    },
     estacao_fast_quanti: {
         elem: 'input',
         value: 0,
@@ -209,9 +242,18 @@ let Element_obj = {
     },
     estacao_fast_custo: {
         elem: 'input',
-        value: 50000,
+        value: 30000,
         type: 'number',
         step: '1',
+    },
+    estacao_fast_pot: {
+        elem: 'input',
+        value: 25,
+        type: 'number',
+        step: '1',
+    },
+    slow_title: {
+        elem: 'title',
     },
     estacao_slow_quanti: {
         elem: 'input',
@@ -221,9 +263,15 @@ let Element_obj = {
     },
     estacao_slow_custo: {
         elem: 'input',
-        value: 50000,
+        value: 8500,
         type: 'number',
         step: '1',
+    },
+    estacao_slow_pot: {
+        elem: 'input',
+        value: 7.5,
+        type: 'number',
+        step: '0.1',
     },
 };
 
@@ -609,9 +657,9 @@ const fun_obj = {
         );
 
         //obtem o valor total que vai no texto Resultado
-        const total_kw = obj.total * CC_CA,
+        const total_kw = resultObj.total * CC_CA,
             resultado_total = GetTotal(total_kw),
-            result_title = Lang[appLang].result;
+            result_title = Lang[appLang].result_graf;
 
         let result_title_extra;
 
@@ -646,17 +694,26 @@ const fun_obj = {
             result_title_extra = Lang[appLang].year;
         }
 
-        fun_obj.result('result_title', 'inputsContainerTop', result_title + result_title_extra);
+        fun_obj.result('result_title', 'inputsContainerTop', Lang[appLang].pv_sys);
         fun_obj.result('result_total', null, Lang[appLang].total_en, resultado_total);
         fun_obj.result('result_kwh_ret', null, Lang[appLang].ret_kwh, GetTotalkWhRetorno(total_kw));
         fun_obj.result('result_custo_ret', null, Lang[appLang].ret_custo, GetCustoPV(total_kw));
         if (Element_obj['tem_estacao'].value) {
-            fun_obj.result('result_kwh_ret', null, Lang[appLang].ret_estacao, GetTotalkWhRetorno(total_kw));
+            fun_obj.result('result_kwh_consumo', null, Lang[appLang].ret_estacao, GetTotalkWhRetornoEstacao(total_kw));
+            fun_obj.result('result_kwh_ret', null, Lang[appLang].ret_estacao, GetTotalkWhRetornoEstacao(total_kw));
             fun_obj.result('result_custo_ret', null, Lang[appLang].ret_estacao_custo, GetCustoEstação(total_kw));
         }
 
         fun_obj.result('result_title', null, Lang[appLang].result + Lang[appLang].total);
 
+        resultDiv.appendChild(
+            mCreateElement(
+                'div',
+                Elem_Ids.Result.Note + '_Title',
+                'result_note',
+                result_title + result_title_extra + GetTotal(obj.total * CC_CA)
+            )
+        );
         //Adiciona a observação para meses e dias
         if (isMonth) {
 
@@ -665,7 +722,7 @@ const fun_obj = {
                     'div',
                     Elem_Ids.Result.Note,
                     'result_note',
-                    Lang[appLang].obs_month
+                    Lang[appLang].obs_day
                 )
             );
 

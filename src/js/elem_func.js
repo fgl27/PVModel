@@ -46,6 +46,30 @@ function superficieSetValues(value, obj) {
     Delta_T = obj.values.Delta_T[value];
 }
 
+const estacao_props = [
+    [
+        'estacao_ultra_quanti',
+        'estacao_ultra_custo',
+        'estacao_ultra_pot',
+    ],
+    [
+        'estacao_fast_quanti',
+        'estacao_fast_custo',
+        'estacao_fast_pot',
+    ],
+    [
+        'estacao_slow_quanti',
+        'estacao_slow_custo',
+        'estacao_slow_pot'
+    ]
+];
+
+const estacao_lang_props = [
+    'estacao_quanti',
+    'estacao_custo',
+    'estacao_pot'
+];
+
 function Set_Element_obj_Strings() {
     for (const prop in Lang[appLang]) {
         for (const value in Lang[appLang][prop]) {
@@ -54,6 +78,16 @@ function Set_Element_obj_Strings() {
             }
         }
     }
+
+    //Adiciona as strings das estações
+    estacao_props.forEach(element => {
+
+        for (let index = 0; index < estacao_lang_props.length; index++) {
+            Element_obj[element[index]].innerHTML = Lang[appLang][estacao_lang_props[index]].innerHTML;
+            Element_obj[element[index]].help = Lang[appLang][estacao_lang_props[index]].help;
+        }
+
+    });
 }
 
 //Atualiza o valor da potência nominal total da matriz em relação ao outros valores
@@ -160,9 +194,27 @@ function GetTotal(total) {
 
 }
 
-//Retorna o valor financeiro total em relação aos kwh produzidos
+//Retorna o valor financeiro total em relação aos kwh produzidos PV
 function GetTotalkWhRetorno(total_kWh) {
     return formatNumber(total_kWh * Element_obj.kwh.value) + Lang[appLang].real;
+}
+
+//Retorna o valor financeiro total em relação aos kwh produzidos Estações de recarga
+function GetTotalkWhRetornoEstacao(total_kWh) {
+    let total_kw = 0;
+
+    //custo ultrarapido
+    total_kw += Element_obj.estacao_ultra_quanti.value * 50;
+
+    //Custo rapido
+    total_kw += Element_obj.estacao_fast_quanti.value * 25;
+
+    //Custo lento
+    total_kw += Element_obj.estacao_slow_quanti.value * 5;
+
+    total_kw *= 365 * 5;
+
+    return formatNumber(total_kw * Element_obj.kwh.value);
 }
 
 function GetCustoPV(total_kWh) {

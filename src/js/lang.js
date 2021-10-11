@@ -21,18 +21,18 @@ const Lang = {
             "Dez"
         ],
         mesesfull: {
-            Jan: 'Janeiro',
-            Fev: 'Fevereiro',
-            Mar: 'Março',
-            Abr: 'Abril',
-            Maio: 'Maio',
-            Jun: 'Junho',
-            Jul: 'Julho',
-            Ago: 'Agosto',
-            Set: 'Setembor',
-            Out: 'Outubro',
-            Nov: 'Novembro',
-            Dez: 'Dezembro'
+            Jan: 'Janeiro ',
+            Fev: 'Fevereiro ',
+            Mar: 'Março ',
+            Abr: 'Abril ',
+            Maio: 'Maio ',
+            Jun: 'Junho ',
+            Jul: 'Julho ',
+            Ago: 'Agosto ',
+            Set: 'Setembor ',
+            Out: 'Outubro ',
+            Nov: 'Novembro ',
+            Dez: 'Dezembro '
         },
         modelo: {
             innerHTML: 'Modelo de entrada de valores',
@@ -47,9 +47,6 @@ const Lang = {
         },
         energi_title: {
             innerHTML: 'Entradas sistema PV',
-        },
-        cost_title: {
-            innerHTML: 'Entradas sistema financeiro',
         },
         pot_nominal_array: {
             innerHTML: 'Potência nominal total da matriz (W/m²)',
@@ -106,9 +103,15 @@ const Lang = {
                 'Sul'
             ]
         },
+        cost_title: {
+            innerHTML: 'Entradas sistema financeiro',
+        },
+        estacao_title: {
+            innerHTML: 'Entradas sistema estações de recarga veicular',
+        },
         kwh: {
             innerHTML: 'Custo do kWh (R$)',
-            help: 'Utilizado para calcular o retorno financeiro da produção ou consumo de energia'
+            help: 'O custo do kWh cobrado pela concessionária, utilizado para calcular o retorno financeiro da produção ou consumo de energia'
         },
         custo_painel: {
             innerHTML: 'Custo Wp painel (R$)',
@@ -152,42 +155,53 @@ const Lang = {
                 'Com'
             ]
         },
-        estacao_ultra_quanti: {
-            innerHTML: 'Quantidade estações ultrarrápidos (un)',
-            help: 'Quantidade estações ultrarrápidos a serem instaladas'
+        days_active: {
+            innerHTML: 'Dias semana estações abertas (Un)',
+            help: 'A quantidade de dias que o estabelecimento funciona em uma semana'
         },
-        estacao_ultra_custo: {
-            innerHTML: 'Custo estações ultrarrápidas (R$)',
-            help: 'Custo de uma estações ultrarrápidos'
+        hours_active: {
+            innerHTML: 'Média de Horas estações sadas (Un)',
+            help: 'A quantidade de horas em medía que as estações premanecem ativas em uso'
         },
-        estacao_fast_quanti: {
-            innerHTML: 'Quantidade estações rápidas (un)',
-            help: 'Quantidade estações rápidas a serem instaladas'
+        kwh_venda: {
+            innerHTML: 'kWh venda (BRL)',
+            help: 'O valor de venda do kWh cobrado pela recarga'
         },
-        estacao_fast_custo: {
-            innerHTML: 'Custo estações rápidas (R$)',
-            help: 'Custo de uma estações rápidas'
+        ultra_title: {
+            innerHTML: 'Estações de recarga ultrarrápidos',
         },
-        estacao_slow_quanti: {
-            innerHTML: 'Quantidade estações lentas (un)',
+        fast_title: {
+            innerHTML: 'Estações de recarga rápidas',
+        },
+        slow_title: {
+            innerHTML: 'Estações de recarga lenta',
+        },
+        estacao_quanti: {
+            innerHTML: 'Quantidade estações (Un)',
             help: 'Quantidade estações lentas a serem instaladas'
         },
-        estacao_slow_custo: {
-            innerHTML: 'Custo estações lentas (R$)',
-            help: 'Custo de uma estações lentas'
+        estacao_custo: {
+            innerHTML: 'Custo estações (R$)',
+            help: 'Custo de uma estações.'
+        },
+        estacao_pot: {
+            innerHTML: 'Potência média de recarga (kW)',
+            help: 'A potencia média que a estação carrega, alguns veiculos podem carregar a potencias maiores outros menores usar aqui um valor médio.'
         },
         button: {
             innerHTML: 'Calcular'
         },
         result: "Resultado ",
+        result_graf: "Resultado grafico sistema PV ",
         total: "total ",
         of: " de ",
         year: " ano ",
         day: "dia",
         month: "Mês",
         hour: "hora",
-        obs_day: "Obs.: Clique no dia para ver o resultado por hora",
-        obs_month: 'Obs.: Clique no mês para ver o resultado por dia',
+        pv_sys: "Resultado sistema PV",
+        obs_day: "Obs.: Clique no dia para ver o resultado da produção de energia por hora",
+        obs_month: 'Obs.: Clique no mês para ver o resultado da produção de energia  por dia',
         back_year: "  Voltar pro ano",
         back_month: "  Voltar pro mês de ",
         total_en: "Energia produzida total ",
@@ -221,18 +235,18 @@ const Lang = {
             "Dec"
         ],
         mesesfull: {
-            Jan: 'January',
-            Feb: 'February',
-            Mar: 'March',
-            Apr: 'April',
-            May: 'May',
-            June: 'June',
-            July: 'July',
-            Aug: 'August',
-            Sept: 'September',
-            Oct: 'October',
-            Nov: 'November',
-            Dec: 'December'
+            Jan: 'January ',
+            Feb: 'February ',
+            Mar: 'March ',
+            Apr: 'April ',
+            May: 'May ',
+            June: 'June ',
+            July: 'July ',
+            Aug: 'August ',
+            Sept: 'September ',
+            Oct: 'October ',
+            Nov: 'November ',
+            Dec: 'December '
         },
         modelo: {
             innerHTML: 'Input values mddell',
@@ -247,9 +261,6 @@ const Lang = {
         },
         energi_title: {
             innerHTML: 'PV system inputs',
-        },
-        cost_title: {
-            innerHTML: 'Financial system inputs',
         },
         pot_nominal_array: {
             innerHTML: 'Total nominal power of the array (W/m²)',
@@ -306,9 +317,15 @@ const Lang = {
                 'South'
             ]
         },
+        cost_title: {
+            innerHTML: 'Financial system inputs',
+        },
+        estacao_title: {
+            innerHTML: 'Vehicle charging station system inputs',
+        },
         kwh: {
             innerHTML: 'kWh cost (BRL)',
-            help: 'Used to calculate the financial return on energy production or consumption'
+            help: 'The cost of the kWh charged by the utility company, used to calculate the financial return on energy production or consumption'
         },
         custo_painel: {
             innerHTML: 'Wp Panel Cost (BRL)',
@@ -344,42 +361,61 @@ const Lang = {
             innerHTML: 'Amount of structures for slab or roof (R$)',
             help: 'Number of structures, some are one panel per structure others are multiple'
         },
-        estacao_ultra_quanti: {
-            innerHTML: 'Quantity of Rapid chargers stations (un)',
-            help: 'How many Rapid chargers stations to install'
+        tem_estacao: {
+            innerHTML: 'VE charging stations',
+            help: 'If the establishment implements charging stations',
+            options: [
+                'Without',
+                'With'
+            ]
         },
-        estacao_ultra_custo: {
-            innerHTML: 'Cost ultrafast stations (R$)',
-            help: 'Cost of one ultrafast stations'
+        days_active: {
+            innerHTML: 'Week days open (Un)',
+            help: 'The amount of days the establishment works in a week.'
         },
-        estacao_fast_quanti: {
-            innerHTML: 'Amount of fast stations (un)',
-            help: 'How many fast stations to install'
+        hours_active: {
+            innerHTML: 'Average Hours of stations use (Un)',
+            help: 'The number of hours on average that the stations remain active in use'
         },
-        estacao_fast_custo: {
-            innerHTML: 'Fast stations cost (R$)',
-            help: 'Cost of a fast stations'
+        kwh_venda: {
+            innerHTML: 'Sale kWh (BRL)',
+            help: 'The sales value of the kWh charged for the recharge'
         },
-        estacao_slow_quanti: {
-            innerHTML: 'Amount of slow stations (un)',
+        ultra_title: {
+            innerHTML: 'Ultrafast charging stations',
+        },
+        fast_title: {
+            innerHTML: 'Fast charging stations',
+        },
+        slow_title: {
+            innerHTML: 'Slow charging stations',
+        },
+        estacao_quanti: {
+            innerHTML: 'Amount of stations (Un)',
             help: 'How many slow stations to install'
         },
-        estacao_slow_custo: {
-            innerHTML: 'Cost slow stations (R$)',
-            help: 'Cost of a slow stations'
+        estacao_custo: {
+            innerHTML: 'Stations cost (R$)',
+            help: 'Cost of one season.'
+        },
+        estacao_pot: {
+            innerHTML: 'Average recharge power (kW)',
+            help: 'The average power that the station loads, some vehicles can load at higher power others lower, use an average value here.'
         },
         button: {
             innerHTML: 'Calculate'
         },
         result: "Result ",
+        result_graf: "Graphic result PV system",
         total: "total ",
         of: " of ",
         year: " year ",
         day: "day",
         month: "Month",
         hour: "hour",
-        obs_day: "Note: Click on the day to see the hourly result",
-        obs_month: 'Note: Click on the month to see the result by day',
+        pv_sys: "PV system result",
+        obs_day: "Note: Click on the day to see the result of energy production per hour",
+        obs_month: 'Note: Click on the month to see the result of energy production per day',
         back_year: "Back to the year",
         back_month: " Back to month of ",
         total_en: "Total produced energy ",
