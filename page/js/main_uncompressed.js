@@ -22,7 +22,9 @@
             StartInputs();
 
             const disabled = Boolean(value);
-            mgetElementById(Elem_Ids.Input.Input + 'pot_nominal_array').disabled = disabled;
+            let ele = mgetElementById(Elem_Ids.Input.Input + 'pot_nominal_array');
+            ele.disabled = disabled;
+            if (disabled) ele.classList.add('CursorDisable');
 
             //bloqueia que se altere os valores dos elementos que seu valor é calculado em relação a outros valores
             if (disabled) {
@@ -36,7 +38,10 @@
 
             if (value === 1) {
 
-                mgetElementById(Elem_Ids.Input.Input + 'quantidade').disabled = true;
+                ele = mgetElementById(Elem_Ids.Input.Input + 'quantidade');
+                ele.disabled = true;
+                ele.classList.add('CursorDisable');
+
                 mgetElementById(Elem_Ids.Input.Span + 'quantidade').className =
                     'tooltiptext tooltiptext_disabled';
                 mgetElementById(Elem_Ids.Input.Span + 'quantidade').innerHTML =
@@ -54,6 +59,30 @@
         Delta_T = obj.values.Delta_T[value];
     }
 
+    const estacao_props = [
+        [
+            'estacao_ultra_quanti',
+            'estacao_ultra_custo',
+            'estacao_ultra_pot',
+        ],
+        [
+            'estacao_fast_quanti',
+            'estacao_fast_custo',
+            'estacao_fast_pot',
+        ],
+        [
+            'estacao_slow_quanti',
+            'estacao_slow_custo',
+            'estacao_slow_pot'
+        ]
+    ];
+
+    const estacao_lang_props = [
+        'estacao_quanti',
+        'estacao_custo',
+        'estacao_pot'
+    ];
+
     function Set_Element_obj_Strings() {
         for (const prop in Lang[appLang]) {
             for (const value in Lang[appLang][prop]) {
@@ -62,6 +91,16 @@
                 }
             }
         }
+
+        //Adiciona as strings das estações
+        estacao_props.forEach(element => {
+
+            for (let index = 0; index < estacao_lang_props.length; index++) {
+                Element_obj[element[index]].innerHTML = Lang[appLang][estacao_lang_props[index]].innerHTML;
+                Element_obj[element[index]].help = Lang[appLang][estacao_lang_props[index]].help;
+            }
+
+        });
     }
 
     //Atualiza o valor da potência nominal total da matriz em relação ao outros valores
@@ -149,6 +188,117 @@
         //Calcula a potencia CC já com as perdas
         return PM * (1 - (Element_obj.perda.value / 100));
     }
+
+    //Retorna se o total esta em quilo, Mega ou Giga
+    function GetTotal(total) {
+        let text = '';
+
+        if (total > 1000000) { //Giga
+
+            return text + formatNumber(total / 1000000.0, 4) + ' GWh ' + Lang[appLang].ac;
+
+        } else if (total > 1000) { //Mega
+
+            return text + formatNumber(total / 1000.0, 4) + ' MWh ' + Lang[appLang].ac;
+
+        } //else quilo
+
+        return text + formatNumber(total, 4) + ' kWh ' + Lang[appLang].ac;
+
+    }
+
+    //Retorna o valor financeiro total em relação aos kwh produzidos PV
+    function GetTotalkWhRetorno(total_kWh) {
+        return (total_kWh * Element_obj.kwh.value);
+    }
+
+    //Retorna o valor financeiro total em relação aos kwh produzidos Estações de recarga
+    function GetConsumoEstacao() {
+        let total_kw = 0;
+
+        //custo ultrarapido
+        total_kw += Element_obj.estacao_ultra_quanti.value * Element_obj.estacao_ultra_pot.value;
+
+        //Custo rapido
+        total_kw += Element_obj.estacao_fast_quanti.value * Element_obj.estacao_fast_pot.value;
+
+        //Custo lento
+        total_kw += Element_obj.estacao_slow_quanti.value * Element_obj.estacao_slow_pot.value;
+
+        total_kw *= (365 / 7) * Element_obj.days_active.value * Element_obj.hours_active.value;
+
+        return total_kw;
+    }
+
+    //Retorna o valor financeiro total em relação aos kwh produzidos Estações de recarga
+    function GetRetornoEstacao(total_ev_kw) {
+        return (total_ev_kw * Element_obj.kwh_venda.value) -
+            (total_ev_kw * Element_obj.kwh.value);
+    }
+
+    function GetCustoPV(total_kWh) {
+        let total_cost = 0;
+
+        //custo paineis
+        total_cost += Element_obj.pot_nominal_array.value * Element_obj.custo_painel.value;
+
+        //Custo inversores ou otimizadores
+        total_cost += total_kWh / 1000 * Element_obj.custo_inv.value;
+
+        //Custo extrutura
+        if (Element_obj.tem_estrutura.value === 1) {
+
+            total_cost += Element_obj.quantidade_estrutura.value * Element_obj.custo_estrutura.value;
+
+        } else if (Element_obj.tem_estrutura.value === 2) {
+
+            total_cost += Element_obj.quantidade_estrutura_garagem.value * Element_obj.custo_estrutura_garagem.value;
+
+        } else if (Element_obj.tem_estrutura.value === 3) {
+
+            total_cost += Element_obj.quantidade_estrutura.value * Element_obj.custo_estrutura.value;
+            total_cost += Element_obj.quantidade_estrutura_garagem.value * Element_obj.custo_estrutura_garagem.value;
+
+        }
+
+        return total_cost;
+    }
+
+    function GetCustoEstação() {
+        let total_cost = 0;
+
+        //custo ultrarapido
+        total_cost += Element_obj.estacao_ultra_quanti.value * Element_obj.estacao_ultra_custo.value;
+
+        //Custo rapido
+        total_cost += Element_obj.estacao_fast_quanti.value * Element_obj.estacao_fast_custo.value;
+
+        //Custo lento
+        total_cost += Element_obj.estacao_slow_quanti.value * Element_obj.estacao_slow_custo.value;
+
+        return total_cost;
+    }
+
+    function formatNumber(number, max) {
+        return number.toLocaleString(locale, {
+            maximumFractionDigits: max ? max : 2
+        });
+    }
+
+    function formatAnos(value) {
+        if (value === 0 || isNaN(value)) {
+            return 0 + Lang[appLang].years;
+        }
+
+        const qmes = value * 12,
+            m = Math.ceil(qmes % 12),
+            y = Math.floor(qmes / 12) + (m === 12 ? 1 : 0),
+            m_text = m > 0 && m !== 12 ? m + ' ' + (m > 1 ? Lang[appLang].months : Lang[appLang].month) : '',
+            y_text = y > 0 ? y + (y > 1 ? Lang[appLang].years : Lang[appLang].year) : '';
+
+        return y_text + ' ' + m_text;
+    }
+
     let resultObj = {};
     let resultObjID;
     const question_icon = '<i class="icon icon-help-circled" style="-webkit-text-stroke-width:unset;"></i>';
@@ -160,16 +310,17 @@
             value: 0,
             values: [
                 [ // os elementos disponíveis no modo Pot nominal
+                    'energi_title',
                     'modelo',
                     'regiao',
                     'pot_nominal_array',
                     'coef_temp',
                     'superficie',
                     'perda',
-                    'cc_ca',
-                    'button'
+                    'cc_ca'
                 ],
                 [ // os elementos disponíveis no modo Área total
+                    'energi_title',
                     'modelo',
                     'regiao',
                     'area',
@@ -180,10 +331,10 @@
                     'coef_temp',
                     'superficie',
                     'perda',
-                    'cc_ca',
-                    'button'
+                    'cc_ca'
                 ],
                 [ // os elementos disponíveis no modo quantidade painéis
+                    'energi_title',
                     'modelo',
                     'regiao',
                     'pot_nominal_painel',
@@ -192,17 +343,20 @@
                     'coef_temp',
                     'superficie',
                     'perda',
-                    'cc_ca',
-                    'button'
+                    'cc_ca'
                 ]
             ],
             setValues: function(value) {
                 modeloSetValues(value, this);
             }
         },
+        energi_title: {
+            elem: 'title',
+        },
         pot_nominal_array: {
             elem: 'input',
             value: 1000,
+            min: 0,
             type: 'number',
             step: '10',
             UpdateValue: UpdatePotNominal
@@ -210,6 +364,7 @@
         pot_nominal_painel: {
             elem: 'input',
             value: 300,
+            min: 0,
             type: 'number',
             step: '10',
             UpdateValue: UpdatePotNominal
@@ -217,6 +372,7 @@
         area_painel: {
             elem: 'input',
             value: 1.64,
+            min: 0,
             type: 'number',
             step: '0.01',
             UpdateValue: UpdatePotNominal
@@ -224,6 +380,7 @@
         area: {
             elem: 'input',
             value: 6,
+            min: 0,
             type: 'number',
             step: '1',
             UpdateValue: UpdatePotNominal
@@ -231,6 +388,7 @@
         quantidade: {
             elem: 'input',
             value: 3,
+            min: 0,
             type: 'number',
             step: '1',
             UpdateValue: UpdatePotNominal
@@ -238,18 +396,22 @@
         perda: {
             elem: 'input',
             value: 14,
+            min: 0,
             type: 'number',
             step: '1',
         },
         coef_temp: {
             elem: 'input',
             value: -0.35,
+            max: 0,
             type: 'number',
             step: '0.01',
         },
         cc_ca: {
             elem: 'input',
             value: 95,
+            min: 0,
+            max: 100,
             type: 'number',
             step: '1',
         },
@@ -274,7 +436,175 @@
         },
         button: {
             elem: 'button',
-        }
+        },
+        cost_title: {
+            elem: 'title',
+        },
+        kwh: {
+            elem: 'input',
+            value: 0.85,
+            min: 0,
+            type: 'number',
+            step: '0.01',
+        },
+        custo_painel: {
+            elem: 'input',
+            value: 2.2,
+            min: 0,
+            type: 'number',
+            step: '0.01',
+        },
+        custo_inv: {
+            elem: 'input',
+            value: 1000,
+            min: 0,
+            type: 'number',
+            step: '1',
+        },
+        tem_estrutura: {
+            elem: 'select',
+            value: 0,
+            setValues: function(value) {
+                this.value = parseInt(value);
+                StartInputs();
+            }
+        },
+        custo_estrutura: {
+            elem: 'input',
+            value: 500,
+            min: 0,
+            type: 'number',
+            step: '1',
+        },
+        quantidade_estrutura: {
+            elem: 'input',
+            value: 1,
+            min: 0,
+            type: 'number',
+            step: '1',
+        },
+        custo_estrutura_garagem: {
+            elem: 'input',
+            value: 10000,
+            min: 0,
+            type: 'number',
+            step: '1',
+        },
+        quantidade_estrutura_garagem: {
+            elem: 'input',
+            value: 1,
+            min: 0,
+            type: 'number',
+            step: '1',
+        },
+        estacao_title: {
+            elem: 'title',
+        },
+        tem_estacao: {
+            elem: 'select',
+            value: 0,
+            setValues: function(value) {
+                this.value = parseInt(value);
+                StartInputs();
+            }
+        },
+        ultra_title: {
+            elem: 'title',
+        },
+        days_active: {
+            elem: 'input',
+            value: 7,
+            min: 1,
+            nax: 7,
+            type: 'number',
+            step: '1',
+        },
+        hours_active: {
+            elem: 'input',
+            value: 3,
+            min: 0,
+            max: 24,
+            type: 'number',
+            step: '1',
+        },
+        kwh_venda: {
+            elem: 'input',
+            value: 1.0,
+            min: 0,
+            type: 'number',
+            step: '0.1',
+        },
+        estacao_ultra_quanti: {
+            elem: 'input',
+            value: 0,
+            min: 0,
+            type: 'number',
+            step: '1',
+        },
+        estacao_ultra_custo: {
+            elem: 'input',
+            value: 100000,
+            min: 0,
+            type: 'number',
+            step: '1',
+        },
+        estacao_ultra_pot: {
+            elem: 'input',
+            value: 100,
+            min: 43,
+            max: 200,
+            type: 'number',
+            step: '1',
+        },
+        fast_title: {
+            elem: 'title',
+        },
+        estacao_fast_quanti: {
+            elem: 'input',
+            value: 0,
+            min: 0,
+            type: 'number',
+            step: '1',
+        },
+        estacao_fast_custo: {
+            elem: 'input',
+            value: 30000,
+            type: 'number',
+            step: '1',
+        },
+        estacao_fast_pot: {
+            elem: 'input',
+            value: 22,
+            min: 0,
+            max: 20,
+            type: 'number',
+            step: '1',
+        },
+        slow_title: {
+            elem: 'title',
+        },
+        estacao_slow_quanti: {
+            elem: 'input',
+            value: 0,
+            min: 0,
+            type: 'number',
+            step: '1',
+        },
+        estacao_slow_custo: {
+            elem: 'input',
+            value: 8500,
+            min: 0,
+            type: 'number',
+            step: '1',
+        },
+        estacao_slow_pot: {
+            elem: 'input',
+            value: 6,
+            min: 0,
+            max: 7.5,
+            type: 'number',
+            step: '0.1',
+        },
     };
 
     const Elem_Ids = {
@@ -313,6 +643,111 @@
     const k = 0.0015; //Fator de correção de erro
 
     const fun_obj = {
+        title: function(prop) {
+            //cria o elemento de entrada de valor
+            let obj = Element_obj[prop];
+
+            const Inputs_Container = mCreateElement(
+                'div',
+                Elem_Ids.Input.Container + prop,
+                'inputsContainer'
+            );
+
+            //cria os elementos de acordo com as entradas
+            Inputs_Container.appendChild(
+                mCreateElement(
+                    'div',
+                    Elem_Ids.Input.Text + prop,
+                    'inputsTitle',
+                    obj.innerHTML
+                )
+            );
+
+            const container = mCreateElement(
+                'div',
+                prop
+            );
+
+            container.appendChild(Inputs_Container);
+            inputsDiv.appendChild(container);
+        },
+        result: function(prop, extra_class, text, result, help) {
+            const Inputs_Container = mCreateElement(
+                'div',
+                Elem_Ids.Input.Container + prop,
+                'inputsContainer ' + (extra_class ? extra_class : '')
+            );
+
+            const Imput_Help_Container = mCreateElement(
+                'div',
+                Elem_Ids.Input.Imput_Help_Container + prop,
+                'Imput_Help_Container'
+            );
+
+            const textDiv = mCreateElement(
+                'div',
+                Elem_Ids.Input.Text + prop,
+                result || result === 0 ? 'inputsText' : 'inputsTitle',
+                text
+            );
+
+            if (help) {
+
+                const Input_Tooltip = mCreateElement(
+                    'div',
+                    Elem_Ids.Input.Tooltip + prop,
+                    'tooltip tooltip_disabled'
+                );
+
+                Input_Tooltip.appendChild(textDiv);
+                Input_Tooltip.appendChild(
+                    mCreateElement(
+                        'span',
+                        Elem_Ids.Input.Span + prop,
+                        'hide'
+                    )
+                );
+                Imput_Help_Container.appendChild(Input_Tooltip);
+
+                //Seta a ajuda quando o mouse fica sobre ?
+                Imput_Help_Container.appendChild(
+                    mCreateElement(
+                        'div',
+                        Elem_Ids.Input.Help + prop,
+                        'tooltip ',
+                        question_icon + '<span class="tooltiptext">' + help + '</span>'
+                    )
+                );
+                Inputs_Container.appendChild(Imput_Help_Container);
+
+            } else {
+
+                Inputs_Container.appendChild(
+                    textDiv
+                );
+
+            }
+            Inputs_Container.appendChild(Imput_Help_Container);
+
+            if (result || result === 0) {
+                Imput_Help_Container.appendChild(
+                    mCreateElement(
+                        'div',
+                        Elem_Ids.Input.Help + prop,
+                        'resultText',
+                        result
+                    )
+                );
+            }
+
+            const container = mCreateElement(
+                'div',
+                prop
+            );
+
+            container.appendChild(Inputs_Container);
+            resultDiv.appendChild(container);
+        },
         input: function(prop) {
             //cria o elemento de entrada de valor
             let obj = Element_obj[prop];
@@ -346,7 +781,7 @@
             //seta o seu passo se é numero de 0.1 em 0.1 por ex.
             Input.step = obj.step;
             //seta o valor inicial
-            if (obj.value) Input.value = obj.value;
+            if (obj.value || obj.value === 0) Input.value = obj.value;
 
             //seta a função a ser chamada quando o valor muda
             Input.onchange = function() {
@@ -355,6 +790,13 @@
                 if (obj.UpdateValue) {
                     obj.UpdateValue();
                 }
+
+                if (obj.min && this.value < obj.min) {
+                    this.value = obj.min;
+                } else if (obj.max && this.value > obj.max) {
+                    this.value = obj.max;
+                }
+
             };
 
             //cria os elementos de acordo com as entradas
@@ -586,49 +1028,84 @@
                 'inputsbutton Result_Button text_shadown'
             );
 
-            //adiciona o div titulo "Resultado ___: etc..."
-            const div_result_title = mCreateElement(
-                'div',
-                Elem_Ids.Result.Title + base_id,
-                'result_title'
-            );
-
             //obtem o valor total que vai no texto Resultado
-            const resultado_total = GetTotal(obj.total * CC_CA);
+            const total_kw = resultObj.total * CC_CA,
+                resultado_total = GetTotal(total_kw),
+                result_title = Lang[appLang].result_graf;
+
+            let result_title_extra;
 
             //Seta o valor se é ano, mês ou dia
             //e adiciona um botão pra voltar ao resultado anterior caso seja mês ou dia
             if (isDay) {
 
-                div_result_title.innerHTML = Lang[appLang].result + prop2 + Lang[appLang].of + Lang[appLang].mesesfull[prop1] + resultado_total;
+                result_title_extra = prop2 + Lang[appLang].of + Lang[appLang].mesesfull[prop1];
 
                 button.innerHTML = arrow + Lang[appLang].back_month + Lang[appLang].mesesfull[prop1];
                 button.onclick = function() {
                     monclick(prop1);
                 };
 
-                resultDiv.appendChild(button);
-
                 base_div_text = Lang[appLang].hour;
 
             } else if (isMonth) {
 
-                div_result_title.innerHTML = Lang[appLang].result + Lang[appLang].mesesfull[prop1] + resultado_total;
+                result_title_extra = Lang[appLang].mesesfull[prop1];
                 button.innerHTML = arrow + Lang[appLang].back_year;
                 button.onclick = function() {
                     monclick();
                 };
 
-                resultDiv.appendChild(button);
-
                 base_div_text = Lang[appLang].day;
 
             } else {
-                div_result_title.innerHTML = Lang[appLang].result + Lang[appLang].year + resultado_total;
+                result_title_extra = Lang[appLang].year;
             }
 
-            resultDiv.appendChild(div_result_title);
+            const total_ret_kw = GetTotalkWhRetorno(total_kw),
+                total_pv_custo = GetCustoPV(total_kw),
+                ret_anos = total_pv_custo / total_ret_kw;
 
+            fun_obj.result('result_title', 'inputsContainerTop', Lang[appLang].pv_sys);
+            fun_obj.result('result_total_pv', null, Lang[appLang].total_en, resultado_total);
+            fun_obj.result('result_kwh_ret', null, Lang[appLang].ret_kwh, formatNumber(total_ret_kw) + Lang[appLang].real);
+            fun_obj.result('result_custo_ret', null, Lang[appLang].ret_custo, formatNumber(total_pv_custo) + Lang[appLang].real);
+            fun_obj.result('result_ret_ev', null, Lang[appLang].pv_paga, formatAnos(ret_anos));
+
+            if (Element_obj.tem_estacao.value) {
+
+                const total_ev_kw = GetConsumoEstacao(),
+                    total_ev_custo = GetCustoEstação(),
+                    total_ev_ret = GetRetornoEstacao(total_ev_kw),
+                    ret_ev_anos = total_ev_custo / total_ev_ret,
+                    se_paga = formatAnos((total_ev_custo + total_pv_custo) / (total_ret_kw + total_ev_ret)),
+                    ret_ano_tot = formatNumber(total_ev_ret + total_ret_kw, 2) + Lang[appLang].real;
+
+                fun_obj.result('result_ev_title', null, Lang[appLang].ev_sys);
+                fun_obj.result('result_kwh_consumo', null, Lang[appLang].estacao_consumo, GetTotal(total_ev_kw));
+                fun_obj.result('result_kwh_ev_ret', null, Lang[appLang].ret_estacao, formatNumber(total_ev_ret, 2) + Lang[appLang].real);
+                fun_obj.result('result_custo_ev_ret', null, Lang[appLang].ret_estacao_custo, formatNumber(total_ev_custo, 2) + Lang[appLang].real);
+                fun_obj.result('result_ret_ev', null, Lang[appLang].pv_paga, formatAnos(ret_ev_anos));
+
+                fun_obj.result('result_title', null, Lang[appLang].result + Lang[appLang].total, null, Lang[appLang].result_tot);
+
+                fun_obj.result('custo_total', null, Lang[appLang].custo_total, formatNumber(total_ev_custo + total_pv_custo, 2) + Lang[appLang].real);
+                fun_obj.result('ret_total', null, Lang[appLang].ret_total, ret_ano_tot);
+
+                fun_obj.result('se_paga_total', 'inputsContainerBottom', Lang[appLang].sys_pago, se_paga);
+
+            }
+
+
+
+            resultDiv.appendChild(
+                mCreateElement(
+                    'div',
+                    Elem_Ids.Result.Note + '_Title',
+                    'result_note',
+                    result_title + result_title_extra + GetTotal(obj.total * CC_CA)
+                )
+            );
 
             //Adiciona a observação para meses e dias
             if (isMonth) {
@@ -638,7 +1115,7 @@
                         'div',
                         Elem_Ids.Result.Note,
                         'result_note',
-                        Lang[appLang].obs_month
+                        Lang[appLang].obs_day
                     )
                 );
 
@@ -653,6 +1130,10 @@
                     )
                 );
             }
+
+            //Adiciona o botão retornar grafico
+            if (isDay || isMonth)
+                resultDiv.appendChild(button);
 
             const Results_container = mCreateElement(
                 'div',
@@ -815,6 +1296,7 @@
         };
         //zoom
         mgetElementById('zoom_reset').onclick = function() {
+            zoomMinusDiv.classList = 'optionButton skipclick';
             ChangeSize(1);
         };
 
@@ -851,12 +1333,23 @@
         }
     };
 
+    let locale;
+
     function GetLAng() {
         const lang = localStorage.getItem('app_lang') ||
             window.navigator.userLanguage ||
             window.navigator.language;
 
-        return lang.toLowerCase().indexOf('en') !== -1 ? 'en' : 'pt';
+        if (lang.toLowerCase().indexOf('en') !== -1) {
+            locale = 'en-EN';
+
+            return 'en';
+        } else {
+            locale = 'pt-BR';
+
+            return 'pt';
+        }
+
     }
 
     function SetLAng(newLang) {
@@ -971,18 +1464,18 @@
                 "Dez"
             ],
             mesesfull: {
-                Jan: 'Janeiro',
-                Fev: 'Fevereiro',
-                Mar: 'Março',
-                Abr: 'Abril',
-                Maio: 'Maio',
-                Jun: 'Junho',
-                Jul: 'Julho',
-                Ago: 'Agosto',
-                Set: 'Setembor',
-                Out: 'Outubro',
-                Nov: 'Novembro',
-                Dez: 'Dezembro'
+                Jan: 'Janeiro ',
+                Fev: 'Fevereiro ',
+                Mar: 'Março ',
+                Abr: 'Abril ',
+                Maio: 'Maio ',
+                Jun: 'Junho ',
+                Jul: 'Julho ',
+                Ago: 'Agosto ',
+                Set: 'Setembor ',
+                Out: 'Outubro ',
+                Nov: 'Novembro ',
+                Dez: 'Dezembro '
             },
             modelo: {
                 innerHTML: 'Modelo de entrada de valores',
@@ -994,6 +1487,9 @@
                     'Área total',
                     'Quantidade painéis',
                 ]
+            },
+            energi_title: {
+                innerHTML: 'Entradas sistema PV',
             },
             pot_nominal_array: {
                 innerHTML: 'Potência nominal total da matriz (W/m²)',
@@ -1050,21 +1546,123 @@
                     'Sul'
                 ]
             },
+            cost_title: {
+                innerHTML: 'Entradas sistema financeiro',
+            },
+            estacao_title: {
+                innerHTML: 'Entradas sistema estações de recarga veicular',
+            },
+            kwh: {
+                innerHTML: 'Custo do kWh (R$)',
+                help: 'O custo do kWh cobrado pela concessionária, utilizado para calcular o retorno financeiro da produção ou consumo de energia'
+            },
+            custo_painel: {
+                innerHTML: 'Custo Wp painel (R$)',
+                help: 'Wp Watt-pico, Valor médio de um Wp, este valor é multiplicado pela potência nominal total da matriz para calcular o custo total dos painéis'
+            },
+            custo_inv: {
+                innerHTML: 'Custo Inversor ou Otimizador (R$)',
+                help: 'Valor médio por kW produzido'
+            },
+            tem_estrutura: {
+                innerHTML: 'Estruturas de suporte',
+                help: 'Caso seja necessario adquirir estruturas para suportar os paíneis',
+                options: [
+                    'Sem',
+                    'Lage/telhado',
+                    'Garagem',
+                    'Com ambas'
+                ]
+            },
+            custo_estrutura: {
+                innerHTML: 'Custo estruturas de telhado (R$)',
+                help: 'Custo por unidade de estrutura'
+            },
+            quantidade_estrutura: {
+                innerHTML: 'Quantidade estruturas de telhado (R$)',
+                help: 'Quantidade de estruturas, algumas são um painel por estrutura outras são multiplas'
+            },
+            custo_estrutura_garagem: {
+                innerHTML: 'Custo estruturas de garagem (R$)',
+                help: 'Custo por unidade de estrutura'
+            },
+            quantidade_estrutura_garagem: {
+                innerHTML: 'Quantidade estruturas de garagem (Un)',
+                help: 'Quantidade de estruturas, algumas são um painel por estrutura outras são multiplas'
+            },
+            tem_estacao: {
+                innerHTML: 'Estações de recarga VE',
+                help: 'Caso o estabelecimento implatar estações de recarga',
+                options: [
+                    'Sem',
+                    'Com'
+                ]
+            },
+            days_active: {
+                innerHTML: 'Dias semana estações abertas (Un)',
+                help: 'A quantidade de dias que o estabelecimento funciona em uma semana'
+            },
+            hours_active: {
+                innerHTML: 'Média de Horas de utilização por dia (Un)',
+                help: 'A quantidade de horas em medía que as estações premanecem ativas em uso'
+            },
+            kwh_venda: {
+                innerHTML: 'kWh venda (R$)',
+                help: 'O valor de venda do kWh cobrado pela recarga'
+            },
+            ultra_title: {
+                innerHTML: 'Estações de recarga ultrarrápidos',
+            },
+            fast_title: {
+                innerHTML: 'Estações de recarga rápidas',
+            },
+            slow_title: {
+                innerHTML: 'Estações de recarga lenta',
+            },
+            estacao_quanti: {
+                innerHTML: 'Quantidade estações (Un)',
+                help: 'Quantidade estações lentas a serem instaladas'
+            },
+            estacao_custo: {
+                innerHTML: 'Custo estações (R$)',
+                help: 'Custo de uma estações.'
+            },
+            estacao_pot: {
+                innerHTML: 'Potência média de recarga (kW)',
+                help: 'A potencia média que a estação carrega, alguns veiculos podem carregar a potencias maiores outros menores usar aqui um valor médio.'
+            },
             button: {
                 innerHTML: 'Calcular'
             },
             result: "Resultado ",
+            result_tot: "O resultado total combina os custos totais do sistema PV e estações de recarga",
+            result_graf: "Resultado grafico sistema PV ",
+            total: "total ",
             of: " de ",
             year: " ano ",
+            years: " anos ",
             day: "dia",
-            month: "Mês",
+            month: "mês",
+            months: "mêses",
             hour: "hora",
-            obs_day: "Obs.: Clique no dia para ver o resultado por hora",
-            obs_month: 'Obs.: Clique no mês para ver o resultado por dia',
+            ret_total: "Retorno total do sistema ano",
+            custo_total: "Custo total do sistema",
+            sys_pago: "Sistema todo se paga em",
+            pv_sys: "Resultado somente do sistema PV ano",
+            ev_sys: "Resultado somente do sistema recarga ano",
+            pv_paga: "Sistema PV se paga em",
+            obs_day: "Obs.: Clique no dia para ver o resultado da produção de energia por hora",
+            obs_month: 'Obs.: Clique no mês para ver o resultado da produção de energia  por dia',
             back_year: "  Voltar pro ano",
             back_month: "  Voltar pro mês de ",
-            total: ": Energia produzida total ",
+            total_en: "Energia produzida total ",
             ac: "(CA)",
+            ret_kwh: "Retorno produção de energia",
+            ret_custo: "Custo total do sistema PV",
+            estacao_consumo: "Consumo estações de recarga ano",
+            ret_estacao: "Retorno estações de recarga ano",
+            ret_estacao_custo: "Custo total estações",
+            real: " (R$)",
             about: "Sobre",
             about_help: "Este é um projeto em andamento da faculdade, com o objetivo de modelar painéis fotovoltaicos, esta página é usada para mostrar os resultados do modelo, para mais informações acesse o link abaixo:",
         },
@@ -1089,18 +1687,18 @@
                 "Dec"
             ],
             mesesfull: {
-                Jan: 'January',
-                Feb: 'February',
-                Mar: 'March',
-                Apr: 'April',
-                May: 'May',
-                June: 'June',
-                July: 'July',
-                Aug: 'August',
-                Sept: 'September',
-                Oct: 'October',
-                Nov: 'November',
-                Dec: 'December'
+                Jan: 'January ',
+                Feb: 'February ',
+                Mar: 'March ',
+                Apr: 'April ',
+                May: 'May ',
+                June: 'June ',
+                July: 'July ',
+                Aug: 'August ',
+                Sept: 'September ',
+                Oct: 'October ',
+                Nov: 'November ',
+                Dec: 'December '
             },
             modelo: {
                 innerHTML: 'Input values mddell',
@@ -1112,6 +1710,9 @@
                 help: 'Total rated power:<br><br>The calculation is made by the total rated power of the set of panels<br><br>' +
                     'Total area:<br><br>The calculation is done by determining the total rated power of the set of panels in relation to how many panels fit in the total area<br><br>' +
                     'Amount of panels:<br><br>The calculation is made to determine the total rated power of the set of panels in relation to the total number of panels'
+            },
+            energi_title: {
+                innerHTML: 'PV system inputs',
             },
             pot_nominal_array: {
                 innerHTML: 'Total nominal power of the array (W/m²)',
@@ -1168,21 +1769,122 @@
                     'South'
                 ]
             },
+            cost_title: {
+                innerHTML: 'Financial system inputs',
+            },
+            estacao_title: {
+                innerHTML: 'Vehicle charging station system inputs',
+            },
+            kwh: {
+                innerHTML: 'kWh cost (BRL)',
+                help: 'The cost of the kWh charged by the utility company, used to calculate the financial return on energy production or consumption'
+            },
+            custo_painel: {
+                innerHTML: 'Wp Panel Cost (BRL)',
+                help: 'Wp Watt-peak, Average value of a Wp, this value is multiplied by the total nominal power of the matrix to calculate the total cost of the panels'
+            },
+            custo_inv: {
+                innerHTML: 'Inverter or Optimizer Cost (BRL)',
+                help: 'Average value per kW produced'
+            },
+            tem_estrutura: {
+                innerHTML: 'Support structures',
+                help: 'If necessary to acquire structures to support the panels',
+                options: [
+                    'Not',
+                    'Lage/roof',
+                    'Garage',
+                    'Both'
+                ]
+            },
+            custo_estrutura: {
+                innerHTML: 'Cost structures for slab or roof (R$)',
+                help: 'Cost per structure unit'
+            },
+            quantidade_estrutura: {
+                innerHTML: 'Amount of structures for slab or roof (R$)',
+                help: 'Number of structures, some are one panel per structure others are multiple'
+            },
+            custo_estrutura_garagem: {
+                innerHTML: 'Cost structures for slab or roof (R$)',
+                help: 'Cost per structure unit'
+            },
+            quantidade_estrutura_garagem: {
+                innerHTML: 'Amount of structures for slab or roof (R$)',
+                help: 'Number of structures, some are one panel per structure others are multiple'
+            },
+            tem_estacao: {
+                innerHTML: 'VE charging stations',
+                help: 'If the establishment implements charging stations',
+                options: [
+                    'Without',
+                    'With'
+                ]
+            },
+            days_active: {
+                innerHTML: 'Week days open (Un)',
+                help: 'The amount of days the establishment works in a week.'
+            },
+            hours_active: {
+                innerHTML: 'Average Hours of use per day (Un)',
+                help: 'The number of hours on average that the stations remain active in use'
+            },
+            kwh_venda: {
+                innerHTML: 'Sale kWh (BRL)',
+                help: 'The sales value of the kWh charged for the recharge'
+            },
+            ultra_title: {
+                innerHTML: 'Ultrafast charging stations',
+            },
+            fast_title: {
+                innerHTML: 'Fast charging stations',
+            },
+            slow_title: {
+                innerHTML: 'Slow charging stations',
+            },
+            estacao_quanti: {
+                innerHTML: 'Amount of stations (Un)',
+                help: 'How many slow stations to install'
+            },
+            estacao_custo: {
+                innerHTML: 'Stations cost (R$)',
+                help: 'Cost of one season.'
+            },
+            estacao_pot: {
+                innerHTML: 'Average recharge power (kW)',
+                help: 'The average power that the station loads, some vehicles can load at higher power others lower, use an average value here.'
+            },
             button: {
                 innerHTML: 'Calculate'
             },
             result: "Result ",
+            result_tot: "The total result combines the total costs of the PV system and charging stations",
+            result_graf: "Graphic result PV system",
+            total: "total ",
             of: " of ",
             year: " year ",
+            years: " years ",
             day: "day",
-            month: "Month",
+            month: "month",
+            months: "months",
             hour: "hour",
-            obs_day: "Note: Click on the day to see the hourly result",
-            obs_month: 'Note: Click on the month to see the result by day',
+            ret_total: "Total system return year",
+            custo_total: "Total system cost",
+            sys_pago: "The entire system pays in",
+            pv_sys: "PV system only year result",
+            ev_sys: "Recharge System only year result",
+            pv_paga: "PV system pays in",
+            obs_day: "Note: Click on the day to see the result of energy production per hour",
+            obs_month: 'Note: Click on the month to see the result of energy production per day',
             back_year: "Back to the year",
             back_month: " Back to month of ",
-            total: ": Total produced energy ",
+            total_en: "Total produced energy ",
             ac: "(AC)",
+            ret_kwh: "Energy production return",
+            ret_custo: "Total PV system cost",
+            ret_estacao: "Return charging stations",
+            ret_estacao_custo: "Total cost stations",
+            real: " (BRL)",
             about: "About",
             about_help: "This is an ongoing college project, with the objective of modeling photovoltaic panels, this page is used to show the model results, for more information visit the link below:",
         }
@@ -1259,38 +1961,94 @@
     function StartInputs() {
         //Limpa o div
         emptyEle(inputsDiv);
+        emptyEle(resultDiv);
 
         const obj = Element_obj.modelo;
         const objArray = obj.values[obj.value];
 
         //Gera a lista de entradas em relação ao array Element_obj.modelo.values
         objArray.forEach(GenDiv);
-
+        GenDivFinanceiro();
         //Aredonda os cantos do primeiro e ultimo elemento de entrada
         mgetElementById(Elem_Ids.Input.Container + objArray[0]).classList.add('inputsContainerTop');
-        mgetElementById(Elem_Ids.Input.Container + objArray[objArray.length - 2]).classList.add('inputsContainerBottom');
+
+        fun_obj[Element_obj.button.elem]('button');
+    }
+
+    const default_value = [
+        'cost_title',
+        'kwh',
+        'custo_painel',
+        'custo_inv'
+    ];
+    const estacao_values = [
+        'ultra_title',
+        'estacao_ultra_quanti',
+        'estacao_ultra_custo',
+        'estacao_ultra_pot',
+
+        'fast_title',
+        'estacao_fast_quanti',
+        'estacao_fast_custo',
+        'estacao_fast_pot',
+
+        'slow_title',
+        'estacao_slow_quanti',
+        'estacao_slow_custo',
+        'estacao_slow_pot'
+    ];
+
+    function GenDivFinanceiro() {
+
+        default_value.forEach(GenDiv);
+
+        GenDiv('tem_estrutura');
+
+        if (Element_obj.tem_estrutura.value === 1) {
+
+            GenDiv('quantidade_estrutura');
+            GenDiv('custo_estrutura');
+
+        } else if (Element_obj.tem_estrutura.value === 2) {
+
+            GenDiv('quantidade_estrutura_garagem');
+            GenDiv('custo_estrutura_garagem');
+
+        } else if (Element_obj.tem_estrutura.value === 3) {
+
+            GenDiv('quantidade_estrutura');
+            GenDiv('custo_estrutura');
+            GenDiv('quantidade_estrutura_garagem');
+            GenDiv('custo_estrutura_garagem');
+
+        }
+
+        GenDiv('estacao_title');
+        GenDiv('tem_estacao');
+
+        if (Element_obj.tem_estacao.value === 1) {
+
+            GenDiv('kwh_venda');
+            GenDiv('days_active');
+            GenDiv('hours_active');
+
+            estacao_values.forEach(GenDiv);
+
+            mgetElementById(
+                Elem_Ids.Input.Container + estacao_values[estacao_values.length - 1]
+            ).classList.add('inputsContainerBottom');
+
+        } else {
+
+            mgetElementById(
+                Elem_Ids.Input.Container + 'tem_estacao'
+            ).classList.add('inputsContainerBottom');
+
+        }
     }
 
     function GenDiv(prop) {
         fun_obj[Element_obj[prop].elem](prop);
-    }
-
-    //Retorna se o total esta em quilo, Mega ou Giga
-    function GetTotal(total) {
-        let text = Lang[appLang].total;
-
-        if (total > 1000000) { //Giga
-
-            return text + (total / 1000000).toFixed(2) + ' GWh ' + Lang[appLang].ac;
-
-        } else if (total > 1000) { //Mega
-
-            return text + (total / 1000).toFixed(2) + ' MWh ' + Lang[appLang].ac;
-
-        } //else quilo
-
-        return text + (total).toFixed(2) + ' kWh ' + Lang[appLang].ac;
-
     }
 
     //Start();
