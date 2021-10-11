@@ -11,9 +11,6 @@ function Start() {
     }
 }
 
-let inputsDiv;
-let resultDiv;
-let appZoomLevel = 1.0;
 function StartPage() {
     //Inicializa os div de conteúdo
     inputsDiv = mgetElementById('inputs');
@@ -82,29 +79,6 @@ function StartInputs() {
 
     fun_obj[Element_obj.button.elem]('button');
 }
-
-const default_value = [
-    'cost_title',
-    'kwh',
-    'custo_painel',
-    'custo_inv'
-];
-const estacao_values = [
-    'ultra_title',
-    'estacao_ultra_quanti',
-    'estacao_ultra_custo',
-    'estacao_ultra_pot',
-
-    'fast_title',
-    'estacao_fast_quanti',
-    'estacao_fast_custo',
-    'estacao_fast_pot',
-
-    'slow_title',
-    'estacao_slow_quanti',
-    'estacao_slow_custo',
-    'estacao_slow_pot'
-];
 
 function GenDivFinanceiro() {
 

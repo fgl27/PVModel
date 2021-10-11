@@ -225,7 +225,7 @@ cd page/temp/ || exit
 # Run uglifyjs one more time with "toplevel" enable, only here as if run before js files don't work, the result is around 10% compression improve
 if [ "$canuglifyjs" == 1 ]; then
     echo -e "${bldblu}    uglifyjs  main.js";
-    uglifyjs main.js -c -m toplevel=true,eval=true -o main.js;
+    uglifyjs main.js -c -m eval=true -o main.js;
 fi;
 
 echo -e "\\n${bldgrn}Compression done\\n";

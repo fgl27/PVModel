@@ -1,4 +1,5 @@
 
+
 function modeloSetValues(value, obj) {
     value = parseInt(value);
 
@@ -45,30 +46,6 @@ function superficieSetValues(value, obj) {
     b = obj.values.b[value];
     Delta_T = obj.values.Delta_T[value];
 }
-
-const estacao_props = [
-    [
-        'estacao_ultra_quanti',
-        'estacao_ultra_custo',
-        'estacao_ultra_pot',
-    ],
-    [
-        'estacao_fast_quanti',
-        'estacao_fast_custo',
-        'estacao_fast_pot',
-    ],
-    [
-        'estacao_slow_quanti',
-        'estacao_slow_custo',
-        'estacao_slow_pot'
-    ]
-];
-
-const estacao_lang_props = [
-    'estacao_quanti',
-    'estacao_custo',
-    'estacao_pot'
-];
 
 function Set_Element_obj_Strings() {
     for (const prop in Lang[appLang]) {

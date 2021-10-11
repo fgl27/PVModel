@@ -1,6 +1,4 @@
 
-let zoomValueDiv;
-let zoomMinusDiv;
 function ChangeSize(zoom_level) {
     if (isNaN(zoom_level)) zoom_level = 1;
 
@@ -60,7 +58,6 @@ window.onclick = function(event) {
     }
 };
 
-let locale;
 function GetLAng() {
     const lang = localStorage.getItem('app_lang') ||
         window.navigator.userLanguage ||
@@ -141,7 +138,6 @@ function gtag() {
     dataLayer.push(arguments);
 }
 
-var skipfirebase = false;
 function Startfirebase() {
 
     var firebaseConfig = {
