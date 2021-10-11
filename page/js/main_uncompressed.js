@@ -11,6 +11,64 @@
         root = PVModelGlobal;
 
     }
+    let skipfirebase = false;
+
+    let zoomValueDiv;
+    let zoomMinusDiv;
+
+    let inputsDiv;
+    let resultDiv;
+    let appZoomLevel = 1.0;
+
+    let locale;
+
+    const estacao_props = [
+        [
+            'estacao_ultra_quanti',
+            'estacao_ultra_custo',
+            'estacao_ultra_pot',
+        ],
+        [
+            'estacao_fast_quanti',
+            'estacao_fast_custo',
+            'estacao_fast_pot',
+        ],
+        [
+            'estacao_slow_quanti',
+            'estacao_slow_custo',
+            'estacao_slow_pot'
+        ]
+    ];
+
+    const estacao_lang_props = [
+        'estacao_quanti',
+        'estacao_custo',
+        'estacao_pot'
+    ];
+
+    const default_value = [
+        'cost_title',
+        'kwh',
+        'custo_painel',
+        'custo_inv'
+    ];
+    const estacao_values = [
+        'ultra_title',
+        'estacao_ultra_quanti',
+        'estacao_ultra_custo',
+        'estacao_ultra_pot',
+
+        'fast_title',
+        'estacao_fast_quanti',
+        'estacao_fast_custo',
+        'estacao_fast_pot',
+
+        'slow_title',
+        'estacao_slow_quanti',
+        'estacao_slow_custo',
+        'estacao_slow_pot'
+    ];
+
 
     function modeloSetValues(value, obj) {
         value = parseInt(value);
@@ -58,30 +116,6 @@
         b = obj.values.b[value];
         Delta_T = obj.values.Delta_T[value];
     }
-
-    const estacao_props = [
-        [
-            'estacao_ultra_quanti',
-            'estacao_ultra_custo',
-            'estacao_ultra_pot',
-        ],
-        [
-            'estacao_fast_quanti',
-            'estacao_fast_custo',
-            'estacao_fast_pot',
-        ],
-        [
-            'estacao_slow_quanti',
-            'estacao_slow_custo',
-            'estacao_slow_pot'
-        ]
-    ];
-
-    const estacao_lang_props = [
-        'estacao_quanti',
-        'estacao_custo',
-        'estacao_pot'
-    ];
 
     function Set_Element_obj_Strings() {
         for (const prop in Lang[appLang]) {
@@ -1271,8 +1305,6 @@
 
         }
     };
-    let zoomValueDiv;
-    let zoomMinusDiv;
 
     function ChangeSize(zoom_level) {
         if (isNaN(zoom_level)) zoom_level = 1;
@@ -1332,8 +1364,6 @@
             showDropdown();
         }
     };
-
-    let locale;
 
     function GetLAng() {
         const lang = localStorage.getItem('app_lang') ||
@@ -1415,8 +1445,6 @@
     function gtag() {
         dataLayer.push(arguments);
     }
-
-    var skipfirebase = false;
 
     function Startfirebase() {
 
@@ -1902,10 +1930,6 @@
         }
     }
 
-    let inputsDiv;
-    let resultDiv;
-    let appZoomLevel = 1.0;
-
     function StartPage() {
         //Inicializa os div de conteúdo
         inputsDiv = mgetElementById('inputs');
@@ -1974,29 +1998,6 @@
 
         fun_obj[Element_obj.button.elem]('button');
     }
-
-    const default_value = [
-        'cost_title',
-        'kwh',
-        'custo_painel',
-        'custo_inv'
-    ];
-    const estacao_values = [
-        'ultra_title',
-        'estacao_ultra_quanti',
-        'estacao_ultra_custo',
-        'estacao_ultra_pot',
-
-        'fast_title',
-        'estacao_fast_quanti',
-        'estacao_fast_custo',
-        'estacao_fast_pot',
-
-        'slow_title',
-        'estacao_slow_quanti',
-        'estacao_slow_custo',
-        'estacao_slow_pot'
-    ];
 
     function GenDivFinanceiro() {
 
