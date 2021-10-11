@@ -69,6 +69,7 @@ function ReStartPage() {
 function StartInputs() {
     //Limpa o div
     emptyEle(inputsDiv);
+    emptyEle(resultDiv);
 
     const obj = Element_obj.modelo;
     const objArray = obj.values[obj.value];
@@ -111,17 +112,17 @@ function GenDivFinanceiro() {
 
     GenDiv('tem_estrutura');
 
-    if (Element_obj['tem_estrutura'].value === 1) {
+    if (Element_obj.tem_estrutura.value === 1) {
 
         GenDiv('quantidade_estrutura');
         GenDiv('custo_estrutura');
 
-    } else if (Element_obj['tem_estrutura'].value === 2) {
+    } else if (Element_obj.tem_estrutura.value === 2) {
 
         GenDiv('quantidade_estrutura_garagem');
         GenDiv('custo_estrutura_garagem');
 
-    } else if (Element_obj['tem_estrutura'].value === 3) {
+    } else if (Element_obj.tem_estrutura.value === 3) {
 
         GenDiv('quantidade_estrutura');
         GenDiv('custo_estrutura');
@@ -133,7 +134,7 @@ function GenDivFinanceiro() {
     GenDiv('estacao_title');
     GenDiv('tem_estacao');
 
-    if (Element_obj['tem_estacao'].value === 1) {
+    if (Element_obj.tem_estacao.value === 1) {
 
         GenDiv('kwh_venda');
         GenDiv('days_active');

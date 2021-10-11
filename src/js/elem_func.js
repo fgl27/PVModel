@@ -28,7 +28,7 @@ function modeloSetValues(value, obj) {
             ele = mgetElementById(Elem_Ids.Input.Input + 'quantidade');
             ele.disabled = true;
             ele.classList.add('CursorDisable');
-            console.log(ele)
+
             mgetElementById(Elem_Ids.Input.Span + 'quantidade').className =
                 'tooltiptext tooltiptext_disabled';
             mgetElementById(Elem_Ids.Input.Span + 'quantidade').innerHTML =
@@ -196,25 +196,31 @@ function GetTotal(total) {
 
 //Retorna o valor financeiro total em relação aos kwh produzidos PV
 function GetTotalkWhRetorno(total_kWh) {
-    return formatNumber(total_kWh * Element_obj.kwh.value) + Lang[appLang].real;
+    return (total_kWh * Element_obj.kwh.value);
 }
 
 //Retorna o valor financeiro total em relação aos kwh produzidos Estações de recarga
-function GetTotalkWhRetornoEstacao(total_kWh) {
+function GetConsumoEstacao() {
     let total_kw = 0;
 
     //custo ultrarapido
-    total_kw += Element_obj.estacao_ultra_quanti.value * 50;
+    total_kw += Element_obj.estacao_ultra_quanti.value * Element_obj.estacao_ultra_pot.value;
 
     //Custo rapido
-    total_kw += Element_obj.estacao_fast_quanti.value * 25;
+    total_kw += Element_obj.estacao_fast_quanti.value * Element_obj.estacao_fast_pot.value;
 
     //Custo lento
-    total_kw += Element_obj.estacao_slow_quanti.value * 5;
+    total_kw += Element_obj.estacao_slow_quanti.value * Element_obj.estacao_slow_pot.value;
 
-    total_kw *= 365 * 5;
+    total_kw *= (365 / 7) * Element_obj.days_active.value * Element_obj.hours_active.value;
 
-    return formatNumber(total_kw * Element_obj.kwh.value);
+    return total_kw;
+}
+
+//Retorna o valor financeiro total em relação aos kwh produzidos Estações de recarga
+function GetRetornoEstacao(total_ev_kw) {
+    return (total_ev_kw * Element_obj.kwh_venda.value) -
+        (total_ev_kw * Element_obj.kwh.value);
 }
 
 function GetCustoPV(total_kWh) {
@@ -227,22 +233,22 @@ function GetCustoPV(total_kWh) {
     total_cost += total_kWh / 1000 * Element_obj.custo_inv.value;
 
     //Custo extrutura
-    if (Element_obj['tem_estrutura'].value === 1) {
+    if (Element_obj.tem_estrutura.value === 1) {
 
         total_cost += Element_obj.quantidade_estrutura.value * Element_obj.custo_estrutura.value;
 
-    } else if (Element_obj['tem_estrutura'].value === 2) {
+    } else if (Element_obj.tem_estrutura.value === 2) {
 
         total_cost += Element_obj.quantidade_estrutura_garagem.value * Element_obj.custo_estrutura_garagem.value;
 
-    } else if (Element_obj['tem_estrutura'].value === 3) {
+    } else if (Element_obj.tem_estrutura.value === 3) {
 
         total_cost += Element_obj.quantidade_estrutura.value * Element_obj.custo_estrutura.value;
         total_cost += Element_obj.quantidade_estrutura_garagem.value * Element_obj.custo_estrutura_garagem.value;
 
     }
 
-    return formatNumber(total_cost) + Lang[appLang].real;
+    return total_cost;
 }
 
 function GetCustoEstação() {
@@ -255,14 +261,25 @@ function GetCustoEstação() {
     total_cost += Element_obj.estacao_fast_quanti.value * Element_obj.estacao_fast_custo.value;
 
     //Custo lento
-    total_cost += Element_obj.estacao_slow_quanti.value * Element_obj.estacao_slow_quanti.value;
+    total_cost += Element_obj.estacao_slow_quanti.value * Element_obj.estacao_slow_custo.value;
 
-
-    return formatNumber(total_cost) + Lang[appLang].real;
+    return total_cost;
 }
 
 function formatNumber(number, max) {
-    return number.toLocaleString(locale, {maximumFractionDigits: max ? max : 2})
-
+    return number.toLocaleString(locale, {maximumFractionDigits: max ? max : 2});
 }
 
+function formatAnos(value) {
+    if (value === 0 || isNaN(value)) {
+        return 0 + Lang[appLang].years;
+    }
+
+    const qmes = value * 12,
+        m = Math.ceil(qmes % 12),
+        y = Math.floor(qmes / 12) + (m === 12 ? 1 : 0),
+        m_text = m > 0 && m !== 12 ? m + ' ' + (m > 1 ? Lang[appLang].months : Lang[appLang].month) : '',
+        y_text = y > 0 ? y + (y > 1 ? Lang[appLang].years : Lang[appLang].year) : '';
+
+    return y_text + ' ' + m_text;
+}

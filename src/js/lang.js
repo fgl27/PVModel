@@ -160,11 +160,11 @@ const Lang = {
             help: 'A quantidade de dias que o estabelecimento funciona em uma semana'
         },
         hours_active: {
-            innerHTML: 'Média de Horas estações sadas (Un)',
+            innerHTML: 'Média de Horas de utilização por dia (Un)',
             help: 'A quantidade de horas em medía que as estações premanecem ativas em uso'
         },
         kwh_venda: {
-            innerHTML: 'kWh venda (BRL)',
+            innerHTML: 'kWh venda (R$)',
             help: 'O valor de venda do kWh cobrado pela recarga'
         },
         ultra_title: {
@@ -192,14 +192,22 @@ const Lang = {
             innerHTML: 'Calcular'
         },
         result: "Resultado ",
+        result_tot: "O resultado total combina os custos totais do sistema PV e estações de recarga",
         result_graf: "Resultado grafico sistema PV ",
         total: "total ",
         of: " de ",
         year: " ano ",
+        years: " anos ",
         day: "dia",
-        month: "Mês",
+        month: "mês",
+        months: "mêses",
         hour: "hora",
-        pv_sys: "Resultado sistema PV",
+        ret_total: "Retorno total do sistema ano",
+        custo_total: "Custo total do sistema",
+        sys_pago: "Sistema todo se paga em",
+        pv_sys: "Resultado somente do sistema PV ano",
+        ev_sys: "Resultado somente do sistema recarga ano",
+        pv_paga: "Sistema PV se paga em",
         obs_day: "Obs.: Clique no dia para ver o resultado da produção de energia por hora",
         obs_month: 'Obs.: Clique no mês para ver o resultado da produção de energia  por dia',
         back_year: "  Voltar pro ano",
@@ -208,7 +216,8 @@ const Lang = {
         ac: "(CA)",
         ret_kwh: "Retorno produção de energia",
         ret_custo: "Custo total do sistema PV",
-        ret_estacao: "Retorno estações de recarga",
+        estacao_consumo: "Consumo estações de recarga ano",
+        ret_estacao: "Retorno estações de recarga ano",
         ret_estacao_custo: "Custo total estações",
         real: " (R$)",
         about: "Sobre",
@@ -374,7 +383,7 @@ const Lang = {
             help: 'The amount of days the establishment works in a week.'
         },
         hours_active: {
-            innerHTML: 'Average Hours of stations use (Un)',
+            innerHTML: 'Average Hours of use per day (Un)',
             help: 'The number of hours on average that the stations remain active in use'
         },
         kwh_venda: {
@@ -406,14 +415,22 @@ const Lang = {
             innerHTML: 'Calculate'
         },
         result: "Result ",
+        result_tot: "The total result combines the total costs of the PV system and charging stations",
         result_graf: "Graphic result PV system",
         total: "total ",
         of: " of ",
         year: " year ",
+        years: " years ",
         day: "day",
-        month: "Month",
+        month: "month",
+        months: "months",
         hour: "hour",
-        pv_sys: "PV system result",
+        ret_total: "Total system return year",
+        custo_total: "Total system cost",
+        sys_pago: "The entire system pays in",
+        pv_sys: "PV system only year result",
+        ev_sys: "Recharge System only year result",
+        pv_paga: "PV system pays in",
         obs_day: "Note: Click on the day to see the result of energy production per hour",
         obs_month: 'Note: Click on the month to see the result of energy production per day',
         back_year: "Back to the year",

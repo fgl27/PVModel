@@ -56,6 +56,7 @@ let Element_obj = {
     pot_nominal_array: {
         elem: 'input',
         value: 1000,
+        min: 0,
         type: 'number',
         step: '10',
         UpdateValue: UpdatePotNominal
@@ -63,6 +64,7 @@ let Element_obj = {
     pot_nominal_painel: {
         elem: 'input',
         value: 300,
+        min: 0,
         type: 'number',
         step: '10',
         UpdateValue: UpdatePotNominal
@@ -70,6 +72,7 @@ let Element_obj = {
     area_painel: {
         elem: 'input',
         value: 1.64,
+        min: 0,
         type: 'number',
         step: '0.01',
         UpdateValue: UpdatePotNominal
@@ -77,6 +80,7 @@ let Element_obj = {
     area: {
         elem: 'input',
         value: 6,
+        min: 0,
         type: 'number',
         step: '1',
         UpdateValue: UpdatePotNominal
@@ -84,6 +88,7 @@ let Element_obj = {
     quantidade: {
         elem: 'input',
         value: 3,
+        min: 0,
         type: 'number',
         step: '1',
         UpdateValue: UpdatePotNominal
@@ -91,18 +96,22 @@ let Element_obj = {
     perda: {
         elem: 'input',
         value: 14,
+        min: 0,
         type: 'number',
         step: '1',
     },
     coef_temp: {
         elem: 'input',
         value: -0.35,
+        max: 0,
         type: 'number',
         step: '0.01',
     },
     cc_ca: {
         elem: 'input',
         value: 95,
+        min: 0,
+        max: 100,
         type: 'number',
         step: '1',
     },
@@ -134,18 +143,21 @@ let Element_obj = {
     kwh: {
         elem: 'input',
         value: 0.85,
+        min: 0,
         type: 'number',
         step: '0.01',
     },
     custo_painel: {
         elem: 'input',
         value: 2.2,
+        min: 0,
         type: 'number',
         step: '0.01',
     },
     custo_inv: {
         elem: 'input',
         value: 1000,
+        min: 0,
         type: 'number',
         step: '1',
     },
@@ -160,24 +172,28 @@ let Element_obj = {
     custo_estrutura: {
         elem: 'input',
         value: 500,
+        min: 0,
         type: 'number',
         step: '1',
     },
     quantidade_estrutura: {
         elem: 'input',
         value: 1,
+        min: 0,
         type: 'number',
         step: '1',
     },
     custo_estrutura_garagem: {
         elem: 'input',
         value: 10000,
+        min: 0,
         type: 'number',
         step: '1',
     },
     quantidade_estrutura_garagem: {
         elem: 'input',
         value: 1,
+        min: 0,
         type: 'number',
         step: '1',
     },
@@ -198,36 +214,45 @@ let Element_obj = {
     days_active: {
         elem: 'input',
         value: 7,
+        min: 1,
+        nax: 7,
         type: 'number',
         step: '1',
     },
     hours_active: {
         elem: 'input',
         value: 3,
+        min: 0,
+        max: 24,
         type: 'number',
         step: '1',
     },
     kwh_venda: {
         elem: 'input',
         value: 1.0,
+        min: 0,
         type: 'number',
         step: '0.1',
     },
     estacao_ultra_quanti: {
         elem: 'input',
         value: 0,
+        min: 0,
         type: 'number',
         step: '1',
     },
     estacao_ultra_custo: {
         elem: 'input',
-        value: 50000,
+        value: 100000,
+        min: 0,
         type: 'number',
         step: '1',
     },
     estacao_ultra_pot: {
         elem: 'input',
-        value: 75,
+        value: 100,
+        min: 43,
+        max: 200,
         type: 'number',
         step: '1',
     },
@@ -237,6 +262,7 @@ let Element_obj = {
     estacao_fast_quanti: {
         elem: 'input',
         value: 0,
+        min: 0,
         type: 'number',
         step: '1',
     },
@@ -248,7 +274,9 @@ let Element_obj = {
     },
     estacao_fast_pot: {
         elem: 'input',
-        value: 25,
+        value: 22,
+        min: 0,
+        max: 20,
         type: 'number',
         step: '1',
     },
@@ -258,18 +286,22 @@ let Element_obj = {
     estacao_slow_quanti: {
         elem: 'input',
         value: 0,
+        min: 0,
         type: 'number',
         step: '1',
     },
     estacao_slow_custo: {
         elem: 'input',
         value: 8500,
+        min: 0,
         type: 'number',
         step: '1',
     },
     estacao_slow_pot: {
         elem: 'input',
-        value: 7.5,
+        value: 6,
+        min: 0,
+        max: 7.5,
         type: 'number',
         step: '0.1',
     },
@@ -339,8 +371,7 @@ const fun_obj = {
         container.appendChild(Inputs_Container);
         inputsDiv.appendChild(container);
     },
-    result: function(prop, extra_class, text, result) {
-
+    result: function(prop, extra_class, text, result, help) {
         const Inputs_Container = mCreateElement(
             'div',
             Elem_Ids.Input.Container + prop,
@@ -350,10 +381,55 @@ const fun_obj = {
         const Imput_Help_Container = mCreateElement(
             'div',
             Elem_Ids.Input.Imput_Help_Container + prop,
-            'Imput_Help_Container',
+            'Imput_Help_Container'
         );
 
-        if (result) {
+        const textDiv = mCreateElement(
+            'div',
+            Elem_Ids.Input.Text + prop,
+            result || result === 0 ? 'inputsText' : 'inputsTitle',
+            text
+        );
+
+        if (help) {
+
+            const Input_Tooltip = mCreateElement(
+                'div',
+                Elem_Ids.Input.Tooltip + prop,
+                'tooltip tooltip_disabled'
+            );
+
+            Input_Tooltip.appendChild(textDiv);
+            Input_Tooltip.appendChild(
+                mCreateElement(
+                    'span',
+                    Elem_Ids.Input.Span + prop,
+                    'hide'
+                )
+            );
+            Imput_Help_Container.appendChild(Input_Tooltip);
+
+            //Seta a ajuda quando o mouse fica sobre ?
+            Imput_Help_Container.appendChild(
+                mCreateElement(
+                    'div',
+                    Elem_Ids.Input.Help + prop,
+                    'tooltip ',
+                    question_icon + '<span class="tooltiptext">' + help + '</span>'
+                )
+            );
+            Inputs_Container.appendChild(Imput_Help_Container);
+
+        } else {
+
+            Inputs_Container.appendChild(
+                textDiv
+            );
+
+        }
+        Inputs_Container.appendChild(Imput_Help_Container);
+
+        if (result || result === 0) {
             Imput_Help_Container.appendChild(
                 mCreateElement(
                     'div',
@@ -363,17 +439,6 @@ const fun_obj = {
                 )
             );
         }
-
-        Inputs_Container.appendChild(
-            mCreateElement(
-                'div',
-                Elem_Ids.Input.Text + prop,
-                result ? 'inputsText' : 'inputsTitle',
-                text
-            )
-        );
-
-        Inputs_Container.appendChild(Imput_Help_Container);
 
         const container = mCreateElement(
             'div',
@@ -425,6 +490,13 @@ const fun_obj = {
             if (obj.UpdateValue) {
                 obj.UpdateValue();
             }
+
+            if (obj.min && this.value < obj.min) {
+                this.value = obj.min;
+            } else if (obj.max && this.value > obj.max) {
+                this.value = obj.max;
+            }
+
         };
 
         //cria os elementos de acordo com as entradas
@@ -674,8 +746,6 @@ const fun_obj = {
                 monclick(prop1);
             };
 
-            resultDiv.appendChild(button);
-
             base_div_text = Lang[appLang].hour;
 
         } else if (isMonth) {
@@ -686,25 +756,47 @@ const fun_obj = {
                 monclick();
             };
 
-            resultDiv.appendChild(button);
-
             base_div_text = Lang[appLang].day;
 
         } else {
             result_title_extra = Lang[appLang].year;
         }
 
+        const total_ret_kw = GetTotalkWhRetorno(total_kw),
+            total_pv_custo = GetCustoPV(total_kw),
+            ret_anos = total_pv_custo / total_ret_kw;
+
         fun_obj.result('result_title', 'inputsContainerTop', Lang[appLang].pv_sys);
-        fun_obj.result('result_total', null, Lang[appLang].total_en, resultado_total);
-        fun_obj.result('result_kwh_ret', null, Lang[appLang].ret_kwh, GetTotalkWhRetorno(total_kw));
-        fun_obj.result('result_custo_ret', null, Lang[appLang].ret_custo, GetCustoPV(total_kw));
-        if (Element_obj['tem_estacao'].value) {
-            fun_obj.result('result_kwh_consumo', null, Lang[appLang].ret_estacao, GetTotalkWhRetornoEstacao(total_kw));
-            fun_obj.result('result_kwh_ret', null, Lang[appLang].ret_estacao, GetTotalkWhRetornoEstacao(total_kw));
-            fun_obj.result('result_custo_ret', null, Lang[appLang].ret_estacao_custo, GetCustoEstação(total_kw));
+        fun_obj.result('result_total_pv', null, Lang[appLang].total_en, resultado_total);
+        fun_obj.result('result_kwh_ret', null, Lang[appLang].ret_kwh, formatNumber(total_ret_kw) + Lang[appLang].real);
+        fun_obj.result('result_custo_ret', null, Lang[appLang].ret_custo, formatNumber(total_pv_custo) + Lang[appLang].real);
+        fun_obj.result('result_ret_ev', null, Lang[appLang].pv_paga, formatAnos(ret_anos));
+
+        if (Element_obj.tem_estacao.value) {
+
+            const total_ev_kw = GetConsumoEstacao(),
+                total_ev_custo = GetCustoEstação(),
+                total_ev_ret = GetRetornoEstacao(total_ev_kw),
+                ret_ev_anos = total_ev_custo / total_ev_ret,
+                se_paga = formatAnos((total_ev_custo + total_pv_custo) / (total_ret_kw + total_ev_ret)),
+                ret_ano_tot = formatNumber(total_ev_ret + total_ret_kw, 2) + Lang[appLang].real;
+
+            fun_obj.result('result_ev_title', null, Lang[appLang].ev_sys);
+            fun_obj.result('result_kwh_consumo', null, Lang[appLang].estacao_consumo, GetTotal(total_ev_kw));
+            fun_obj.result('result_kwh_ev_ret', null, Lang[appLang].ret_estacao, formatNumber(total_ev_ret, 2) + Lang[appLang].real);
+            fun_obj.result('result_custo_ev_ret', null, Lang[appLang].ret_estacao_custo, formatNumber(total_ev_custo, 2) + Lang[appLang].real);
+            fun_obj.result('result_ret_ev', null, Lang[appLang].pv_paga, formatAnos(ret_ev_anos));
+
+            fun_obj.result('result_title', null, Lang[appLang].result + Lang[appLang].total, null, Lang[appLang].result_tot);
+
+            fun_obj.result('custo_total', null, Lang[appLang].custo_total, formatNumber(total_ev_custo + total_pv_custo, 2) + Lang[appLang].real);
+            fun_obj.result('ret_total', null, Lang[appLang].ret_total, ret_ano_tot);
+
+            fun_obj.result('se_paga_total', 'inputsContainerBottom', Lang[appLang].sys_pago, se_paga);
+
         }
 
-        fun_obj.result('result_title', null, Lang[appLang].result + Lang[appLang].total);
+
 
         resultDiv.appendChild(
             mCreateElement(
@@ -714,6 +806,7 @@ const fun_obj = {
                 result_title + result_title_extra + GetTotal(obj.total * CC_CA)
             )
         );
+
         //Adiciona a observação para meses e dias
         if (isMonth) {
 
@@ -737,6 +830,10 @@ const fun_obj = {
                 )
             );
         }
+
+        //Adiciona o botão retornar grafico
+        if (isDay || isMonth)
+            resultDiv.appendChild(button);
 
         const Results_container = mCreateElement(
             'div',
