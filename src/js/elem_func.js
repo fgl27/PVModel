@@ -200,6 +200,11 @@ function GetRetornoEstacao(total_ev_kw) {
         (total_ev_kw * Element_obj.kwh.value);
 }
 
+function GetRetornoSis(total_ev_kw, total_kw) {
+    return (total_ev_kw * Element_obj.kwh_venda.value) -
+        ((total_ev_kw - total_kw) * Element_obj.kwh.value)
+}
+
 function GetCustoPV(total_kWh) {
     let total_cost = 0;
 
@@ -207,7 +212,7 @@ function GetCustoPV(total_kWh) {
     total_cost += Element_obj.pot_nominal_array.value * Element_obj.custo_painel.value;
 
     //Custo inversores ou otimizadores
-    total_cost += total_kWh / 1000 * Element_obj.custo_inv.value;
+    total_cost += (total_kWh / 1000) * Element_obj.custo_inv.value;
 
     //Custo extrutura
     if (Element_obj.tem_estrutura.value === 1) {
