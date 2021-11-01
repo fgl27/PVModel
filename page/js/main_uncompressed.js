@@ -11,6 +11,7 @@
         root = PVModelGlobal;
 
     }
+    let BackButtonClick = false;
     let skipfirebase = false;
 
     let zoomValueDiv;
@@ -48,6 +49,7 @@
 
     const default_value = [
         'cost_title',
+        'kwh_consumption',
         'kwh',
         'custo_painel',
         'custo_inv'
@@ -227,11 +229,11 @@
     function GetTotal(total) {
         let text = '';
 
-        if (total > 1000000) { //Giga
+        if (Math.abs(total) > 1000000) { //Giga
 
             return text + formatNumber(total / 1000000.0, 4) + ' GWh ' + Lang[appLang].ac;
 
-        } else if (total > 1000) { //Mega
+        } else if (Math.abs(total) > 1000) { //Mega
 
             return text + formatNumber(total / 1000.0, 4) + ' MWh ' + Lang[appLang].ac;
 
@@ -270,6 +272,11 @@
             (total_ev_kw * Element_obj.kwh.value);
     }
 
+    function GetRetornoSis(total_ev_kw, total_kw) {
+        return (total_ev_kw * Element_obj.kwh_venda.value) -
+            ((total_ev_kw - total_kw) * Element_obj.kwh.value);
+    }
+
     function GetCustoPV(total_kWh) {
         let total_cost = 0;
 
@@ -277,7 +284,7 @@
         total_cost += Element_obj.pot_nominal_array.value * Element_obj.custo_painel.value;
 
         //Custo inversores ou otimizadores
-        total_cost += total_kWh / 1000 * Element_obj.custo_inv.value;
+        total_cost += (total_kWh / 1000) * Element_obj.custo_inv.value;
 
         //Custo extrutura
         if (Element_obj.tem_estrutura.value === 1) {
@@ -473,6 +480,13 @@
         },
         cost_title: {
             elem: 'title',
+        },
+        kwh_consumption: {
+            elem: 'input',
+            value: 0,
+            min: 0,
+            type: 'number',
+            step: '1',
         },
         kwh: {
             elem: 'input',
@@ -971,6 +985,8 @@
                     dia,
                     hora;
 
+                BackButtonClick = false;
+
                 resultObj = {};
                 resultObj.total = 0;
 
@@ -1037,6 +1053,7 @@
                 isMonth = Boolean(prop1 && !prop2),
                 CC_CA = Element_obj.cc_ca.value / 100000,
                 monclick = function(prop1, prop2) {
+                    BackButtonClick = true;
                     fun_obj.Resultado(prop1, prop2);
                 };
 
@@ -1106,30 +1123,53 @@
             fun_obj.result('result_custo_ret', null, Lang[appLang].ret_custo, formatNumber(total_pv_custo) + Lang[appLang].real);
             fun_obj.result('result_ret_ev', null, Lang[appLang].pv_paga, formatAnos(ret_anos));
 
-            if (Element_obj.tem_estacao.value) {
+            const total_ev_kw = (Element_obj.tem_estacao.value ? GetConsumoEstacao() : 0),
+                total_ev_custo = GetCustoEstação(),
+                total_ev_ret = GetRetornoEstacao(total_ev_kw),
+                ret_ev_anos = total_ev_custo / total_ev_ret,
+                se_paga = formatAnos((total_ev_custo + total_pv_custo) / (total_ret_kw + total_ev_ret)),
+                ret_ano_tot = formatNumber(total_ev_ret + total_ret_kw, 2) + Lang[appLang].real,
+                consumo = (Element_obj.kwh_consumption.value * 12),
+                kw_consumo = (Element_obj.tem_estacao.value ? total_ev_kw : 0) + consumo,
+                kw_deficit = total_kw - kw_consumo,
+                kw_pago = kw_deficit * Element_obj.kwh.value,
+                ev_sell_profit = total_ev_ret * Element_obj.kwh_venda.value;
 
-                const total_ev_kw = GetConsumoEstacao(),
-                    total_ev_custo = GetCustoEstação(),
-                    total_ev_ret = GetRetornoEstacao(total_ev_kw),
-                    ret_ev_anos = total_ev_custo / total_ev_ret,
-                    se_paga = formatAnos((total_ev_custo + total_pv_custo) / (total_ret_kw + total_ev_ret)),
-                    ret_ano_tot = formatNumber(total_ev_ret + total_ret_kw, 2) + Lang[appLang].real;
+            fun_obj.result('result_ev_title', (!total_kw ? 'inputsContainerTop' : null), Lang[appLang].ev_sys);
+            fun_obj.result('result_kwh_consumo', null, Lang[appLang].estacao_consumo, GetTotal(total_ev_kw));
 
-                fun_obj.result('result_ev_title', null, Lang[appLang].ev_sys);
-                fun_obj.result('result_kwh_consumo', null, Lang[appLang].estacao_consumo, GetTotal(total_ev_kw));
-                fun_obj.result('result_kwh_ev_ret', null, Lang[appLang].ret_estacao, formatNumber(total_ev_ret, 2) + Lang[appLang].real);
-                fun_obj.result('result_custo_ev_ret', null, Lang[appLang].ret_estacao_custo, formatNumber(total_ev_custo, 2) + Lang[appLang].real);
-                fun_obj.result('result_ret_ev', null, Lang[appLang].pv_paga, formatAnos(ret_ev_anos));
+            fun_obj.result('result_kwh_consumo', null, Lang[appLang].cost_buy_kw, formatNumber(total_ev_kw * Element_obj.kwh.value, 2) + Lang[appLang].real);
+            fun_obj.result('result_kwh_consumo', null, Lang[appLang].ret_sell_kw, formatNumber(ev_sell_profit, 2) + Lang[appLang].real);
 
-                fun_obj.result('result_title', null, Lang[appLang].result + Lang[appLang].total, null, Lang[appLang].result_tot);
+            fun_obj.result('result_kwh_ev_ret', null, Lang[appLang].ret_estacao, formatNumber(total_ev_ret, 2) + Lang[appLang].real);
+            fun_obj.result('result_custo_ev_ret', null, Lang[appLang].ret_estacao_custo, formatNumber(total_ev_custo, 2) + Lang[appLang].real);
+            fun_obj.result('result_ret_ev', null, Lang[appLang].pv_paga, formatAnos(ret_ev_anos));
 
-                fun_obj.result('custo_total', null, Lang[appLang].custo_total, formatNumber(total_ev_custo + total_pv_custo, 2) + Lang[appLang].real);
-                fun_obj.result('ret_total', null, Lang[appLang].ret_total, ret_ano_tot);
+            fun_obj.result(
+                'result_title',
+                (!total_kw && !Element_obj.tem_estacao.value ? 'inputsContainerTop' : null),
+                Lang[appLang].result + Lang[appLang].total,
+                null,
+                Lang[appLang].result_tot
+            );
 
-                fun_obj.result('se_paga_total', 'inputsContainerBottom', Lang[appLang].sys_pago, se_paga);
+            fun_obj.result('result_total_pv', null, Lang[appLang].total_year, resultado_total);
+            fun_obj.result('result_kwh_consumo', null, Lang[appLang].consumo_tot, GetTotal(kw_consumo));
 
-            }
+            fun_obj.result('result_kwh_consumo', null, kw_deficit >= 0 ? Lang[appLang].excedente : Lang[appLang].deficit, GetTotal(kw_deficit));
+            fun_obj.result('result_kwh_consumo', null, (kw_pago >= 0 ? Lang[appLang].custo_re_energia : Lang[appLang].custo_pg_energia), formatNumber(kw_pago >= 0 ? kw_pago : Math.abs(kw_pago)) + Lang[appLang].real);
+            fun_obj.result('result_kwh_ev_ret', null, Lang[appLang].ret_estacao + Lang[appLang].year, formatNumber(total_ev_ret, 2) + Lang[appLang].real);
 
+            fun_obj.result('custo_total', null, Lang[appLang].custo_total, formatNumber(total_ev_custo + total_pv_custo, 2) + Lang[appLang].real);
+            fun_obj.result('ret_total', null, Lang[appLang].ret_total, ret_ano_tot);
+
+            fun_obj.result('se_paga_total', 'inputsContainerBottom', Lang[appLang].sys_pago, se_paga);
+            fun_obj.result(
+                'result_kwh_ev_ret',
+                null,
+                Lang[appLang].ret_anual_sys_payed,
+                formatNumber(GetRetornoSis(total_ev_kw, total_kw - consumo), 2) + Lang[appLang].real
+            );
 
 
             resultDiv.appendChild(
@@ -1286,7 +1326,7 @@
                 function() {
 
                     //Desloca a pagina para baixo, para mostrar os gráficos
-                    mgetElementById(Elem_Ids.Input.Button).scrollIntoView({
+                    mgetElementById((!isMonth && !isDay && !BackButtonClick) ? Elem_Ids.Input.Button : Elem_Ids.Result.Note + '_Title').scrollIntoView({
                         behavior: "smooth"
                     });
 
@@ -1507,7 +1547,7 @@
             },
             modelo: {
                 innerHTML: 'Modelo de entrada de valores',
-                help: 'Potência nominal total:<br><br>O cálculo é feito pela potência total nominal do conjunto de painéis<br><br>' +
+                help: 'Potência nominal total:<br><br>O cálculo é feito pela potência total nominal do conjunto de painéis<br><br> ' +
                     'Área total:<br><br>O cálculo é feito a determinar potência total nominal do conjunto de painéis em relação a quantos paines cabem na área total<br><br>' +
                     'Quantidade painéis:<br><br>O cálculo é feito a determinar potência total nominal do conjunto de painéis em relação ao número total de painéis',
                 options: [
@@ -1575,10 +1615,14 @@
                 ]
             },
             cost_title: {
-                innerHTML: 'Entradas sistema financeiro',
+                innerHTML: 'Entradas sistema financeiro ',
             },
             estacao_title: {
                 innerHTML: 'Entradas sistema estações de recarga veicular',
+            },
+            kwh_consumption: {
+                innerHTML: 'Consumo de energia media mensal (kWh)',
+                help: 'O consumo medio mensal em kWh da residencia/estabelecimento'
             },
             kwh: {
                 innerHTML: 'Custo do kWh (R$)',
@@ -1586,18 +1630,18 @@
             },
             custo_painel: {
                 innerHTML: 'Custo Wp painel (R$)',
-                help: 'Wp Watt-pico, Valor médio de um Wp, este valor é multiplicado pela potência nominal total da matriz para calcular o custo total dos painéis'
+                help: 'Wp Watt-pico, Valor médio de um Wp, este valor é multiplicado pela potência nominal total da matriz para calcular o custo total da matriz de painéis'
             },
             custo_inv: {
                 innerHTML: 'Custo Inversor ou Otimizador (R$)',
-                help: 'Valor médio por kW produzido'
+                help: 'Valor médio por kW a ser otimizado ou invertido'
             },
             tem_estrutura: {
                 innerHTML: 'Estruturas de suporte',
                 help: 'Caso seja necessario adquirir estruturas para suportar os paíneis',
                 options: [
                     'Sem',
-                    'Lage/telhado',
+                    'Laje/telhado',
                     'Garagem',
                     'Com ambas'
                 ]
@@ -1607,8 +1651,8 @@
                 help: 'Custo por unidade de estrutura'
             },
             quantidade_estrutura: {
-                innerHTML: 'Quantidade estruturas de telhado (R$)',
-                help: 'Quantidade de estruturas, algumas são um painel por estrutura outras são multiplas'
+                innerHTML: 'Quantidade estruturas de telhado (Un)',
+                help: 'Quantidade de estruturas, estruturas de telhado suportam geralmente de 1 a 2 paineis'
             },
             custo_estrutura_garagem: {
                 innerHTML: 'Custo estruturas de garagem (R$)',
@@ -1616,11 +1660,11 @@
             },
             quantidade_estrutura_garagem: {
                 innerHTML: 'Quantidade estruturas de garagem (Un)',
-                help: 'Quantidade de estruturas, algumas são um painel por estrutura outras são multiplas'
+                help: 'Quantidade de estruturas, estruturas de garagem suportam geralmente de 4 a 8 paineis'
             },
             tem_estacao: {
                 innerHTML: 'Estações de recarga VE',
-                help: 'Caso o estabelecimento implatar estações de recarga',
+                help: 'Caso o estabelecimento deseja implantar estações de recarga',
                 options: [
                     'Sem',
                     'Com'
@@ -1631,8 +1675,8 @@
                 help: 'A quantidade de dias que o estabelecimento funciona em uma semana'
             },
             hours_active: {
-                innerHTML: 'Média de Horas de utilização por dia (Un)',
-                help: 'A quantidade de horas em medía que as estações premanecem ativas em uso'
+                innerHTML: 'Média de Horas de utilização por dia (H)',
+                help: 'A quantidade média de horas por dia que as estações permanecem ativas em uso por um veículo'
             },
             kwh_venda: {
                 innerHTML: 'kWh venda (R$)',
@@ -1649,7 +1693,7 @@
             },
             estacao_quanti: {
                 innerHTML: 'Quantidade estações (Un)',
-                help: 'Quantidade estações lentas a serem instaladas'
+                help: 'Quantidade estações a serem instaladas'
             },
             estacao_custo: {
                 innerHTML: 'Custo estações (R$)',
@@ -1671,24 +1715,33 @@
             years: " anos ",
             day: "dia",
             month: "mês",
-            months: "mêses",
+            months: "meses",
             hour: "hora",
             ret_total: "Retorno total do sistema ano",
             custo_total: "Custo total do sistema",
-            sys_pago: "Sistema todo se paga em",
-            pv_sys: "Resultado somente do sistema PV ano",
-            ev_sys: "Resultado somente do sistema recarga ano",
-            pv_paga: "Sistema PV se paga em",
+            sys_pago: "Sistema completo se paga em",
+            pv_sys: "Resultado do sistema PV ano",
+            ev_sys: "Resultado do sistema de estações recarga ano",
+            pv_paga: "Sistema se paga em",
             obs_day: "Obs.: Clique no dia para ver o resultado da produção de energia por hora",
             obs_month: 'Obs.: Clique no mês para ver o resultado da produção de energia  por dia',
             back_year: "  Voltar pro ano",
             back_month: "  Voltar pro mês de ",
             total_en: "Energia produzida total ",
+            total_year: "Energia produzida total ano",
             ac: "(CA)",
             ret_kwh: "Retorno produção de energia",
             ret_custo: "Custo total do sistema PV",
-            estacao_consumo: "Consumo estações de recarga ano",
-            ret_estacao: "Retorno estações de recarga ano",
+            deficit: "Déficit de energia ano",
+            excedente: "Excedente de energia ano",
+            custo_pg_energia: "Energia pago a concessionária ano",
+            custo_re_energia: "Recebido da concessionária de energia ano",
+            estacao_consumo: "Consumo estações de recarga",
+            cost_buy_kw: "Custo total compra kW (Caso não produza)",
+            ret_sell_kw: "Retorno total veda kW",
+            consumo_tot: "Consumo total de energia ano",
+            ret_estacao: "Retorno estações de recarga",
+            ret_anual_sys_payed: "Lucro anual apos sistema pago",
             ret_estacao_custo: "Custo total estações",
             real: " (R$)",
             about: "Sobre",
@@ -1803,47 +1856,51 @@
             estacao_title: {
                 innerHTML: 'Vehicle charging station system inputs',
             },
+            kwh_consumption: {
+                innerHTML: 'Average monthly energy consumption (kWh)',
+                help: 'Average monthly consumption in kWh of the residence/establishment'
+            },
             kwh: {
                 innerHTML: 'kWh cost (BRL)',
                 help: 'The cost of the kWh charged by the utility company, used to calculate the financial return on energy production or consumption'
             },
             custo_painel: {
                 innerHTML: 'Wp Panel Cost (BRL)',
-                help: 'Wp Watt-peak, Average value of a Wp, this value is multiplied by the total nominal power of the matrix to calculate the total cost of the panels'
+                help: 'Wp Watt-peak, Average value of a Wp, this value is multiplied by the total rated power of the matrix to calculate the total cost of the array of panels'
             },
             custo_inv: {
                 innerHTML: 'Inverter or Optimizer Cost (BRL)',
-                help: 'Average value per kW produced'
+                help: 'Average value per kW to be optimized or inverted'
             },
             tem_estrutura: {
                 innerHTML: 'Support structures',
                 help: 'If necessary to acquire structures to support the panels',
                 options: [
-                    'Not',
-                    'Lage/roof',
+                    'No',
+                    'Slab/Roof',
                     'Garage',
                     'Both'
                 ]
             },
             custo_estrutura: {
-                innerHTML: 'Cost structures for slab or roof (R$)',
+                innerHTML: 'Cost per unit of structure (R$)',
                 help: 'Cost per structure unit'
             },
             quantidade_estrutura: {
-                innerHTML: 'Amount of structures for slab or roof (R$)',
-                help: 'Number of structures, some are one panel per structure others are multiple'
+                innerHTML: 'Roof Structures Quantity (Un)',
+                help: 'Number of structures, roof structures generally support 1 to 2 panels'
             },
             custo_estrutura_garagem: {
-                innerHTML: 'Cost structures for slab or roof (R$)',
+                innerHTML: 'Cost per unit of structure (R$)',
                 help: 'Cost per structure unit'
             },
             quantidade_estrutura_garagem: {
-                innerHTML: 'Amount of structures for slab or roof (R$)',
-                help: 'Number of structures, some are one panel per structure others are multiple'
+                innerHTML: 'Amount of garage structures (Un)',
+                help: 'Number of structures, garage structures generally support from 4 to 8 panels'
             },
             tem_estacao: {
                 innerHTML: 'VE charging stations',
-                help: 'If the establishment implements charging stations',
+                help: 'If the establishment wants to implement charging stations',
                 options: [
                     'Without',
                     'With'
@@ -1854,8 +1911,8 @@
                 help: 'The amount of days the establishment works in a week.'
             },
             hours_active: {
-                innerHTML: 'Average Hours of use per day (Un)',
-                help: 'The number of hours on average that the stations remain active in use'
+                innerHTML: 'Average Hours of use per day (H)',
+                help: 'The average number of hours per day that stations are active in use by a vehicle'
             },
             kwh_venda: {
                 innerHTML: 'Sale kWh (BRL)',
@@ -1872,15 +1929,15 @@
             },
             estacao_quanti: {
                 innerHTML: 'Amount of stations (Un)',
-                help: 'How many slow stations to install'
+                help: 'How many stations to install'
             },
             estacao_custo: {
                 innerHTML: 'Stations cost (R$)',
-                help: 'Cost of one season.'
+                help: 'Cost of one charging stations.'
             },
             estacao_pot: {
                 innerHTML: 'Average recharge power (kW)',
-                help: 'The average power that the station loads, some vehicles can load at higher power others lower, use an average value here.'
+                help: 'The average power that the station charges, some vehicles can charge at higher power others lower, use an average value here.'
             },
             button: {
                 innerHTML: 'Calculate'
@@ -1899,19 +1956,29 @@
             ret_total: "Total system return year",
             custo_total: "Total system cost",
             sys_pago: "The entire system pays in",
-            pv_sys: "PV system only year result",
-            ev_sys: "Recharge System only year result",
+            pv_sys: "PV system year result",
+            ev_sys: "Result of the system of recharge stations per year",
             pv_paga: "PV system pays in",
             obs_day: "Note: Click on the day to see the result of energy production per hour",
             obs_month: 'Note: Click on the month to see the result of energy production per day',
             back_year: "Back to the year",
             back_month: " Back to month of ",
             total_en: "Total produced energy ",
+            total_year: "Total produced energy year",
             ac: "(AC)",
             ret_kwh: "Energy production return",
             ret_custo: "Total PV system cost",
+            deficit: "Energy deficit year",
+            excedente: "Energy surplus year",
+            custo_pg_energia: "Energy paid to the utility company year",
+            custo_re_energia: "Received from the energy utility year",
+            estacao_consumo: "Recharging stations consumption",
+            cost_buy_kw: "Total kW purchase cost (If not producing)",
+            ret_sell_kw: "Total return seals kW",
+            consumo_tot: "Total energy consumption year",
             ret_estacao: "Return charging stations",
             ret_estacao_custo: "Total cost stations",
+            ret_anual_sys_payed: "Annual profit after system paid",
             real: " (BRL)",
             about: "About",
             about_help: "This is an ongoing college project, with the objective of modeling photovoltaic panels, this page is used to show the model results, for more information visit the link below:",

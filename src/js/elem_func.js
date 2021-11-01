@@ -202,7 +202,7 @@ function GetRetornoEstacao(total_ev_kw) {
 
 function GetRetornoSis(total_ev_kw, total_kw) {
     return (total_ev_kw * Element_obj.kwh_venda.value) -
-        ((total_ev_kw - total_kw) * Element_obj.kwh.value)
+        ((total_ev_kw - total_kw) * Element_obj.kwh.value);
 }
 
 function GetCustoPV(total_kWh) {
