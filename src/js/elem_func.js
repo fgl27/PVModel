@@ -157,11 +157,11 @@ function calcPotCC(PM0, DNI, EG_ED, TA, WS) {
 function GetTotal(total) {
     let text = '';
 
-    if (total > 1000000) {//Giga
+    if (Math.abs(total) > 1000000) {//Giga
 
         return text + formatNumber(total / 1000000.0, 4) + ' GWh ' + Lang[appLang].ac;
 
-    } else if (total > 1000) {//Mega
+    } else if (Math.abs(total) > 1000) {//Mega
 
         return text + formatNumber(total / 1000.0, 4) + ' MWh ' + Lang[appLang].ac;
 

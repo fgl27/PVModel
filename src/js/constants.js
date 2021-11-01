@@ -35,6 +35,7 @@ const estacao_lang_props = [
 
 const default_value = [
     'cost_title',
+    'kwh_consumption',
     'kwh',
     'custo_painel',
     'custo_inv'
