@@ -111,7 +111,7 @@ const Lang = {
         },
         kwh_consumption: {
             innerHTML: 'Consumo de energia media mensal (kWh)',
-            help: 'O consumo medi mensal de do kWh da residencia/estabelecimento'
+            help: 'O consumo medio mensal em kWh da residencia/estabelecimento'
         },
         kwh: {
             innerHTML: 'Custo do kWh (R$)',
@@ -130,7 +130,7 @@ const Lang = {
             help: 'Caso seja necessario adquirir estruturas para suportar os paíneis',
             options: [
                 'Sem',
-                'Lage/telhado',
+                'Laje/telhado',
                 'Garagem',
                 'Com ambas'
             ]
@@ -223,6 +223,8 @@ const Lang = {
         ret_custo: "Custo total do sistema PV",
         deficit: "Déficit de energia ano",
         excedente: "Excedente de energia ano",
+        custo_pg_energia: "Pago a concessionária de energia ano",
+        custo_re_energia: "Recebido da concessionária de energia ano",
         estacao_consumo: "Consumo estações de recarga",
         consumo_tot: "Consumo total de energia ano",
         ret_estacao: "Retorno estações de recarga",
@@ -342,7 +344,7 @@ const Lang = {
         },
         kwh_consumption: {
             innerHTML: 'Average monthly energy consumption (kWh)',
-            help: 'Measured monthly consumption of the kWh of the residence/establishment'
+            help: 'Average monthly consumption in kWh of the residence/establishment'
         },
         kwh: {
             innerHTML: 'kWh cost (BRL)',
@@ -360,26 +362,26 @@ const Lang = {
             innerHTML: 'Support structures',
             help: 'If necessary to acquire structures to support the panels',
             options: [
-                'Not',
-                'Lage/roof',
+                'No',
+                'Slab/Roof',
                 'Garage',
                 'Both'
             ]
         },
         custo_estrutura: {
-            innerHTML: 'Cost structures for slab or roof (R$)',
+            innerHTML: 'Cost per unit of structure (R$)',
             help: 'Cost per structure unit'
         },
         quantidade_estrutura: {
-            innerHTML: 'Amount of structures for slab or roof (Un)',
+            innerHTML: 'Roof Structures Quantity (Un)',
             help: 'Number of structures, roof structures generally support 1 to 2 panels'
         },
         custo_estrutura_garagem: {
-            innerHTML: 'Cost structures for slab or roof (R$)',
+            innerHTML: 'Cost per unit of structure (R$)',
             help: 'Cost per structure unit'
         },
         quantidade_estrutura_garagem: {
-            innerHTML: 'Amount of structures for slab or roof (Un)',
+            innerHTML: 'Amount of garage structures (Un)',
             help: 'Number of structures, garage structures generally support from 4 to 8 panels'
         },
         tem_estacao: {
@@ -413,15 +415,15 @@ const Lang = {
         },
         estacao_quanti: {
             innerHTML: 'Amount of stations (Un)',
-            help: 'How many slow stations to install'
+            help: 'How many stations to install'
         },
         estacao_custo: {
             innerHTML: 'Stations cost (R$)',
-            help: 'Cost of one season.'
+            help: 'Cost of one charging stations.'
         },
         estacao_pot: {
             innerHTML: 'Average recharge power (kW)',
-            help: 'The average power that the station loads, some vehicles can load at higher power others lower, use an average value here.'
+            help: 'The average power that the station charges, some vehicles can charge at higher power others lower, use an average value here.'
         },
         button: {
             innerHTML: 'Calculate'
@@ -454,7 +456,9 @@ const Lang = {
         ret_custo: "Total PV system cost",
         deficit: "Energy deficit year",
         excedente: "Energy surplus year",
-        estacao_consumo: "I consume recharge stations",
+        custo_pg_energia: "Paid to the energy utility year",
+        custo_re_energia: "Received from the energy utility year",
+        estacao_consumo: "Recharging stations consumption",
         consumo_tot: "Total energy consumption year",
         ret_estacao: "Return charging stations",
         ret_estacao_custo: "Total cost stations",

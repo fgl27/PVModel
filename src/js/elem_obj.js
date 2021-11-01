@@ -773,11 +773,13 @@ const fun_obj = {
             total_pv_custo = GetCustoPV(total_kw),
             ret_anos = total_pv_custo / total_ret_kw;
 
-        fun_obj.result('result_title', 'inputsContainerTop', Lang[appLang].pv_sys);
-        fun_obj.result('result_total_pv', null, Lang[appLang].total_en, resultado_total);
-        fun_obj.result('result_kwh_ret', null, Lang[appLang].ret_kwh, formatNumber(total_ret_kw) + Lang[appLang].real);
-        fun_obj.result('result_custo_ret', null, Lang[appLang].ret_custo, formatNumber(total_pv_custo) + Lang[appLang].real);
-        fun_obj.result('result_ret_ev', null, Lang[appLang].pv_paga, formatAnos(ret_anos));
+        if (total_kw > 0) {
+            fun_obj.result('result_title', 'inputsContainerTop', Lang[appLang].pv_sys);
+            fun_obj.result('result_total_pv', null, Lang[appLang].total_en, resultado_total);
+            fun_obj.result('result_kwh_ret', null, Lang[appLang].ret_kwh, formatNumber(total_ret_kw) + Lang[appLang].real);
+            fun_obj.result('result_custo_ret', null, Lang[appLang].ret_custo, formatNumber(total_pv_custo) + Lang[appLang].real);
+            fun_obj.result('result_ret_ev', null, Lang[appLang].pv_paga, formatAnos(ret_anos));
+        }
 
         const total_ev_kw = (Element_obj.tem_estacao.value ? GetConsumoEstacao() : 0),
             total_ev_custo = GetCustoEstação(),
@@ -786,22 +788,30 @@ const fun_obj = {
             se_paga = formatAnos((total_ev_custo + total_pv_custo) / (total_ret_kw + total_ev_ret)),
             ret_ano_tot = formatNumber(total_ev_ret + total_ret_kw, 2) + Lang[appLang].real,
             kw_consumo = (Element_obj.tem_estacao.value ? total_ev_kw : 0) + (Element_obj.kwh_consumption.value * 12),
-            kw_deficit = total_kw - (kw_consumo);
+            kw_deficit = total_kw - kw_consumo,
+            kw_pago = kw_deficit * Element_obj.kwh.value;
 
         if (Element_obj.tem_estacao.value) {
-            fun_obj.result('result_ev_title', null, Lang[appLang].ev_sys);
+            fun_obj.result('result_ev_title', (!total_kw ? 'inputsContainerTop' : null), Lang[appLang].ev_sys);
             fun_obj.result('result_kwh_consumo', null, Lang[appLang].estacao_consumo, GetTotal(total_ev_kw));
             fun_obj.result('result_kwh_ev_ret', null, Lang[appLang].ret_estacao, formatNumber(total_ev_ret, 2) + Lang[appLang].real);
             fun_obj.result('result_custo_ev_ret', null, Lang[appLang].ret_estacao_custo, formatNumber(total_ev_custo, 2) + Lang[appLang].real);
             fun_obj.result('result_ret_ev', null, Lang[appLang].pv_paga, formatAnos(ret_ev_anos));
         }
 
-        fun_obj.result('result_title', null, Lang[appLang].result + Lang[appLang].total, null, Lang[appLang].result_tot);
+        fun_obj.result(
+            'result_title',
+            (!total_kw && !Element_obj.tem_estacao.value ? 'inputsContainerTop' : null),
+            Lang[appLang].result + Lang[appLang].total,
+            null,
+            Lang[appLang].result_tot
+        );
 
         fun_obj.result('result_total_pv', null, Lang[appLang].total_year, resultado_total);
         fun_obj.result('result_kwh_consumo', null, Lang[appLang].consumo_tot, GetTotal(kw_consumo));
 
         fun_obj.result('result_kwh_consumo', null, kw_deficit >= 0 ? Lang[appLang].excedente : Lang[appLang].deficit, GetTotal(kw_deficit));
+        fun_obj.result('result_kwh_consumo', null, (kw_pago >= 0 ? Lang[appLang].custo_re_energia : Lang[appLang].custo_pg_energia), formatNumber(kw_pago >= 0 ? kw_pago : Math.abs(kw_pago)) + Lang[appLang].real);
 
         fun_obj.result('custo_total', null, Lang[appLang].custo_total, formatNumber(total_ev_custo + total_pv_custo, 2) + Lang[appLang].real);
         fun_obj.result('ret_total', null, Lang[appLang].ret_total, ret_ano_tot);
