@@ -1,3 +1,4 @@
+let BackButtonClick = false;
 let skipfirebase = false;
 
 let zoomValueDiv;

@@ -644,6 +644,8 @@ const fun_obj = {
                 dia,
                 hora;
 
+            BackButtonClick = false;
+
             resultObj = {};
             resultObj.total = 0;
 
@@ -710,6 +712,7 @@ const fun_obj = {
             isMonth = Boolean(prop1 && !prop2),
             CC_CA = Element_obj.cc_ca.value / 100000,
             monclick = function(prop1, prop2) {
+                BackButtonClick = true;
                 fun_obj.Resultado(prop1, prop2);
             };
 
@@ -976,7 +979,7 @@ const fun_obj = {
             function() {
 
                 //Desloca a pagina para baixo, para mostrar os gráficos
-                mgetElementById(Elem_Ids.Input.Button).scrollIntoView({behavior: "smooth"});
+                mgetElementById((!isMonth && !isDay && !BackButtonClick) ? Elem_Ids.Input.Button : Elem_Ids.Result.Note + '_Title').scrollIntoView({behavior: "smooth"});
 
                 //Anima os gráficos
                 for (const prop in obj) {
