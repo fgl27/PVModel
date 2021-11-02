@@ -204,6 +204,12 @@ function GetRetornoSis(total_ev_kw, total_kw) {
         ((total_ev_kw - total_kw) * Element_obj.kwh.value);
 }
 
+function GetRetornoEstacaoEProducao(total_ev_kw, total_kw, consumo, kw_pago) {
+    if (kw_pago < 0) return GetRetornoSis(total_ev_kw, total_kw - consumo);
+
+    return GetRetornoSis(total_ev_kw, total_kw - consumo) - (kw_pago);
+}
+
 function GetCustoPV(total_kWh) {
     let total_cost = 0;
 
