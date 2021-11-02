@@ -263,5 +263,7 @@ function formatAnos(value) {
         m_text = m > 0 && m !== 12 ? m + ' ' + (m > 1 ? Lang[appLang].months : Lang[appLang].month) : '',
         y_text = y > 0 ? y + (y > 1 ? Lang[appLang].years : Lang[appLang].year) : '';
 
+    if (y_text === '' && y_text === '') return '-';
+
     return y_text + ' ' + m_text;
 }

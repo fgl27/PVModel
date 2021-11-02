@@ -785,14 +785,15 @@ const fun_obj = {
         const total_ev_kw = (Element_obj.tem_estacao.value ? GetConsumoEstacao() : 0),
             total_ev_custo = GetCustoEstação(),
             total_ev_ret = GetRetornoEstacao(total_ev_kw),
-            ret_ev_anos = total_ev_custo / total_ev_ret,
+            ret_ev_anos = total_ev_ret > 0 ? (total_ev_custo / total_ev_ret) : 0,
             se_paga = formatAnos((total_ev_custo + total_pv_custo) / (total_ret_kw + total_ev_ret)),
             ret_ano_tot = formatNumber(total_ev_ret + total_ret_kw, 2) + Lang[appLang].real,
             consumo = (Element_obj.kwh_consumption.value * 12),
             kw_consumo = (Element_obj.tem_estacao.value ? total_ev_kw : 0) + consumo,
             kw_deficit = total_kw - kw_consumo,
             kw_pago = kw_deficit * Element_obj.kwh.value,
-            ev_sell_profit = total_ev_ret * Element_obj.kwh_venda.value;
+            ev_sell_profit = total_ev_ret * Element_obj.kwh_venda.value,
+            sys_ev_se_paga = total_ev_ret <= 0 && total_ev_custo > 0;
 
         fun_obj.result('result_ev_title', (!total_kw ? 'inputsContainerTop' : null), Lang[appLang].ev_sys);
         fun_obj.result('result_kwh_consumo', null, Lang[appLang].estacao_consumo, GetTotal(total_ev_kw));
@@ -802,7 +803,7 @@ const fun_obj = {
 
         fun_obj.result('result_kwh_ev_ret', null, Lang[appLang].ret_estacao, formatNumber(total_ev_ret, 2) + Lang[appLang].real);
         fun_obj.result('result_custo_ev_ret', null, Lang[appLang].ret_estacao_custo, formatNumber(total_ev_custo, 2) + Lang[appLang].real);
-        fun_obj.result('result_ret_ev', null, Lang[appLang].pv_paga, formatAnos(ret_ev_anos));
+        fun_obj.result('result_ret_ev', null, sys_ev_se_paga ? Lang[appLang].pv_nao_paga : Lang[appLang].pv_paga, sys_ev_se_paga ? '-' : formatAnos(ret_ev_anos));
 
         fun_obj.result(
             'result_title',
@@ -822,7 +823,12 @@ const fun_obj = {
         fun_obj.result('custo_total', null, Lang[appLang].custo_total, formatNumber(total_ev_custo + total_pv_custo, 2) + Lang[appLang].real);
         fun_obj.result('ret_total', null, Lang[appLang].ret_total, ret_ano_tot);
 
-        fun_obj.result('se_paga_total', 'inputsContainerBottom', Lang[appLang].sys_pago, se_paga);
+        fun_obj.result(
+            'se_paga_total',
+            'inputsContainerBottom',
+            se_paga === '-' ? Lang[appLang].pv_nao_paga : Lang[appLang].sys_pago,
+            se_paga
+        );
         fun_obj.result(
             'result_kwh_ev_ret',
             null,
