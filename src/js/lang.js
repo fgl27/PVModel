@@ -111,7 +111,7 @@ const Lang = {
         },
         kwh_consumption: {
             innerHTML: 'Consumo de energia media mensal (kWh)',
-            help: 'O consumo medio mensal em kWh da residencia/estabelecimento'
+            help: 'O consumo medio mensal em kWh da residência/estabelecimento'
         },
         kwh: {
             innerHTML: 'Custo do kWh (R$)',

@@ -792,7 +792,7 @@ const fun_obj = {
             kw_consumo = (Element_obj.tem_estacao.value ? total_ev_kw : 0) + consumo,
             kw_deficit = total_kw - kw_consumo,
             kw_pago = kw_deficit * Element_obj.kwh.value,
-            ev_sell_profit = total_ev_ret * Element_obj.kwh_venda.value,
+            ev_sell_profit = total_ev_kw * Element_obj.kwh_venda.value,
             sys_ev_se_paga = total_ev_ret <= 0 && total_ev_custo > 0;
 
         fun_obj.result('result_ev_title', (!total_kw ? 'inputsContainerTop' : null), Lang[appLang].ev_sys);
@@ -818,7 +818,7 @@ const fun_obj = {
 
         fun_obj.result('result_kwh_consumo', null, kw_deficit >= 0 ? Lang[appLang].excedente : Lang[appLang].deficit, GetTotal(kw_deficit));
         fun_obj.result('result_kwh_consumo', null, (kw_pago >= 0 ? Lang[appLang].custo_re_energia : Lang[appLang].custo_pg_energia), formatNumber(kw_pago >= 0 ? kw_pago : Math.abs(kw_pago)) + Lang[appLang].real);
-        fun_obj.result('result_kwh_ev_ret', null, Lang[appLang].ret_estacao + Lang[appLang].year, formatNumber(total_ev_ret, 2) + Lang[appLang].real);
+        fun_obj.result('result_kwh_ev_ret2', null, Lang[appLang].ret_estacao + Lang[appLang].year, formatNumber(total_ev_ret, 2) + Lang[appLang].real);
 
         fun_obj.result('custo_total', null, Lang[appLang].custo_total, formatNumber(total_ev_custo + total_pv_custo, 2) + Lang[appLang].real);
         fun_obj.result('ret_total', null, Lang[appLang].ret_total, ret_ano_tot);
@@ -830,7 +830,7 @@ const fun_obj = {
             se_paga
         );
         fun_obj.result(
-            'result_kwh_ev_ret',
+            'result_kwh_ev_ret3',
             null,
             Lang[appLang].ret_anual_sys_payed,
             formatNumber(GetRetornoSis(total_ev_kw, total_kw - consumo), 2) + Lang[appLang].real
