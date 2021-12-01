@@ -172,7 +172,7 @@ const Lang = {
             help: 'O valor de venda do kWh cobrado pela recarga'
         },
         ultra_title: {
-            innerHTML: 'Estações de recarga ultrarrápidos',
+            innerHTML: 'Estações de recarga ultrarrápidas',
         },
         fast_title: {
             innerHTML: 'Estações de recarga rápidas',
