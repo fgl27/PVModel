@@ -38,6 +38,8 @@ const default_value = [
     'cost_title',
     'kwh_consumption',
     'kwh',
+    'kwhv',
+    'cost_min',
     'custo_painel',
     'custo_inv'
 ];

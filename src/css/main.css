@@ -217,6 +217,7 @@ html {
   flex-grow: 1;
   width: 100%;
   padding-left: 0.5em;
+  font-size: 95%;
 }
 
 .inputsTitle {

@@ -49,13 +49,13 @@ const Lang = {
             innerHTML: 'Entradas sistema PV',
         },
         pot_nominal_array: {
-            innerHTML: 'Potência nominal total da matriz (W/m²)',
-            help: 'O valor nominal total da matriz fotovoltaica instalada em W/m²',
+            innerHTML: 'Potência nominal total da matriz (Wp)',
+            help: 'O valor nominal total da matriz fotovoltaica instalada em Wp',
             disabledHelp: 'Neste modo a potência nominal total é igual:<br><br>A potência nominal de um painel vezes a quatidade de painéis',
         },
         pot_nominal_painel: {
-            innerHTML: 'Potência nominal de um painel (W/m²)',
-            help: 'O valor nominal total de um painel usado em W/m² (assumindo que todos painéis são iguais)',
+            innerHTML: 'Potência nominal de um painel (Wp)',
+            help: 'O valor nominal total de um painel usado em Wp (assumindo que todos painéis são iguais)',
         },
         area_painel: {
             innerHTML: 'Área de um painel (m²)',
@@ -115,7 +115,15 @@ const Lang = {
         },
         kwh: {
             innerHTML: 'Custo do kWh (R$)',
-            help: 'O custo do kWh cobrado pela concessionária, utilizado para calcular o retorno financeiro da produção ou consumo de energia'
+            help: 'O custo do kWh cobrado pela concessionária, utilizado para calcular o Faturmento financeiro da produção ou consumo de energia'
+        },
+        kwhv: {
+            innerHTML: 'Valor de compra kWh concessionaria (R$)',
+            help: 'O valor que a concessionaria de energia local paga pelo kWh injetado na rede eletrica'
+        },
+        cost_min: {
+            innerHTML: 'Custo mínimo mensal concessionaria',
+            help: 'O valor mínimo mensal que a concessionaria de energia cobra para estar conectado na rede'
         },
         custo_painel: {
             innerHTML: 'Custo Wp painel (R$)',
@@ -164,11 +172,11 @@ const Lang = {
             help: 'A quantidade de dias que o estabelecimento funciona em uma semana'
         },
         hours_active: {
-            innerHTML: 'Média de Horas de utilização por dia (H)',
+            innerHTML: 'Média de Horas de utilização por dia (h)',
             help: 'A quantidade média de horas por dia que as estações permanecem ativas em uso por um veículo'
         },
         kwh_venda: {
-            innerHTML: 'kWh venda (R$)',
+            innerHTML: 'Custo kWh recarga (R$)',
             help: 'O valor de venda do kWh cobrado pela recarga'
         },
         ultra_title: {
@@ -206,31 +214,31 @@ const Lang = {
         month: "mês",
         months: "meses",
         hour: "hora",
-        ret_total: "Retorno total do sistema ano",
+        ret_total: "Faturamento total do sistema ano",
         custo_total: "Custo total do sistema",
-        sys_pago: "Sistema completo se paga em",
+        sys_pago: "Prazo de retorno de investimento to sistema todo",
         pv_sys: "Resultado do sistema PV ano",
         ev_sys: "Resultado do sistema de estações recarga ano",
-        pv_paga: "Sistema se paga em",
+        pv_paga: "Prazo de retorno de investimento",
         pv_nao_paga: "Sistema não se paga",
         obs_day: "Obs.: Clique no dia para ver o resultado da produção de energia por hora",
         obs_month: 'Obs.: Clique no mês para ver o resultado da produção de energia  por dia',
-        back_year: "  Voltar pro ano",
-        back_month: "  Voltar pro mês de ",
+        back_year: "  Voltar para o ano",
+        back_month: "  Voltar para o mês de ",
         total_en: "Energia produzida total ",
         total_year: "Energia produzida total ano",
         ac: "(CA)",
-        ret_kwh: "Retorno produção de energia",
+        ret_kwh: "Faturmento produção de energia",
         ret_custo: "Custo total do sistema PV",
         deficit: "Déficit de energia ano",
         excedente: "Excedente de energia ano",
         custo_pg_energia: "Energia pago a concessionária ano",
         custo_re_energia: "Recebido da concessionária de energia ano",
         estacao_consumo: "Consumo estações de recarga",
-        cost_buy_kw: "Custo total compra kW (Caso não produza)",
-        ret_sell_kw: "Retorno total veda kW",
+        cost_buy_kw: "Custo de compra de energia (Caso não produza)",
+        ret_sell_kw: "Faturamento bruto",
         consumo_tot: "Consumo total de energia ano",
-        ret_estacao: "Retorno estações de recarga",
+        ret_estacao: "Faturamento liquido",
         ret_anual_sys_payed: "Lucro anual apos sistema pago",
         ret_estacao_custo: "Custo total estações",
         real: " (R$)",
@@ -286,13 +294,13 @@ const Lang = {
             innerHTML: 'PV system inputs',
         },
         pot_nominal_array: {
-            innerHTML: 'Total nominal power of the array (W/m²)',
-            help: 'The total nominal value of the installed photovoltaic array in W/m²',
+            innerHTML: 'Total nominal power of the array (Wp)',
+            help: 'The total nominal value of the installed photovoltaic array in Wp',
             disabledHelp: 'In this mode the total rated power is equal:<br><br>The rated power of a panel times the quantity of panels',
         },
         pot_nominal_painel: {
-            innerHTML: 'Rated power of a panel (W/m²)',
-            help: 'The total power rating of a panel used in W/m² (assuming all panels are equal)',
+            innerHTML: 'Rated power of a panel (Wp)',
+            help: 'The total power rating of a panel used in Wp (assuming all panels are equal)',
         },
         area_painel: {
             innerHTML: 'Area of a panel (m²)',
@@ -352,7 +360,15 @@ const Lang = {
         },
         kwh: {
             innerHTML: 'kWh cost (BRL)',
-            help: 'The cost of the kWh charged by the utility company, used to calculate the financial return on energy production or consumption'
+            help: 'The cost of the kWh charged by the energy company, used to calculate the financial return on energy production or consumption'
+        },
+        kwhv: {
+            innerHTML: 'Purchase Value kWh utility company (R$)',
+            help: 'The amount that the local energy company pays for the kWh injected into the electricity grid'
+        },
+        cost_min: {
+            innerHTML: 'Minimum monthly dealership cost',
+            help: 'The minimum monthly amount the energy company charges to be connected to the grid'
         },
         custo_painel: {
             innerHTML: 'Wp Panel Cost (BRL)',

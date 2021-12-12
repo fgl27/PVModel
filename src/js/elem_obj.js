@@ -154,6 +154,20 @@ let Element_obj = {
         type: 'number',
         step: '0.01',
     },
+    kwhv: {
+        elem: 'input',
+        value: 0.75,
+        min: 0,
+        type: 'number',
+        step: '0.01',
+    },
+    cost_min: {
+        elem: 'input',
+        value: 25,
+        min: 0,
+        type: 'number',
+        step: '1',
+    },
     custo_painel: {
         elem: 'input',
         value: 2.2,
@@ -784,14 +798,14 @@ const fun_obj = {
             consumo = (Element_obj.kwh_consumption.value * 12),
             kw_consumo = (Element_obj.tem_estacao.value ? total_ev_kw : 0) + consumo,
             kw_deficit = total_kw - kw_consumo,
-            kw_pago = kw_deficit * Element_obj.kwh.value,
+            kw_pago = kw_deficit * Element_obj.kwhv.value - (Element_obj.cost_min.value * 12),
             ev_sell_profit = total_ev_kw * Element_obj.kwh_venda.value,
             sys_ev_se_paga = total_ev_ret <= 0 && total_ev_custo > 0,
             lucro_total = GetRetornoSis(total_ev_kw, total_kw - consumo);
 
         fun_obj.result('result_title', 'inputsContainerTop', Lang[appLang].pv_sys);
         fun_obj.result('result_total_pv', null, Lang[appLang].total_en, resultado_total);
-        fun_obj.result('result_kwh_ret', null, Lang[appLang].ret_kwh, formatNumber(total_ret_kw) + Lang[appLang].real);
+        //fun_obj.result('result_kwh_ret', null, Lang[appLang].ret_kwh, formatNumber(total_ret_kw) + Lang[appLang].real);
         fun_obj.result('result_custo_ret', null, Lang[appLang].ret_custo, formatNumber(total_pv_custo) + Lang[appLang].real);
         fun_obj.result('result_ret_ev', null, Lang[appLang].pv_paga, formatAnos(ret_anos));
 
@@ -825,14 +839,14 @@ const fun_obj = {
 
         fun_obj.result(
             'se_paga_total',
-            'inputsContainerBottom',
+            null,
             se_paga === '-' ? Lang[appLang].pv_nao_paga : Lang[appLang].sys_pago,
             se_paga
         );
 
         fun_obj.result(
             'result_kwh_ev_ret3',
-            null,
+            'inputsContainerBottom',
             Lang[appLang].ret_anual_sys_payed,
             formatNumber(lucro_total, 2) + Lang[appLang].real
         );
