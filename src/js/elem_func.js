@@ -194,20 +194,28 @@ function GetConsumoEstacao() {
     return total_kw;
 }
 
+function GetQuantiEstacao() {
+    return Element_obj.estacao_ultra_quanti.value + Element_obj.estacao_fast_quanti.value + Element_obj.estacao_slow_quanti.value;
+}
+
 //Retorna o valor financeiro total em relação aos kwh produzidos Estações de recarga
 function GetRetornoEstacao(total_ev_kw) {
+    if (!GetQuantiEstacao()) return 0;
+
     return total_ev_kw * (Element_obj.kwh_venda.value - Element_obj.kwh.value);
 }
 
 function GetRetornoSis(total_ev_kw, total_kw) {
     return (total_ev_kw * Element_obj.kwh_venda.value) -
-        ((total_ev_kw - total_kw) * Element_obj.kwh.value);
+        ((total_ev_kw - total_kw) * Element_obj.kwhv.value);
 }
 
 function GetRetornoEstacaoEProducao(total_ev_kw, total_kw, consumo, kw_pago) {
+    if (!GetQuantiEstacao()) return 0;
+
     if (kw_pago < 0) return GetRetornoSis(total_ev_kw, total_kw - consumo);
 
-    return GetRetornoSis(total_ev_kw, total_kw - consumo) - (kw_pago);
+    return GetRetornoSis(total_ev_kw, total_kw - consumo) - (kw_pago) - (Element_obj.cost_min.value * 12);
 }
 
 function GetCustoPV(total_kWh) {

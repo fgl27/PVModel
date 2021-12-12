@@ -79,7 +79,7 @@ let Element_obj = {
     },
     area: {
         elem: 'input',
-        value: 6,
+        value: 14,
         min: 0,
         type: 'number',
         step: '1',
@@ -142,7 +142,7 @@ let Element_obj = {
     },
     kwh_consumption: {
         elem: 'input',
-        value: 0,
+        value: 175,
         min: 0,
         type: 'number',
         step: '1',
@@ -801,7 +801,7 @@ const fun_obj = {
             kw_pago = kw_deficit * Element_obj.kwhv.value - (Element_obj.cost_min.value * 12),
             ev_sell_profit = total_ev_kw * Element_obj.kwh_venda.value,
             sys_ev_se_paga = total_ev_ret <= 0 && total_ev_custo > 0,
-            lucro_total = GetRetornoSis(total_ev_kw, total_kw - consumo);
+            lucro_total = GetRetornoSis(total_ev_kw, total_kw - consumo) - (Element_obj.cost_min.value * 12);
 
         fun_obj.result('result_title', 'inputsContainerTop', Lang[appLang].pv_sys);
         fun_obj.result('result_total_pv', null, Lang[appLang].total_en, resultado_total);

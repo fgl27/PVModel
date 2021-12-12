@@ -123,7 +123,7 @@ const Lang = {
         },
         cost_min: {
             innerHTML: 'Custo mínimo mensal concessionaria',
-            help: 'O valor mínimo mensal que a concessionaria de energia cobra para estar conectado na rede'
+            help: 'O valor mínimo mensal que a concessionaria de energia cobra para estar conectado na rede, este valor varia se for mono, bi ou trifásico, contempla impostos tributos e iluminação publica'
         },
         custo_painel: {
             innerHTML: 'Custo Wp painel (R$)',
@@ -232,13 +232,13 @@ const Lang = {
         ret_custo: "Custo total do sistema PV",
         deficit: "Déficit de energia ano",
         excedente: "Excedente de energia ano",
-        custo_pg_energia: "Energia pago a concessionária ano",
+        custo_pg_energia: "Valor pago a concessionária ano",
         custo_re_energia: "Recebido da concessionária de energia ano",
         estacao_consumo: "Consumo estações de recarga",
         cost_buy_kw: "Custo de compra de energia (Caso não produza)",
         ret_sell_kw: "Faturamento bruto",
         consumo_tot: "Consumo total de energia ano",
-        ret_estacao: "Faturamento liquido",
+        ret_estacao: "Faturamento liquido Estações recarga",
         ret_anual_sys_payed: "Lucro anual apos sistema pago",
         ret_estacao_custo: "Custo total estações",
         real: " (R$)",
