@@ -51,6 +51,8 @@
         'cost_title',
         'kwh_consumption',
         'kwh',
+        'kwhv',
+        'cost_min',
         'custo_painel',
         'custo_inv'
     ];
@@ -266,20 +268,28 @@
         return total_kw;
     }
 
+    function GetQuantiEstacao() {
+        return Element_obj.estacao_ultra_quanti.value + Element_obj.estacao_fast_quanti.value + Element_obj.estacao_slow_quanti.value;
+    }
+
     //Retorna o valor financeiro total em relação aos kwh produzidos Estações de recarga
     function GetRetornoEstacao(total_ev_kw) {
+        if (!GetQuantiEstacao()) return 0;
+
         return total_ev_kw * (Element_obj.kwh_venda.value - Element_obj.kwh.value);
     }
 
     function GetRetornoSis(total_ev_kw, total_kw) {
         return (total_ev_kw * Element_obj.kwh_venda.value) -
-            ((total_ev_kw - total_kw) * Element_obj.kwh.value);
+            ((total_ev_kw - total_kw) * Element_obj.kwhv.value);
     }
 
     function GetRetornoEstacaoEProducao(total_ev_kw, total_kw, consumo, kw_pago) {
+        if (!GetQuantiEstacao()) return 0;
+
         if (kw_pago < 0) return GetRetornoSis(total_ev_kw, total_kw - consumo);
 
-        return GetRetornoSis(total_ev_kw, total_kw - consumo) - (kw_pago);
+        return GetRetornoSis(total_ev_kw, total_kw - consumo) - (kw_pago) - (Element_obj.cost_min.value * 12);
     }
 
     function GetCustoPV(total_kWh) {
@@ -427,7 +437,7 @@
         },
         area: {
             elem: 'input',
-            value: 6,
+            value: 14,
             min: 0,
             type: 'number',
             step: '1',
@@ -490,7 +500,7 @@
         },
         kwh_consumption: {
             elem: 'input',
-            value: 0,
+            value: 175,
             min: 0,
             type: 'number',
             step: '1',
@@ -501,6 +511,20 @@
             min: 0,
             type: 'number',
             step: '0.01',
+        },
+        kwhv: {
+            elem: 'input',
+            value: 0.75,
+            min: 0,
+            type: 'number',
+            step: '0.01',
+        },
+        cost_min: {
+            elem: 'input',
+            value: 25,
+            min: 0,
+            type: 'number',
+            step: '1',
         },
         custo_painel: {
             elem: 'input',
@@ -1132,14 +1156,14 @@
                 consumo = (Element_obj.kwh_consumption.value * 12),
                 kw_consumo = (Element_obj.tem_estacao.value ? total_ev_kw : 0) + consumo,
                 kw_deficit = total_kw - kw_consumo,
-                kw_pago = kw_deficit * Element_obj.kwh.value,
+                kw_pago = kw_deficit * Element_obj.kwhv.value - (Element_obj.cost_min.value * 12),
                 ev_sell_profit = total_ev_kw * Element_obj.kwh_venda.value,
                 sys_ev_se_paga = total_ev_ret <= 0 && total_ev_custo > 0,
-                lucro_total = GetRetornoSis(total_ev_kw, total_kw - consumo);
+                lucro_total = GetRetornoSis(total_ev_kw, total_kw - consumo) - (Element_obj.cost_min.value * 12);
 
             fun_obj.result('result_title', 'inputsContainerTop', Lang[appLang].pv_sys);
             fun_obj.result('result_total_pv', null, Lang[appLang].total_en, resultado_total);
-            fun_obj.result('result_kwh_ret', null, Lang[appLang].ret_kwh, formatNumber(total_ret_kw) + Lang[appLang].real);
+            //fun_obj.result('result_kwh_ret', null, Lang[appLang].ret_kwh, formatNumber(total_ret_kw) + Lang[appLang].real);
             fun_obj.result('result_custo_ret', null, Lang[appLang].ret_custo, formatNumber(total_pv_custo) + Lang[appLang].real);
             fun_obj.result('result_ret_ev', null, Lang[appLang].pv_paga, formatAnos(ret_anos));
 
@@ -1173,14 +1197,14 @@
 
             fun_obj.result(
                 'se_paga_total',
-                'inputsContainerBottom',
+                null,
                 se_paga === '-' ? Lang[appLang].pv_nao_paga : Lang[appLang].sys_pago,
                 se_paga
             );
 
             fun_obj.result(
                 'result_kwh_ev_ret3',
-                null,
+                'inputsContainerBottom',
                 Lang[appLang].ret_anual_sys_payed,
                 formatNumber(lucro_total, 2) + Lang[appLang].real
             );
@@ -1574,13 +1598,13 @@
                 innerHTML: 'Entradas sistema PV',
             },
             pot_nominal_array: {
-                innerHTML: 'Potência nominal total da matriz (W/m²)',
-                help: 'O valor nominal total da matriz fotovoltaica instalada em W/m²',
+                innerHTML: 'Potência nominal total da matriz (Wp)',
+                help: 'O valor nominal total da matriz fotovoltaica instalada em Wp',
                 disabledHelp: 'Neste modo a potência nominal total é igual:<br><br>A potência nominal de um painel vezes a quatidade de painéis',
             },
             pot_nominal_painel: {
-                innerHTML: 'Potência nominal de um painel (W/m²)',
-                help: 'O valor nominal total de um painel usado em W/m² (assumindo que todos painéis são iguais)',
+                innerHTML: 'Potência nominal de um painel (Wp)',
+                help: 'O valor nominal total de um painel usado em Wp (assumindo que todos painéis são iguais)',
             },
             area_painel: {
                 innerHTML: 'Área de um painel (m²)',
@@ -1640,7 +1664,15 @@
             },
             kwh: {
                 innerHTML: 'Custo do kWh (R$)',
-                help: 'O custo do kWh cobrado pela concessionária, utilizado para calcular o retorno financeiro da produção ou consumo de energia'
+                help: 'O custo do kWh cobrado pela concessionária, utilizado para calcular o Faturmento financeiro da produção ou consumo de energia'
+            },
+            kwhv: {
+                innerHTML: 'Valor de compra kWh concessionaria (R$)',
+                help: 'O valor que a concessionaria de energia local paga pelo kWh injetado na rede eletrica'
+            },
+            cost_min: {
+                innerHTML: 'Custo mínimo mensal concessionaria',
+                help: 'O valor mínimo mensal que a concessionaria de energia cobra para estar conectado na rede, este valor varia se for mono, bi ou trifásico, contempla impostos tributos e iluminação publica'
             },
             custo_painel: {
                 innerHTML: 'Custo Wp painel (R$)',
@@ -1689,11 +1721,11 @@
                 help: 'A quantidade de dias que o estabelecimento funciona em uma semana'
             },
             hours_active: {
-                innerHTML: 'Média de Horas de utilização por dia (H)',
+                innerHTML: 'Média de Horas de utilização por dia (h)',
                 help: 'A quantidade média de horas por dia que as estações permanecem ativas em uso por um veículo'
             },
             kwh_venda: {
-                innerHTML: 'kWh venda (R$)',
+                innerHTML: 'Custo kWh recarga (R$)',
                 help: 'O valor de venda do kWh cobrado pela recarga'
             },
             ultra_title: {
@@ -1731,31 +1763,31 @@
             month: "mês",
             months: "meses",
             hour: "hora",
-            ret_total: "Retorno total do sistema ano",
+            ret_total: "Faturamento total do sistema ano",
             custo_total: "Custo total do sistema",
-            sys_pago: "Sistema completo se paga em",
+            sys_pago: "Prazo de retorno de investimento to sistema todo",
             pv_sys: "Resultado do sistema PV ano",
             ev_sys: "Resultado do sistema de estações recarga ano",
-            pv_paga: "Sistema se paga em",
+            pv_paga: "Prazo de retorno de investimento",
             pv_nao_paga: "Sistema não se paga",
             obs_day: "Obs.: Clique no dia para ver o resultado da produção de energia por hora",
             obs_month: 'Obs.: Clique no mês para ver o resultado da produção de energia  por dia',
-            back_year: "  Voltar pro ano",
-            back_month: "  Voltar pro mês de ",
+            back_year: "  Voltar para o ano",
+            back_month: "  Voltar para o mês de ",
             total_en: "Energia produzida total ",
             total_year: "Energia produzida total ano",
             ac: "(CA)",
-            ret_kwh: "Retorno produção de energia",
+            ret_kwh: "Faturmento produção de energia",
             ret_custo: "Custo total do sistema PV",
             deficit: "Déficit de energia ano",
             excedente: "Excedente de energia ano",
-            custo_pg_energia: "Energia pago a concessionária ano",
+            custo_pg_energia: "Valor pago a concessionária ano",
             custo_re_energia: "Recebido da concessionária de energia ano",
             estacao_consumo: "Consumo estações de recarga",
-            cost_buy_kw: "Custo total compra kW (Caso não produza)",
-            ret_sell_kw: "Retorno total veda kW",
+            cost_buy_kw: "Custo de compra de energia (Caso não produza)",
+            ret_sell_kw: "Faturamento bruto",
             consumo_tot: "Consumo total de energia ano",
-            ret_estacao: "Retorno estações de recarga",
+            ret_estacao: "Faturamento liquido Estações recarga",
             ret_anual_sys_payed: "Lucro anual apos sistema pago",
             ret_estacao_custo: "Custo total estações",
             real: " (R$)",
@@ -1811,13 +1843,13 @@
                 innerHTML: 'PV system inputs',
             },
             pot_nominal_array: {
-                innerHTML: 'Total nominal power of the array (W/m²)',
-                help: 'The total nominal value of the installed photovoltaic array in W/m²',
+                innerHTML: 'Total nominal power of the array (Wp)',
+                help: 'The total nominal value of the installed photovoltaic array in Wp',
                 disabledHelp: 'In this mode the total rated power is equal:<br><br>The rated power of a panel times the quantity of panels',
             },
             pot_nominal_painel: {
-                innerHTML: 'Rated power of a panel (W/m²)',
-                help: 'The total power rating of a panel used in W/m² (assuming all panels are equal)',
+                innerHTML: 'Rated power of a panel (Wp)',
+                help: 'The total power rating of a panel used in Wp (assuming all panels are equal)',
             },
             area_painel: {
                 innerHTML: 'Area of a panel (m²)',
@@ -1877,7 +1909,15 @@
             },
             kwh: {
                 innerHTML: 'kWh cost (BRL)',
-                help: 'The cost of the kWh charged by the utility company, used to calculate the financial return on energy production or consumption'
+                help: 'The cost of the kWh charged by the energy company, used to calculate the financial return on energy production or consumption'
+            },
+            kwhv: {
+                innerHTML: 'Purchase Value kWh utility company (R$)',
+                help: 'The amount that the local energy company pays for the kWh injected into the electricity grid'
+            },
+            cost_min: {
+                innerHTML: 'Minimum monthly dealership cost',
+                help: 'The minimum monthly amount the energy company charges to be connected to the grid'
             },
             custo_painel: {
                 innerHTML: 'Wp Panel Cost (BRL)',
