@@ -1,0 +1,159 @@
+\documentclass[tcc,capa]{texufpel}
+\usepackage[utf8]{inputenc}
+\usepackage{colortbl}
+\usepackage{graphicx} 
+\usepackage[T1]{fontenc}
+\usepackage{epstopdf}
+\usepackage{lmodern}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage{bookman}
+\usepackage{listings}
+\usepackage{subfigure}
+\usepackage{float}
+\usepackage{longtable}
+\usepackage{upquote}
+    \usepackage[hidelinks]{hyperref}
+
+% Estas duas linhas fazem as referências como parte to sumário
+\usepackage{etoolbox}
+\apptocmd{\thebibliography}{\csname phantomsection\endcsname\addcontentsline{toc}{chapter}{\bibname}}{}{}
+
+\unidade{Centro de Engenharias}
+\curso{Engenharia Eletrônica}
+\nomecurso{Bacharelado em Engenharia Eletrônica}
+\titulocurso{Bacharel em Engenharia Eletrônica}
+\title{Um sistema computacional capaz de determinar o potencial energético solar de um estabelecimento ou residência}
+\author{Leon} {Felipe Garcia de}
+\advisor[Prof. Dr. Eng.]{Manoel da Cunha Duarte}{Cláudio}
+%\coadvisor [Prof. Dr.]{sobre nome coorientador}{Nome do coorientador remover linha caso não haja}
+
+%As palavras chaves são usadas para busca na internet e devem ser bem relacionadas ao tema abordado como fotovoltaico, baterias, veículos, carregamento etc. 
+\keyword{Energia solar}
+\keyword{Veiculo elétrico}
+\keyword{Estação de recarga veicular}
+\keyword{Sistemas Fotovoltaicos}
+
+ % Data da defesa
+\date{Junho}{2021}
+\begin{document}
+\maketitle 
+\sloppy
+
+\fichacatalografica
+\folhadeaprovacao
+\input{./textos/A_dedicatoria}
+\newpage
+\input{./textos/B_agradecimentos}
+\input{./textos/C_epigrafe}
+\input{./textos/D_resumo} 
+\input{./textos/E_abstract}
+
+\listoffigures %Lista de Figuras
+\listoftables
+\input{./textos/F_lista_siglas} %lista de abreviaturas e siglas, manual.
+\input{./textos/F2_lista_sinbolos} %lista de símbolos
+
+\begin{NoHyper}
+  \tableofcontents
+\end{NoHyper}
+
+%\tableofcontents %Sumario
+\input{./textos/G_introducao}
+\input{./textos/H_RevisaoBb}	
+\input{./textos/I_Materiais_Metodos}
+\input{./textos/J_Resultados}
+\input{./textos/K_conclusao}
+%\phantomsection 
+%\addcontentsline{toc}{chapter}{Referências} 
+%\chapter{Referências}
+%\bibliography{bibliografia.bib}
+%\bibliographystyle{abnt}
+
+\bibliographystyle{abnt}
+\bibliography{bibliografia.bib}
+
+\makecover
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ================ Log de modificações ==========================
+
+% 0.00   15-FEV-20  Pesquisa bibliográfica 
+% 0.10   20-FEV-20  Criei arquivos, pastas, exemplos e título.
+% 0.50   10-MAR-20  Início da escrita introdução.
+% 0.60   27-MAR-20  Incremento do fluxograma do TCC na Intro
+% 1.00   01-ABR-20  Finalização da introdução.
+% 1.10   03-ABR-20  Início da escrita da Revisão Bibliográfica    
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% =================== Notas pessoais ==========================
+
+% Realizando uns cursos de revisão de Controle de Sistemas do ITA
+% Estudando Modelagem Dinâmica pelo Livro Sistemas de Controle 
+%   para Engegnharia do Franklin
+% Iniciando equações simples das leis físicas da bicicleta
+
+
+
+%% NOTAS DO QUE ESCREVER
+\begin{comment}
+
+----------------------------------------------------------------------
+-------------------------  Introdução --------------------------------
+----------------------------------------------------------------------
+
+A introdução deve conter os temas que serão tratados no trabalho, além da justificativa e do objetivo do TCC. Ao escrever o texto, faça uma apresentação breve e clara da temática estudada, valorizando acima de tudo a delimitação. Na sequência, exponha a justificativa e levante questionamentos para chegar até o problema do pesquisa. Você também pode usar essa parte do trabalho para indicar como será a ordem dos capítulos.
+
+Surgimento dos sistemas de segurança veicular, surgimento no Brasil,
+introdução dos ABS em veículos, carros, motos e na bike.
+Porque utilizar equipamentos de segurança na bike.
+Equipamentos utilizados.
+Motivo de usar o ABS em bikes
+
+----------------------------------------------------------------------
+-------------------------  Desenvolvimento ---------------------------
+----------------------- Revisão Bibliográfica ------------------------
+----------------------------------------------------------------------
+
+-- O quê vou pesquisar? (Problema) --
+
+-- Para quê serve esse trabalho? (Objetivo geral e objetivos específicos) --
+
+-- Por quê devo realizar a pesquisa? (Justificativa) --
+
+-- Como vou fazer esse estudo? (Metodologia) --
+
+-------------------------- ---------------- -------------------
+-- Objeto Geral -- (o que será pesquisado, qual o seu problema)
+
+-- Objeto Específico-- (Essa distinção entre “objeto/ objetivo geral” e “objeto/ objetivo específico” nem sempre aparece, depende das regras da instituição para a qual você vai encaminhar o projeto).
+
+-- Justificativa -- (Uma introdução muito sucinta sobre o assunto, onde você faz uma brevíssima discussão da literatura básica de referência, isto é, do seu referencial teórico básico e expõe a relevância teórica e social – se houver – de sua pesquisa).
+
+-- Relevância ou alcance social -- (Alguns programas podem exigir uma especificação nesse item)
+
+----------------------------------------------------------------------
+-------------------------  Conclusão  --------------------------------
+----------------------------------------------------------------------
+
+A conclusão é a finalização do trabalho, onde o autor recapitula o assunto e fala um pouco sobre os resultados. Também chamada de considerações finais, essa parte do TCC mostra se a investigação atingiu (ou não) os seus objetivos. Não existe uma receita pronta para redigir essa seção.
+
+Em geral, recomenda-se: expor as próprias ideias, resumir o conteúdo e expor as principais inferências. Lembre-se de que o conhecimento científico está em constante evolução, portanto, não dá para criar conclusões fechadas sobre um assunto.  (verdades únicas e absolutas).
+
+
+\end{comment}
+
+
+%% ------ Requisitos para o TCC1 -----------
+% Título, 
+% Objetivos
+% Justificativa
+% Introdução (Bem feita do ponto de vista científico)
+% Resultados Preliminares (Nesse caso podem ser resultados de uma simulação)
+% Metodologia (Métodos e materiais que vão e aser usados para atingir os objetivos)
+% Conclusão

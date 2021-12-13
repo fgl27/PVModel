@@ -175,15 +175,15 @@ function GetWattsUnit(value) {
 
     if (Math.abs(value) > 1000000) {//Giga
 
-        return ' GWh ';
+        return ' (GWh) ';
 
     } else if (Math.abs(value) > 1000) {//Mega
 
-        return ' MWh ';
+        return ' (MWh) ';
 
     }//else quilo
 
-    return ' kWh ';
+    return ' (kWh) ';
 
 }
 
@@ -222,12 +222,13 @@ function GetRetornoEstacao(total_ev_kw) {
 }
 
 function GetRetornoSis(total_ev_kw, total_kw) {
+    console.log(total_ev_kw);
     return (total_ev_kw * Element_obj.kwh_venda.value) -
         ((total_ev_kw - total_kw) * Element_obj.kwhv.value);
 }
 
-function GetRetornoEstacaoEProducao(total_ev_kw, total_kw, consumo, kw_pago) {
-    if (!GetQuantiEstacao()) return 0;
+function GetRetornoEstacaoEProducao(total_ev_kw, total_kw, consumo, kw_pago, sys_ev_se_paga) {
+    if (!GetQuantiEstacao() || sys_ev_se_paga) return 0;
 
     if (kw_pago < 0) return GetRetornoSis(total_ev_kw, total_kw - consumo);
 

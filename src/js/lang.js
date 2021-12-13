@@ -122,7 +122,7 @@ const Lang = {
             help: 'O valor que a concessionaria de energia local paga pelo kWh injetado na rede eletrica'
         },
         cost_min: {
-            innerHTML: 'Custo mínimo mensal concessionaria',
+            innerHTML: 'Custo mínimo mensal concessionaria (R$)',
             help: 'O valor mínimo mensal que a concessionaria de energia cobra para estar conectado na rede, este valor varia se for mono, bi ou trifásico, contempla impostos tributos e iluminação publica'
         },
         custo_painel: {
@@ -233,12 +233,13 @@ const Lang = {
         deficit: "Déficit de energia ano",
         excedente: "Excedente de energia ano",
         custo_pg_energia: "Valor pago a concessionária ano",
-        custo_re_energia: "Recebido da concessionária de energia ano",
+        custo_re_energia: "Valor recebido da concessionária ano",
         estacao_consumo: "Consumo estações de recarga",
         cost_buy_kw: "Custo de compra de energia (Caso não produza)",
         ret_sell_kw: "Faturamento bruto",
         consumo_tot: "Consumo total de energia ano",
-        ret_estacao: "Faturamento liquido Estações recarga",
+        consumo_tot_er: " estações recarga ",
+        ret_estacao: "Faturamento liquido",
         ret_anual_sys_payed: "Lucro anual apos sistema pago",
         ret_estacao_custo: "Custo total estações",
         real: " (R$)",
@@ -483,6 +484,7 @@ const Lang = {
         cost_buy_kw: "Total kW purchase cost (If not producing)",
         ret_sell_kw: "Total return seals kW",
         consumo_tot: "Total energy consumption year",
+        consumo_tot_er: " recharge stations ",
         ret_estacao: "Return charging stations",
         ret_estacao_custo: "Total cost stations",
         ret_anual_sys_payed: "Annual profit after system paid",
