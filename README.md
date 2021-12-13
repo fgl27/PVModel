@@ -23,6 +23,7 @@ A web app was developed to show the model results it can be accessed here:
 - [Etc_images](https://github.com/fgl27/PVModel/tree/master/Etc_images) contém várias capturas de tela do aplicativo.
 - [scripts](https://github.com/fgl27/PVModel/tree/master/scripts) contém vários scripts (Node, Python e Shell) que são usados para gerar o aplicativo da web e os dados do aplicativo.
 - [src](https://github.com/fgl27/PVModel/tree/master/src) contém os arquivos de origem do aplicativo da web (Html, CSS, JS).
+- [TCC](https://github.com/fgl27/PVModel/tree/master/TCC) contém o arquivo PDF do TCC que originou este aplicativo e os arquivos do latex que gera o PDF.
 
 Cada pasta que necessita tem seu próprio README.md que contém mais informações sobre a pasta.
 
@@ -33,6 +34,7 @@ Cada pasta que necessita tem seu próprio README.md que contém mais informaçõ
 - [Etc_images](https://github.com/fgl27/PVModel/tree/master/Etc_images) contains various app screen shots.
 - [scripts](https://github.com/fgl27/PVModel/tree/master/scripts) contains various script (Node, Python and Shell) this are used to generate web app and the app data.
 - [src](https://github.com/fgl27/PVModel/tree/master/src) contains the web app source files (Html, CSS, JS).
+- [TCC](https://github.com/fgl27/PVModel/tree/master/TCC) contains the TCC (Final paper) PDF file that originated this application and the latex files that generate the PDF.
 
 It folder that needed has its own README.md that contains more info about it.
 
