@@ -114,11 +114,11 @@ const Lang = {
             help: 'O consumo medio mensal em kWh da residência/estabelecimento'
         },
         kwh: {
-            innerHTML: 'Custo do kWh (R$)',
+            innerHTML: 'Valor compra kWh da concessionária (R$)',
             help: 'O custo do kWh cobrado pela concessionária, utilizado para calcular o Faturmento financeiro da produção ou consumo de energia'
         },
         kwhv: {
-            innerHTML: 'Valor de compra kWh concessionaria (R$)',
+            innerHTML: 'Valor venda kWh para concessionaria (R$)',
             help: 'O valor que a concessionaria de energia local paga pelo kWh injetado na rede eletrica'
         },
         cost_min: {
@@ -172,7 +172,7 @@ const Lang = {
             help: 'A quantidade de dias que o estabelecimento funciona em uma semana'
         },
         hours_active: {
-            innerHTML: 'Média de Horas de utilização por dia (h)',
+            innerHTML: 'Média de Horas de utilização por dia (Un)',
             help: 'A quantidade média de horas por dia que as estações permanecem ativas em uso por um veículo'
         },
         kwh_venda: {
@@ -225,8 +225,8 @@ const Lang = {
         obs_month: 'Obs.: Clique no mês para ver o resultado da produção de energia  por dia',
         back_year: "  Voltar para o ano",
         back_month: "  Voltar para o mês de ",
-        total_en: "Energia produzida total ",
-        total_year: "Energia produzida total ano",
+        total_en: "Energia CA produzida total ",
+        total_year: "Energia CA produzida ano",
         ac: "(CA)",
         ret_kwh: "Faturmento produção de energia",
         ret_custo: "Custo total do sistema PV",

@@ -159,15 +159,31 @@ function GetTotal(total) {
 
     if (Math.abs(total) > 1000000) {//Giga
 
-        return text + formatNumber(total / 1000000.0, 4) + ' GWh ' + Lang[appLang].ac;
+        return text + formatNumber(total / 1000000.0, 4);
 
     } else if (Math.abs(total) > 1000) {//Mega
 
-        return text + formatNumber(total / 1000.0, 4) + ' MWh ' + Lang[appLang].ac;
+        return text + formatNumber(total / 1000.0, 4);
 
     }//else quilo
 
-    return text + formatNumber(total, 4) + ' kWh ' + Lang[appLang].ac;
+    return text + formatNumber(total, 4);
+
+}
+
+function GetWattsUnit(value) {
+
+    if (Math.abs(value) > 1000000) {//Giga
+
+        return ' GWh ';
+
+    } else if (Math.abs(value) > 1000) {//Mega
+
+        return ' MWh ';
+
+    }//else quilo
+
+    return ' kWh ';
 
 }
 
