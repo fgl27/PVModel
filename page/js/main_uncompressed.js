@@ -233,15 +233,31 @@
 
         if (Math.abs(total) > 1000000) { //Giga
 
-            return text + formatNumber(total / 1000000.0, 4) + ' GWh ' + Lang[appLang].ac;
+            return text + formatNumber(total / 1000000.0, 4);
 
         } else if (Math.abs(total) > 1000) { //Mega
 
-            return text + formatNumber(total / 1000.0, 4) + ' MWh ' + Lang[appLang].ac;
+            return text + formatNumber(total / 1000.0, 4);
 
         } //else quilo
 
-        return text + formatNumber(total, 4) + ' kWh ' + Lang[appLang].ac;
+        return text + formatNumber(total, 4);
+
+    }
+
+    function GetWattsUnit(value) {
+
+        if (Math.abs(value) > 1000000) { //Giga
+
+            return ' GWh ';
+
+        } else if (Math.abs(value) > 1000) { //Mega
+
+            return ' MWh ';
+
+        } //else quilo
+
+        return ' kWh ';
 
     }
 
@@ -1152,7 +1168,7 @@
                 total_ev_ret = GetRetornoEstacao(total_ev_kw),
                 ret_ev_anos = total_ev_ret > 0 ? (total_ev_custo / total_ev_ret) : 0,
                 se_paga = formatAnos((total_ev_custo + total_pv_custo) / (total_ret_kw + total_ev_ret)),
-                ret_ano_tot = formatNumber(total_ev_ret + total_ret_kw, 2) + Lang[appLang].real,
+                ret_ano_tot = formatNumber(total_ev_ret + total_ret_kw, 2),
                 consumo = (Element_obj.kwh_consumption.value * 12),
                 kw_consumo = (Element_obj.tem_estacao.value ? total_ev_kw : 0) + consumo,
                 kw_deficit = total_kw - kw_consumo,
@@ -1162,19 +1178,19 @@
                 lucro_total = GetRetornoSis(total_ev_kw, total_kw - consumo) - (Element_obj.cost_min.value * 12);
 
             fun_obj.result('result_title', 'inputsContainerTop', Lang[appLang].pv_sys);
-            fun_obj.result('result_total_pv', null, Lang[appLang].total_en, resultado_total);
+            fun_obj.result('result_total_pv', null, Lang[appLang].total_en + GetWattsUnit(total_kw), resultado_total);
             //fun_obj.result('result_kwh_ret', null, Lang[appLang].ret_kwh, formatNumber(total_ret_kw) + Lang[appLang].real);
-            fun_obj.result('result_custo_ret', null, Lang[appLang].ret_custo, formatNumber(total_pv_custo) + Lang[appLang].real);
+            fun_obj.result('result_custo_ret', null, Lang[appLang].ret_custo + Lang[appLang].real, formatNumber(total_pv_custo));
             fun_obj.result('result_ret_ev', null, Lang[appLang].pv_paga, formatAnos(ret_anos));
 
             fun_obj.result('result_ev_title', (!total_kw ? 'inputsContainerTop' : null), Lang[appLang].ev_sys);
-            fun_obj.result('result_kwh_consumo', null, Lang[appLang].estacao_consumo, GetTotal(total_ev_kw));
+            fun_obj.result('result_kwh_consumo', null, Lang[appLang].estacao_consumo + GetWattsUnit(total_ev_kw), GetTotal(total_ev_kw));
 
-            fun_obj.result('result_kwh_consumo', null, Lang[appLang].cost_buy_kw, formatNumber(total_ev_kw * Element_obj.kwh.value, 2) + Lang[appLang].real);
-            fun_obj.result('result_kwh_consumo', null, Lang[appLang].ret_sell_kw, formatNumber(ev_sell_profit, 2) + Lang[appLang].real);
+            fun_obj.result('result_kwh_consumo', null, Lang[appLang].cost_buy_kw + Lang[appLang].real, formatNumber(total_ev_kw * Element_obj.kwh.value, 2));
+            fun_obj.result('result_kwh_consumo', null, Lang[appLang].ret_sell_kw + Lang[appLang].real, formatNumber(ev_sell_profit, 2));
 
-            fun_obj.result('result_kwh_ev_ret', null, Lang[appLang].ret_estacao, formatNumber(total_ev_ret, 2) + Lang[appLang].real);
-            fun_obj.result('result_custo_ev_ret', null, Lang[appLang].ret_estacao_custo, formatNumber(total_ev_custo, 2) + Lang[appLang].real);
+            fun_obj.result('result_kwh_ev_ret', null, Lang[appLang].ret_estacao + Lang[appLang].real, formatNumber(total_ev_ret, 2));
+            fun_obj.result('result_custo_ev_ret', null, Lang[appLang].ret_estacao_custo + Lang[appLang].real, formatNumber(total_ev_custo, 2));
             fun_obj.result('result_ret_ev', null, sys_ev_se_paga ? Lang[appLang].pv_nao_paga : Lang[appLang].pv_paga, sys_ev_se_paga ? '-' : formatAnos(ret_ev_anos));
 
             fun_obj.result(
@@ -1185,15 +1201,15 @@
                 Lang[appLang].result_tot
             );
 
-            fun_obj.result('result_total_pv', null, Lang[appLang].total_year, resultado_total);
-            fun_obj.result('result_kwh_consumo', null, Lang[appLang].consumo_tot, GetTotal(kw_consumo));
+            fun_obj.result('result_total_pv', null, Lang[appLang].total_year + GetWattsUnit(total_kw), resultado_total);
+            fun_obj.result('result_kwh_consumo', null, Lang[appLang].consumo_tot + GetWattsUnit(kw_consumo), GetTotal(kw_consumo));
 
-            fun_obj.result('result_kwh_consumo', null, kw_deficit >= 0 ? Lang[appLang].excedente : Lang[appLang].deficit, GetTotal(kw_deficit));
-            fun_obj.result('result_kwh_consumo', null, (kw_pago >= 0 ? Lang[appLang].custo_re_energia : Lang[appLang].custo_pg_energia), formatNumber(kw_pago >= 0 ? kw_pago : Math.abs(kw_pago)) + Lang[appLang].real);
-            fun_obj.result('result_kwh_ev_ret2', null, Lang[appLang].ret_estacao + Lang[appLang].year, formatNumber(GetRetornoEstacaoEProducao(total_ev_kw, total_kw, consumo, kw_pago), 2) + Lang[appLang].real);
+            fun_obj.result('result_kwh_consumo', null, kw_deficit >= 0 ? Lang[appLang].excedente : Lang[appLang].deficit + GetWattsUnit(kw_deficit), GetTotal(kw_deficit));
+            fun_obj.result('result_kwh_consumo', null, (kw_pago >= 0 ? Lang[appLang].custo_re_energia : Lang[appLang].custo_pg_energia) + Lang[appLang].real, formatNumber(kw_pago >= 0 ? kw_pago : Math.abs(kw_pago)));
+            fun_obj.result('result_kwh_ev_ret2', null, Lang[appLang].ret_estacao + Lang[appLang].year + Lang[appLang].real, formatNumber(GetRetornoEstacaoEProducao(total_ev_kw, total_kw, consumo, kw_pago), 2));
 
-            fun_obj.result('custo_total', null, Lang[appLang].custo_total, formatNumber(total_ev_custo + total_pv_custo, 2) + Lang[appLang].real);
-            fun_obj.result('ret_total', null, Lang[appLang].ret_total, ret_ano_tot);
+            fun_obj.result('custo_total', null, Lang[appLang].custo_total + Lang[appLang].real, formatNumber(total_ev_custo + total_pv_custo, 2));
+            fun_obj.result('ret_total', null, Lang[appLang].ret_total + Lang[appLang].real, ret_ano_tot);
 
             fun_obj.result(
                 'se_paga_total',
@@ -1205,8 +1221,8 @@
             fun_obj.result(
                 'result_kwh_ev_ret3',
                 'inputsContainerBottom',
-                Lang[appLang].ret_anual_sys_payed,
-                formatNumber(lucro_total, 2) + Lang[appLang].real
+                Lang[appLang].ret_anual_sys_payed + Lang[appLang].real,
+                formatNumber(lucro_total, 2)
             );
 
 
@@ -1215,7 +1231,7 @@
                     'div',
                     Elem_Ids.Result.Note + '_Title',
                     'result_note',
-                    result_title + result_title_extra + GetTotal(obj.total * CC_CA)
+                    result_title + result_title_extra + GetTotal(obj.total * CC_CA) + GetWattsUnit(obj.total * CC_CA)
                 )
             );
 
@@ -1663,11 +1679,11 @@
                 help: 'O consumo medio mensal em kWh da residência/estabelecimento'
             },
             kwh: {
-                innerHTML: 'Custo do kWh (R$)',
+                innerHTML: 'Valor compra kWh da concessionária (R$)',
                 help: 'O custo do kWh cobrado pela concessionária, utilizado para calcular o Faturmento financeiro da produção ou consumo de energia'
             },
             kwhv: {
-                innerHTML: 'Valor de compra kWh concessionaria (R$)',
+                innerHTML: 'Valor venda kWh para concessionaria (R$)',
                 help: 'O valor que a concessionaria de energia local paga pelo kWh injetado na rede eletrica'
             },
             cost_min: {
@@ -1721,7 +1737,7 @@
                 help: 'A quantidade de dias que o estabelecimento funciona em uma semana'
             },
             hours_active: {
-                innerHTML: 'Média de Horas de utilização por dia (h)',
+                innerHTML: 'Média de Horas de utilização por dia (Un)',
                 help: 'A quantidade média de horas por dia que as estações permanecem ativas em uso por um veículo'
             },
             kwh_venda: {
@@ -1774,8 +1790,8 @@
             obs_month: 'Obs.: Clique no mês para ver o resultado da produção de energia  por dia',
             back_year: "  Voltar para o ano",
             back_month: "  Voltar para o mês de ",
-            total_en: "Energia produzida total ",
-            total_year: "Energia produzida total ano",
+            total_en: "Energia CA produzida total ",
+            total_year: "Energia CA produzida ano",
             ac: "(CA)",
             ret_kwh: "Faturmento produção de energia",
             ret_custo: "Custo total do sistema PV",
